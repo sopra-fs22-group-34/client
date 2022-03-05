@@ -1,6 +1,6 @@
 # SoPra FS22 - Client Template
 
-## Getting started 
+## Getting started
 
 Read and go through these Tutorials. It will make your life easier!
 
