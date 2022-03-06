@@ -21,7 +21,11 @@ const FormField = props => {
       </label>
       <input
         className="login input"
+<<<<<<< HEAD
         placeholder="enter here...?"
+=======
+        placeholder="enter here.."
+>>>>>>> parent of 69092c0 (Update Login.js)
         value={props.value}
         onChange={e => props.onChange(e.target.value)}
       />
