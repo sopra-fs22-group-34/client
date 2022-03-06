@@ -21,11 +21,7 @@ const FormField = props => {
       </label>
       <input
         className="login input"
-<<<<<<< HEAD
-        placeholder="enter here...?"
-=======
-        placeholder="enter here.."
->>>>>>> parent of 69092c0 (Update Login.js)
+        placeholder="enter here..."
         value={props.value}
         onChange={e => props.onChange(e.target.value)}
       />
@@ -68,7 +64,7 @@ const Login = props => {
       <div className="login container">
         <div className="login form">
           <FormField
-            label="User name"
+            label="Username *"
             value={username}
             onChange={un => setUsername(un)}
           />
@@ -78,10 +74,11 @@ const Login = props => {
             onChange={n => setName(n)}
           />
           <FormField
-            label="Password"
+            label="Password *"
             value={password}
             onChange={p => setPassword(p)}
           />
+          <p>* Required fields</p>
           <div className="login button-container">
             <Button
               disabled={!username || !password}
