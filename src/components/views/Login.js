@@ -21,7 +21,7 @@ const FormField = props => {
       </label>
       <input
         className="login input"
-        placeholder="enter here.."
+        placeholder="enter here..."
         value={props.value}
         onChange={e => props.onChange(e.target.value)}
       />
@@ -39,10 +39,11 @@ const Login = props => {
   const history = useHistory();
   const [name, setName] = useState(null);
   const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({username, name});
+      const requestBody = JSON.stringify({username, name, password});
       const response = await api.post('/users', requestBody);
 
       // Get the returned user and update a new object.
@@ -72,9 +73,14 @@ const Login = props => {
             value={name}
             onChange={n => setName(n)}
           />
+          <FormField
+            label="Password"
+            value={password}
+            onChange={p => setPassword(p)}
+          />
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
+              disabled={!username || !password}
               width="100%"
               onClick={() => doLogin()}
             >
