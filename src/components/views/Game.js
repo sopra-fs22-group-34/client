@@ -7,17 +7,23 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
 
-const Player = ({user}) => (
+const Player = ({user}, {online_status=logged_inToString(user.logged_in)}) => (
   <div className="player container">
     <div className="player username">{user.username}</div>
-    <div className="player name">{user.name}</div>
-    <div className="player id">id: {user.id}</div>
+    <div className="player logged_in">{online_status}</div>
   </div>
 );
 
 Player.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  online_status: PropTypes.string
 };
+
+// if logged_in is true, display the user to be "ONLINE", otherwise "OFFLINE"
+function logged_inToString(bool){
+    if (bool) { return "ONLINE"; }
+    return "OFFLINE";
+}
 
 const Game = () => {
   // use react-router-dom's hook to access the history
@@ -31,8 +37,16 @@ const Game = () => {
   const [users, setUsers] = useState(null);
 
   const logout = () => {
+    try { const response = api.put('/users/'+localStorage.getItem("id")+"/logout");
+    } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}
+
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
     history.push('/login');
+  }
+
+  const userPage = ({user}) => {
+    history.push('/users/'+user.id);
   }
 
   // the effect hook can be used to react to change in your component.
@@ -79,13 +93,14 @@ const Game = () => {
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Player user={user} key={user.id}/>
+            <Button width="100%" onClick={() => userPage({user})}>
+              <Player user={user} key={user.id}/>
+            </Button>
           ))}
         </ul>
         <Button
           width="100%"
-          onClick={() => logout()}
-        >
+          onClick={() => logout()}>
           Logout
         </Button>
       </div>
@@ -94,9 +109,9 @@ const Game = () => {
 
   return (
     <BaseContainer className="game container">
-      <h2>Happy Coding!</h2>
+      <h2>Welcome!</h2>
       <p className="game paragraph">
-        Get all users from secure endpoint:
+        Registered users:
       </p>
       {content}
     </BaseContainer>
