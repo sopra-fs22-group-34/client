@@ -25,14 +25,6 @@ function logged_inToString(bool){
     return "OFFLINE";
 }
 
-function getUsername(users){
-    for (var u = 0; u < users.length; u++){
-        if (users[u].id == localStorage.getItem("id")){
-            return users[u].username;
-        }
-    }
-}
-
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -103,18 +95,13 @@ const Game = () => {
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Button className="game user-button" width="100%" onClick={() => userPage({user})}>
+            <Button className="game user-button" onClick={() => userPage({user})}>
               <Player user={user} key={user.id}/>
             </Button>
           ))}
         </ul>
-        <Button
-          width="100%"
-          onClick={() => logout()}>
-          Logout
-        </Button>
       </div>
-    );
+    )
   }
 
 
@@ -125,6 +112,11 @@ const Game = () => {
         Registered users:
       </p>
       {content}
+      <Button
+        width="100%"
+        onClick={() => logout()}>
+        Logout
+      </Button>
     </BaseContainer>
   );
 }
