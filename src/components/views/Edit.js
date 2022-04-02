@@ -16,11 +16,11 @@ specific components that belong to the main one in the same file.
  */
 const FormField = props => {
  return (
-  <div className="register field">
-    <label className="register label">
+  <div className="login field">
+    <label className="login label">
       {props.label}
     </label>
-    <input className="register input"
+    <input className="login input"
       placeholder={props.placeholder}
       value={props.value}
       onChange={e => props.onChange(e.target.value)}
@@ -111,6 +111,7 @@ const EditPage = props => {
   return (
   <BaseContainer>
     <div className="user container">
+    <div className="profile outer-container">
      {content}
      <div className="user edit-button-container">
         <Button
@@ -118,6 +119,7 @@ const EditPage = props => {
           onClick={() => saveChanges()}>
           Save Changes
         </Button>
+      </div>
       </div>
     </div>
     </BaseContainer>

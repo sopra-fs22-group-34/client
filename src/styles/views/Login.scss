@@ -6,7 +6,6 @@
     min-height: 70vh;
     @include center;
     flex-direction: column;
-    flex-grow: 1;
   }
   &.form {
     display: flex;
@@ -17,9 +16,9 @@
     height: 100%;
     font-size: 16px;
     font-weight: 300;
-    padding-left: 37px;
-    padding-right: 37px;
-    padding-bottom: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
     padding-bottom: 20px;
     border-radius: 0.75em 0.75em 0em 0em;
     background-color: $background;
@@ -30,7 +29,7 @@
   &.title {
     font-size: 25pt;
     text-align: center;
-    padding: 20px;
+    padding-bottom: 20px;
   }
   &.field {
     display: flex;

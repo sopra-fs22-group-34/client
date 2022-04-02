@@ -100,14 +100,16 @@ const UserPage = props => {
   return (
     <div className="user container">
       <div className="user button-container">
-         <Button
+         <Button className="user return-button"
            width="100%"
            onClick={() => returnGame()}>
            &#60; Return
          </Button>
       </div>
+    <div className="profile outer-container">
      {content}
      {editButton}
+    </div>
     </div>
   );
 };

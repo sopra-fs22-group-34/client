@@ -8,21 +8,63 @@
   }
   &.button-container {
     width: 10em;
-    margin-bottom: 1em;
-    justify: left;
+    margin-bottom: 10px;
+    margin-left: -160px;
   }
   &.edit-button-container {
     width: 20em;
     margin-top: 1em;
   }
+  &.return-button {
+      &:hover {
+        transform: scale(1.05,1.05);
+      }
+      &:disabled {
+        cursor: default;
+        opacity: 0.4;
+        &:hover {
+          transform: none;
+        }
+      }
+      padding: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 13px;
+      text-align: center;
+      height: 35px;
+      border: none;
+      border-radius: $borderRadius;
+      cursor: pointer;
+      opacity: 1;
+      color: $background;
+      background-color: $accentDark;
+      background: $accentDark;
+      transition: all 0.3s ease;
+  }
 }
 
 .profile {
+  &.outer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    max-width: 30em;
+    min-height: 70vh;
+    font-size: 16px;
+    font-weight: 300;
+    padding-left: 37px;
+    padding-right: 37px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 0.75em 0.75em 0em 0em;
+    background-color: $background;
+    }
   &.container {
     width: 20em;
     padding: 10px;
     border-radius: $borderRadius;
-    background: $background;
+    background: transparentize($accent, 0.85);
   }
   &.name-container {
     display: flex;
@@ -30,7 +72,7 @@
   &.username {
     font-weight: 500;
     font-size: 20pt;
-    color: $accent;
+    color: $accentDark;
   }
   &.id {
     margin-left: auto;

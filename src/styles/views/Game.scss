@@ -10,9 +10,12 @@
 .game {
   &.container {
     background: $background;
-    padding: 1.5em;
+    min-height: 70vh;
+    padding: 20px;
     width: 60%;
     max-width: 30em;
+    padding-left: 50px;
+    padding-right: 50px;
     border-radius: 0.75em 0.75em 0em 0em;
     display: flex;
     flex-direction: column;
@@ -43,7 +46,7 @@
           transform: none;
         }
       }
-      padding: 6px;
+      margin: 5px;
       font-weight: 700;
       font-size: 13px;
       text-transform: none;
@@ -55,6 +58,7 @@
       opacity: 1;
       color: $background;
       background-color: $background;
+      background: $background;
       transition: all 0.3s ease;
     }
 }
@@ -62,8 +66,9 @@
 .player {
   &.container {
     margin: -0.5em 0;
-    width: 20em;
+    width: 30em;
     padding: 10px;
+    border: 1px solid $accentDark;
     border-radius: $borderRadius;
     display: flex;
     align-items: center;
@@ -76,7 +81,7 @@
   }
   &.username {
     font-weight: 500;
-    color: $accent;
+    color: $accentDark;
   }
   &.id {
     margin-left: auto;

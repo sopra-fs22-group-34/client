@@ -103,7 +103,7 @@ const Game = () => {
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Button class="game user-button" width="100%" onClick={() => userPage({user})}>
+            <Button className="game user-button" width="100%" onClick={() => userPage({user})}>
               <Player user={user} key={user.id}/>
             </Button>
           ))}
