@@ -3,7 +3,7 @@ import {api, handleError} from 'helpers/api';
 import User from 'models/User';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
-import 'styles/views/Register.scss';
+import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
@@ -15,13 +15,10 @@ specific components that belong to the main one in the same file.
  */
 const FormField = props => {
     return (
-     <div className="register field">
-       <label className="register label">
-         {props.label}
-       </label>
+     <div className="login field">
        <input
-         className="register input"
-         placeholder="enter here..."
+         className="login input"
+         placeholder={props.label}
          value={props.value}
          onChange={e => props.onChange(e.target.value)}
        />
@@ -62,8 +59,11 @@ const Register = props => {
 
   return (
     <BaseContainer>
-      <div className="register container">
-        <div className="register form">
+      <div className="login container">
+        <div className="login form">
+            <div className="login title">
+               Sign up
+            </div>
           <FormField
             label="Username *"
             value={username}
@@ -75,7 +75,7 @@ const Register = props => {
             onChange={p => setPassword(p)}
           />
           <p>* Required fields</p>
-          <div className="register button-container">
+          <div className="login button-container">
             <Button
               disabled={!username || !password}
               width="100%"

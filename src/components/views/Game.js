@@ -25,6 +25,14 @@ function logged_inToString(bool){
     return "OFFLINE";
 }
 
+function getUsername(users){
+    for (var u = 0; u < users.length; u++){
+        if (users[u].id == localStorage.getItem("id")){
+            return users[u].username;
+        }
+    }
+}
+
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -87,13 +95,15 @@ const Game = () => {
   }, []);
 
   let content = <Spinner/>;
+  const userName = "Player";
+
 
   if (users) {
     content = (
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Button width="100%" onClick={() => userPage({user})}>
+            <Button class="game user-button" width="100%" onClick={() => userPage({user})}>
               <Player user={user} key={user.id}/>
             </Button>
           ))}
@@ -107,9 +117,10 @@ const Game = () => {
     );
   }
 
+
   return (
     <BaseContainer className="game container">
-      <h2>Welcome!</h2>
+      <h2>Welcome, {userName}!</h2>
       <p className="game paragraph">
         Registered users:
       </p>

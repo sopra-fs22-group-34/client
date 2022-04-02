@@ -16,12 +16,9 @@ specific components that belong to the main one in the same file.
 const FormField = props => {
   return (
     <div className="login field">
-      <label className="login label">
-        {props.label}
-      </label>
       <input
         className="login input"
-        placeholder="enter here..."
+        placeholder={props.label}
         value={props.value}
         onChange={e => props.onChange(e.target.value)}
       />
@@ -63,6 +60,9 @@ const Login = props => {
     <BaseContainer>
       <div className="login container">
         <div className="login form">
+          <div className="login title">
+            Welcome!
+          </div>
           <FormField
             label="Username"
             value={username}

@@ -21,8 +21,8 @@ const ProfilePage = ({user}) => (
         <div className="profile logged_in">{logged_inToString(user.logged_in)}</div>
       </div>
       <hr/>
-      <div className="profile creation_date">Joined: {displayDate(user.creation_date)}</div>
-      <div className="profile birthday">Birthday: {displayDate(user.birthday)}</div>
+      <div className="profile stats">Joined: {displayDate(user.creation_date)}</div>
+      <div className="profile stats">Birthday: {displayDate(user.birthday)}</div>
     </div>
 );
 
@@ -103,7 +103,7 @@ const UserPage = props => {
          <Button
            width="100%"
            onClick={() => returnGame()}>
-           Return
+           &#60; Return
          </Button>
       </div>
      {content}
