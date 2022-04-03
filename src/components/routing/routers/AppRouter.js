@@ -3,12 +3,11 @@ import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import Login from "components/views/Login";
-import {RegisterGuard} from "components/routing/routeProtectors/RegisterGuard";
 import Register from "components/views/Register";
-import {UserGuard} from "components/routing/routeProtectors/UserGuard";
 import UserPage from "components/views/User";
 import {EditGuard} from "components/routing/routeProtectors/EditGuard";
 import EditPage from "components/views/Edit";
+import LobbyOverview from "components/views/Overview";
 
 /**
  * Main router of your application.
@@ -28,15 +27,20 @@ const AppRouter = () => {
             <GameRouter base="/game"/>
           </GameGuard>
         </Route>
+        <Route path="/home">
+          <GameGuard>
+            <LobbyOverview/>
+          </GameGuard>
+        </Route>
         <Route path="/users/edit/">
           <EditGuard>
             <EditPage/>
           </EditGuard>
         </Route>
         <Route path="/users/">
-          <UserGuard>
+          <GameGuard>
             <UserPage/>
-          </UserGuard>
+          </GameGuard>
         </Route>
         <Route exact path="/login">
           <LoginGuard>
@@ -44,12 +48,12 @@ const AppRouter = () => {
           </LoginGuard>
         </Route>
         <Route exact path="/register">
-          <RegisterGuard>
+          <LoginGuard>
             <Register/>
-          </RegisterGuard>
+          </LoginGuard>
         </Route>
         <Route exact path="/">
-          <Redirect to="/game"/>
+          <Redirect to="/home"/>
         </Route>
       </Switch>
     </BrowserRouter>

@@ -35,6 +35,7 @@ const Game = () => {
   // a component can have as many state variables as you like.
   // more information can be found under https://reactjs.org/docs/hooks-state.html
   const [users, setUsers] = useState(null);
+  const [user, setUser] = useState(null);
 
   const logout = () => {
     try { const response = api.put('/users/'+localStorage.getItem("id")+"/logout");
@@ -57,6 +58,8 @@ const Game = () => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
       try {
+        const player = await api.get('/users/'+localStorage.getItem("id"));
+        setUser(player.data);
         const response = await api.get('/users');
 
         // delays continuous execution of an async operation for 1 second.
@@ -87,8 +90,8 @@ const Game = () => {
   }, []);
 
   let content = <Spinner/>;
-  const userName = "Player";
-
+  let userName = "";
+  if (user) {userName = user.username;}
 
   if (users) {
     content = (

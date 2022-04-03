@@ -1,0 +1,115 @@
+@import 'styles/theme';
+
+/* The '&' is a shorthand for the containing element,
+  so for example a '&.user-list' inside .game will compile to
+  .game.user-list
+
+  for more information visit https://sass-lang.com/guide
+ */
+
+.overview {
+  &.container {
+    background: $background;
+    min-height: 70vh;
+    padding: 20px;
+    width: 60%;
+    max-width: 30em;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 0.75em 0.75em 0em 0em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: $dropShadow;
+  }
+  &.welcome-container {
+    background: transparentize($accent, 0.85);
+    padding: 5px 15px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    border-radius: $borderRadius;
+  }
+  &.newgame-button {
+    margin-left: 80px;
+    font-size: 18pt;
+    height: 50px;
+    text-transform: none;
+  }
+  &.user-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  &.user-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  & p,h2 {
+    margin: 0.5em 0;
+  }
+  &.user-button {
+      &:hover {
+        transform: scale(1.05,1.05);
+      }
+      &:disabled {
+        cursor: default;
+        opacity: 0.4;
+        &:hover {
+          transform: none;
+        }
+      }
+      margin: 5px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: none;
+      text-align: center;
+      height: 35px;
+      border: none;
+      border-radius: $borderRadius;
+      cursor: pointer;
+      opacity: 1;
+      color: $background;
+      background-color: $background;
+      background: $background;
+      transition: all 0.3s ease;
+    }
+}
+
+.lobby {
+  &.container {
+    margin: -0.5em 0;
+    width: 30em;
+    padding: 10px;
+    border: 1px solid $accentDark;
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
+    background: lighten($background, 5);
+  }
+  &.name {
+    font-weight: 300;
+    margin-left: 5px;
+    color: #FFFFFF;
+  }
+  &.username {
+    font-weight: 500;
+    color: $accentDark;
+  }
+  &.id {
+    margin-left: auto;
+    margin-right: 10px;
+    font-family: $fontMono;
+    font-weight: 300;
+    color: #FFFFFF;
+  }
+  &.logged_in {
+    margin-left: auto;
+    margin-right: 10px;
+    font-family: $fontMono;
+    font-weight: 300;
+    color: #FFFFFF;
+  }
+
+}
