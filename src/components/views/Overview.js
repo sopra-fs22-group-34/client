@@ -7,17 +7,8 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Overview.scss";
 
-const Lobby = ({lobby}) => (
-  <div className="lobby container">
-    <div className="lobby hostname">{lobby.hostname}</div>
-    <div className="lobby lobbyname">{lobby.lobbyname}</div>
-    <div className="lobby players">{lobby.players}/{lobby.total_players}</div>
-  </div>
-);
 
-Lobby.propTypes = {
-  lobby: PropTypes.object
-};
+
 
 const LobbyOverview = () => {
   const history = useHistory();
@@ -34,6 +25,22 @@ const LobbyOverview = () => {
   const goToLobby = ({lobby}) => {
       history.push('/lobbies/'+lobby.id);
   }
+
+  const Lobby = ({lobby}) => (
+    <div className="lobby container">
+      <div className="lobby username">{lobby.hostId}</div>
+      <div className="lobby lobbyname">{lobby.lobbyName}</div>
+      <div className="lobby players">{lobby.players}/{lobby.total_players}</div>
+      <Button className="lobby join-button" onClick={() => goToLobby({lobby})}>
+        Join &#62;
+      </Button>
+    </div>
+  );
+
+  Lobby.propTypes = {
+    lobby: PropTypes.object
+  };
+
   useEffect(() => {
       async function fetchData() {
         try {
@@ -51,9 +58,19 @@ const LobbyOverview = () => {
           alert("Something went wrong while fetching the lobbies! See the console for details.");
         }
       }
-
       fetchData();
     }, []);
+  async function refreshLobbies() {
+      try {
+        const response = await api.get('/lobbies');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLobbies(response.data);
+      } catch (error) {
+        console.error(`Something went wrong while fetching the lobbies: \n${handleError(error)}`);
+        console.error("Details:", error);
+        alert("Something went wrong while fetching the lobbies! See the console for details.");
+      }
+    }
 
   let content = <Spinner/>;
   let userName = "Player";
@@ -90,9 +107,11 @@ const LobbyOverview = () => {
           </p>
           {content}
           {noGames}
+          <Button width="80%" onClick={() => refreshLobbies()}>
+              Refresh
+            </Button>
           <hr width="80%"/>
-          <Button width="100%"
-            onClick={() => logout()}>
+          <Button width="100%" onClick={() => logout()}>
             Logout
           </Button>
         </BaseContainer>

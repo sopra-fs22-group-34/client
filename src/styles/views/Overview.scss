@@ -36,11 +36,11 @@
     height: 50px;
     text-transform: none;
   }
-  &.user-list {
+  &.lobby-list {
     list-style: none;
     padding-left: 0;
   }
-  &.user-item {
+  &.lobby-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,7 +49,10 @@
   & p,h2 {
     margin: 0.5em 0;
   }
-  &.user-button {
+  & hr {
+    margin: 20px;
+  }
+  &.lobby-button {
       &:hover {
         transform: scale(1.05,1.05);
       }
@@ -60,13 +63,16 @@
           transform: none;
         }
       }
-      margin: 5px;
+      margin-bottom: 25px;
       font-weight: 700;
       font-size: 13px;
       text-transform: none;
       text-align: center;
-      height: 35px;
+      display: flex;
+      align-items: center;
+      height: 30px;
       border: none;
+      padding: 0;
       border-radius: $borderRadius;
       cursor: pointer;
       opacity: 1;
@@ -79,9 +85,9 @@
 
 .lobby {
   &.container {
-    margin: -0.5em 0;
-    width: 30em;
-    padding: 10px;
+    width: 28em;
+    padding: 5px;
+    padding-left: 20px;
     border: 1px solid $accentDark;
     border-radius: $borderRadius;
     display: flex;
@@ -97,19 +103,23 @@
     font-weight: 500;
     color: $accentDark;
   }
-  &.id {
+  &.lobbyname {
     margin-left: auto;
     margin-right: 10px;
+    font-family: $fontMono;
+    font-weight: 300;
+    font-size: 12pt;
+    color: $accent;
+  }
+  &.players {
+    margin-left: auto;
+    margin-right: 60px;
     font-family: $fontMono;
     font-weight: 300;
     color: #FFFFFF;
   }
-  &.logged_in {
-    margin-left: auto;
-    margin-right: 10px;
-    font-family: $fontMono;
-    font-weight: 300;
-    color: #FFFFFF;
+  &.join-button {
+      text-transform: none;
   }
 
 }
