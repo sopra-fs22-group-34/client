@@ -7,9 +7,6 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Overview.scss";
 
-
-
-
 const LobbyOverview = () => {
   const history = useHistory();
   const [lobbies, setLobbies] = useState(null);
@@ -17,20 +14,22 @@ const LobbyOverview = () => {
 
   const logout = () => {
     try { const response = api.put('/users/'+localStorage.getItem("id")+"/logout");
-    } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}      localStorage.removeItem('token');
+    } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}
+    localStorage.removeItem('token');
     localStorage.removeItem('id');
     history.push('/login');
   }
 
   const goToLobby = ({lobby}) => {
+    //TODO: put request that adds current user to lobby
       history.push('/lobbies/'+lobby.id);
   }
 
   const Lobby = ({lobby}) => (
     <div className="lobby container">
-      <div className="lobby username">{lobby.hostId}</div>
-      <div className="lobby lobbyname">{lobby.lobbyName}</div>
-      <div className="lobby players">{lobby.players}/{lobby.total_players}</div>
+      <div className="lobby username">{lobby.host_name}</div>
+      <div className="lobby lobbyname">{lobby.name}</div>
+      <div className="lobby players">{lobby.current_players}/{lobby.total_players}</div>
       <Button className="lobby join-button" onClick={() => goToLobby({lobby})}>
         Join &#62;
       </Button>
@@ -60,6 +59,7 @@ const LobbyOverview = () => {
       }
       fetchData();
     }, []);
+
   async function refreshLobbies() {
       try {
         const response = await api.get('/lobbies');
@@ -71,6 +71,8 @@ const LobbyOverview = () => {
         alert("Something went wrong while fetching the lobbies! See the console for details.");
       }
     }
+
+  setInterval(refreshLobbies, 10000);
 
   let content = <Spinner/>;
   let userName = "Player";
@@ -101,7 +103,7 @@ const LobbyOverview = () => {
               New Game
             </Button>
           </div>
-          <hr width="80%"/>
+          <div className="overview lobby-container">
           <p className="overview paragraph">
             Games looking for players:
           </p>
@@ -110,6 +112,7 @@ const LobbyOverview = () => {
           <Button width="80%" onClick={() => refreshLobbies()}>
               Refresh
             </Button>
+          </div>
           <hr width="80%"/>
           <Button width="100%" onClick={() => logout()}>
             Logout

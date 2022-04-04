@@ -23,18 +23,26 @@
     box-shadow: $dropShadow;
   }
   &.welcome-container {
-    background: transparentize($accent, 0.85);
-    padding: 5px 15px;
+    margin-bottom: 20px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+  &.newgame-button {
+    font-size: 18pt;
+    margin-left: 100px;
+    height: 50px;
+    width: 160px;
+    text-transform: none;
+  }
+  &.lobby-container {
+    background: transparentize($accentDark, 0.85);
+    padding: 15px;
+    flex-direction: column;
     display: flex;
     width: 100%;
     align-items: center;
     border-radius: $borderRadius;
-  }
-  &.newgame-button {
-    margin-left: 80px;
-    font-size: 18pt;
-    height: 50px;
-    text-transform: none;
   }
   &.lobby-list {
     list-style: none;
@@ -100,14 +108,12 @@
     color: #FFFFFF;
   }
   &.username {
-    font-weight: 500;
     color: $accentDark;
   }
   &.lobbyname {
     margin-left: auto;
     margin-right: 10px;
     font-family: $fontMono;
-    font-weight: 300;
     font-size: 12pt;
     color: $accent;
   }
@@ -120,6 +126,7 @@
   }
   &.join-button {
       text-transform: none;
+      padding: 0px 10px;
   }
 
 }

@@ -8,6 +8,7 @@ import UserPage from "components/views/User";
 import {EditGuard} from "components/routing/routeProtectors/EditGuard";
 import EditPage from "components/views/Edit";
 import LobbyOverview from "components/views/Overview";
+import LobbyPage from "components/views/Lobby";
 
 /**
  * Main router of your application.
@@ -40,6 +41,11 @@ const AppRouter = () => {
         <Route path="/users/">
           <GameGuard>
             <UserPage/>
+          </GameGuard>
+        </Route>
+        <Route path="/lobbies/">
+          <GameGuard>
+            <LobbyPage/>
           </GameGuard>
         </Route>
         <Route exact path="/login">

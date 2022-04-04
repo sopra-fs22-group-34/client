@@ -52,14 +52,10 @@ const UserPage = props => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-      // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
       async function fetchData() {
         try {
           const currentPage = await api.get(window.location.pathname);
-
-          // Get the returned users and update the state.
           setUser(currentPage.data);
-
           // See here to get more data.
           console.log(currentPage);
         } catch (error) {
