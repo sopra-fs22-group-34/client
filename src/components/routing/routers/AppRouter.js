@@ -9,6 +9,7 @@ import {EditGuard} from "components/routing/routeProtectors/EditGuard";
 import EditPage from "components/views/Edit";
 import LobbyOverview from "components/views/Overview";
 import LobbyPage from "components/views/Lobby";
+import CreatePage from "components/views/Create";
 
 /**
  * Main router of your application.
@@ -31,6 +32,11 @@ const AppRouter = () => {
         <Route path="/home">
           <GameGuard>
             <LobbyOverview/>
+          </GameGuard>
+        </Route>
+        <Route path="/create">
+          <GameGuard>
+            <CreatePage/>
           </GameGuard>
         </Route>
         <Route path="/users/edit/">

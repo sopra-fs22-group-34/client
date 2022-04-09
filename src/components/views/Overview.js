@@ -20,6 +20,10 @@ const LobbyOverview = () => {
     history.push('/login');
   }
 
+  const newGame = () => {
+       history.push('/create');
+    }
+
   const goToLobby = ({lobby}) => {
     //TODO: put request that adds current user to lobby
       history.push('/lobbies/'+lobby.id);
@@ -99,7 +103,7 @@ const LobbyOverview = () => {
         <div className="overview welcome-container">
           <h2>Welcome, <span className="lobby username">{userName}</span>!</h2>
           <Button className="overview newgame-button" width="100%"
-              onClick={() => logout()}>
+              onClick={() => newGame()}>
               New Game
             </Button>
           </div>

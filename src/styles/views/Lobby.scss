@@ -1,0 +1,136 @@
+@import 'styles/theme';
+
+/* The '&' is a shorthand for the containing element,
+  so for example a '&.user-list' inside .game will compile to
+  .game.user-list
+
+  for more information visit https://sass-lang.com/guide
+ */
+
+.lobby {
+  &.container {
+    background: $background;
+    min-height: 70vh;
+    padding: 20px;
+    width: 60%;
+    max-width: 30em;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 0.75em 0.75em 0em 0em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: $dropShadow;
+  }
+  &.buttons-container {
+    margin-bottom: 20px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+  &.leave-button {
+    font-size: 18pt;
+    margin-left: 100px;
+    height: 50px;
+    width: 160px;
+    text-transform: none;
+  }
+  &.players-container {
+    padding: 20px;
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    border-radius: $borderRadius;
+  }
+  &.lobby-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  &.lobby-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  & p,h2 {
+    margin: 0.5em 0;
+  }
+  & hr {
+    margin: 20px;
+  }
+}
+
+.settings {
+  &.container {
+    background: transparentize($accent, 0.85);
+    border-radius: $borderRadius;
+    width: 100%;
+    padding: 5px;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+  }
+  &.name {
+    font-weight: 300;
+    margin-left: 5px;
+    color: #FFFFFF;
+  }
+  &.username {
+    color: $accentDark;
+  }
+  &.lobbyname {
+    margin-left: auto;
+    margin-right: 10px;
+    font-family: $fontMono;
+    font-size: 12pt;
+    color: $accent;
+  }
+  &.players {
+    margin-left: auto;
+    margin-right: 60px;
+    font-family: $fontMono;
+    font-weight: 300;
+    color: #FFFFFF;
+  }
+  &.players-button {
+      &:hover {
+        opacity: 1;
+        transform: none;
+      }
+      text-transform: none;
+      opacity: 0.5;
+      padding: 0px 10px;
+      margin-left: 5px;
+  }
+  &.join-button {
+      text-transform: none;
+      padding: 0px 10px;
+  }
+  &.field {
+    display: flex;
+    align-items: center;
+  }
+  &.input {
+    &:focus {
+      border: 1px solid $accent;
+    }
+    height: 35px;
+    padding-left: 15px;
+    margin-left: 20px;
+    border: 1px hidden $background;
+    border-radius: $borderRadius;
+    background: transparentize($accent, 0.85);
+    color: $textColor;
+    transition: all 0.3s ease;
+  }
+  &.label {
+    color: $textColor;
+    font-weight: 300;
+  }
+  &.button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+}

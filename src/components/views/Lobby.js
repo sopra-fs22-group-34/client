@@ -5,19 +5,21 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import "styles/views/Overview.scss";
+import "styles/views/Lobby.scss";
 
 const LobbyPage = () => {
   const history = useHistory();
   const [lobby, setLobby] = useState(null);
   const [host, setHost] = useState(null);
+  const [players, setPlayers] = useState(null);
 
   const startGame = () => {
     history.push(window.location.pathname+"/game");
   }
   const Return = () => {
-    //TODO: close the game if host, otherwise just remove the current user
-      history.push("/home");
+    try { const response = api.put(window.location.pathname+"/users/"+localStorage.getItem("id")+"/leave");
+    } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
+    history.push('/home');
     }
 
     const LobbySettings = ({lobby}) => (
@@ -45,6 +47,7 @@ const LobbyPage = () => {
       try {
         const currentLobby = await api.get(window.location.pathname);
         setLobby(currentLobby.data);
+        //setPlayers(lobby.players);
         console.log(currentLobby);
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
@@ -59,6 +62,7 @@ const LobbyPage = () => {
        try {
          const response = await api.get(window.location.pathname);
          setLobby(response.data);
+         setPlayers(lobby.players);
        } catch (error) {
          console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
          console.error("Details:", error);
@@ -68,15 +72,15 @@ const LobbyPage = () => {
 
   //setInterval(refreshLobby, 3000);
   let playerCount = 4;
-  let players = null;
   let player1 = "";
   let player2 = <Spinner/>;
   let player3 = "";
   let player4 = "";
   let startNow = null;
+  let player_list = null;
 
   if (lobby) {
-    //TODO: adjust playerCount based on lobby settings
+    playerCount = lobby.total_players;
     //TODO: if at least 2 players and current user is host: set start now button to an actual button
     //TODO: add players
   }
@@ -90,12 +94,8 @@ const LobbyPage = () => {
         </div>
         <LobbySettings lobby={lobby}/>
         <div className="lobby players-container">
-          {players}
+          {player_list}
         </div>
-        <Button width="80%" onClick={() => refreshLobby()}>
-            Refresh
-          </Button>
-        <hr width="80%"/>
 
       </BaseContainer>
     );
