@@ -30,11 +30,11 @@ const LobbyOverview = () => {
   }
 
   const Lobby = ({lobby}) => (
-    <div className="lobby container">
-      <div className="lobby username">{lobby.host_name}</div>
-      <div className="lobby lobbyname">{lobby.name}</div>
-      <div className="lobby players">{lobby.current_players}/{lobby.total_players}</div>
-      <Button className="lobby join-button" onClick={() => goToLobby({lobby})}>
+    <div className="lobbies container">
+      <div className="lobbies username">{lobby.host_name}</div>
+      <div className="lobbies lobbyname">{lobby.name}</div>
+      <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
+      <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
         Join &#62;
       </Button>
     </div>
@@ -89,7 +89,7 @@ const LobbyOverview = () => {
       <div className="overview">
         <ul className="overview lobby-list">
           {lobbies.map(lobby => (
-            <Button className="overview lobby-button" width="100%"
+            <Button className="overview lobby-button"
                 onClick={() => goToLobby({lobby})}>
               <Lobby lobby={lobby} key={lobby.id}/>
             </Button>
@@ -101,7 +101,7 @@ const LobbyOverview = () => {
     return (
         <BaseContainer className="overview container">
         <div className="overview welcome-container">
-          <h2>Welcome, <span className="lobby username">{userName}</span>!</h2>
+          <h2>Welcome, <span className="lobbies username">{userName}</span>!</h2>
           <Button className="overview newgame-button" width="100%"
               onClick={() => newGame()}>
               New Game

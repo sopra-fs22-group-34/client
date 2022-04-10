@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
+import Lobby from 'models/Lobby';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
@@ -24,9 +25,9 @@ const LobbyPage = () => {
 
     const LobbySettings = ({lobby}) => (
       <div className="settings container">
-        <div className="settings username">{lobby.hostId}</div>
-        <div className="settings lobbyname">{lobby.lobbyName}</div>
-        <div className="settings players">{lobby.players}/{lobby.total_players}</div>
+        <div className="settings username">{lobby.host_id}</div>
+        <div className="settings lobbyname">{lobby.name}</div>
+        <div className="settings players">{lobby.current_players}/{lobby.total_players}</div>
       </div>
     );
     LobbySettings.propTypes = {
@@ -46,6 +47,7 @@ const LobbyPage = () => {
     async function fetchData() {
       try {
         const currentLobby = await api.get(window.location.pathname);
+        const lobby = new Lobby(currentLobby.data);
         setLobby(currentLobby.data);
         //setPlayers(lobby.players);
         console.log(currentLobby);
@@ -61,7 +63,7 @@ const LobbyPage = () => {
   async function refreshLobby() {
        try {
          const response = await api.get(window.location.pathname);
-         setLobby(response.data);
+         const lobby = new Lobby(response.data);
          setPlayers(lobby.players);
        } catch (error) {
          console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);

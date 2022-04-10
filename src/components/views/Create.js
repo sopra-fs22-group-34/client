@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
+import Lobby from 'models/Lobby';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -31,17 +32,22 @@ FormField.propTypes = {
 
 const CreatePage = () => {
   const history = useHistory();
-  const [host, setHost] = useState(null);
-  const [lobbyName, setLobbyName] = useState(null);
-  const [playerCount, setPlayerCount] = useState(null);
+  const [host_id, setHost_id] = useState(null);
+  const [name, setName] = useState(null);
+  const [total_players, setTotal_players] = useState(null);
+  const [is_public, setIs_public] = useState(null);
   const [timer, setTimer] = useState(null);
 
   const Return = () => {
     history.push('/home');
     }
   const Open = () => {
-    try { const response = api.post("/lobbies");
-        history.push("/lobbies/"+response.id);
+    try {
+        const requestBody = JSON.stringify({host_id, name, is_public, total_players});
+        const response = api.post("/lobbies", requestBody);
+        const lobby = new Lobby(response.data);
+        localStorage.setItem('game', lobby.id);
+        history.push("/lobbies/"+lobby.id);
     } catch (error) { alert(`Something went wrong while creating the lobby: \n${handleError(error)}`);
         history.push('/home');}
     }
@@ -50,7 +56,11 @@ const CreatePage = () => {
       async function fetchData() {
         try {
           const response = await api.get("/users/"+localStorage.getItem("id"));
-          setHost(response.data);
+          setHost_id(response.data.id);
+          setIs_public(true);
+          setName("New Game");
+          setTotal_players(4);
+          setTimer(45);
           console.log(response);
         } catch (error) {
           console.error(`Something went wrong while fetching your username: \n${handleError(error)}`);
@@ -62,20 +72,20 @@ const CreatePage = () => {
     }, []);
 
   let settings = <Spinner/>
-  if (host) {
+  if (host_id) {
     settings = (
       <div className="settings container">
       <div className="settings form">
         <FormField
           label="Name: "
           placeholder="New Game"
-          value={lobbyName}
-          onChange={ln => setLobbyName(ln)}
+          value={name}
+          onChange={ln => setName(ln)}
         />
         Players:
-        <Button className="settings players-button" onClick={() => setPlayerCount(2)}> 2 </Button>
-        <Button className="settings players-button" onClick={() => setPlayerCount(3)}> 3 </Button>
-        <Button className="settings players-button" onClick={() => setPlayerCount(4)}> 4 </Button>
+        <Button className="settings players-button" onClick={() => setTotal_players(2)}> 2 </Button>
+        <Button className="settings players-button" onClick={() => setTotal_players(3)}> 3 </Button>
+        <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button>
       </div>
       </div>)
     }
