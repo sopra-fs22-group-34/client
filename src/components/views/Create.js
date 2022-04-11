@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
-import Lobby from 'models/Lobby';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -32,36 +31,34 @@ FormField.propTypes = {
 
 const CreatePage = () => {
   const history = useHistory();
-  const [host_id, setHost_id] = useState(null);
-  const [name, setName] = useState(null);
-  const [total_players, setTotal_players] = useState(null);
-  const [is_public, setIs_public] = useState(null);
-  const [timer, setTimer] = useState(null);
+  const [host_id, setHost_id] = useState(localStorage.getItem("id"));
+  const [name, setName] = useState("New Game");
+  const [total_players, setTotal_players] = useState(4);
+  const [is_public, setIs_public] = useState(true);
+  const [timer, setTimer] = useState(45);
 
   const Return = () => {
     history.push('/home');
-    }
-  const Open = () => {
+    };
+
+  const Open = async () => {
     try {
         const requestBody = JSON.stringify({host_id, name, is_public, total_players});
-        const response = api.post("/lobbies", requestBody);
-        const lobby = new Lobby(response.data);
-        localStorage.setItem('game', lobby.id);
-        history.push("/lobbies/"+lobby.id);
+        const response = await api.post('/lobbies', requestBody);
+        localStorage.setItem('game', response.data.id);
+        history.push("/lobbies/"+response.data.id);
     } catch (error) { alert(`Something went wrong while creating the lobby: \n${handleError(error)}`);
         history.push('/home');}
-    }
+    };
 
   useEffect(() => {
       async function fetchData() {
         try {
-          const response = await api.get("/users/"+localStorage.getItem("id"));
-          setHost_id(response.data.id);
+          setHost_id(localStorage.getItem("id"));
           setIs_public(true);
           setName("New Game");
           setTotal_players(4);
           setTimer(45);
-          console.log(response);
         } catch (error) {
           console.error(`Something went wrong while fetching your username: \n${handleError(error)}`);
           console.error("Details:", error);
@@ -71,7 +68,7 @@ const CreatePage = () => {
       fetchData();
     }, []);
 
-  let settings = <Spinner/>
+  let settings = <Spinner/>;
   if (host_id) {
     settings = (
       <div className="settings container">
@@ -88,7 +85,7 @@ const CreatePage = () => {
         <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button>
       </div>
       </div>)
-    }
+    };
 
   return (
         <BaseContainer className="lobby container">
@@ -97,6 +94,7 @@ const CreatePage = () => {
               &#60; Cancel
             </Button>
           </div>
+          <h2>Configure Game Settings:</h2>
           {settings}
         <div className="lobby players-container">
           <Button width="100%" onClick={() => Open()}>

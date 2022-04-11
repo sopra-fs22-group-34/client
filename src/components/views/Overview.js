@@ -24,8 +24,9 @@ const LobbyOverview = () => {
        history.push('/create');
     }
 
-  const goToLobby = ({lobby}) => {
-    //TODO: put request that adds current user to lobby
+  const goToLobby = async ({lobby}) => {
+      try { await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');
+      } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
       history.push('/lobbies/'+lobby.id);
   }
 
@@ -85,6 +86,7 @@ const LobbyOverview = () => {
   if (lobbies) {
     if (lobbies.length === 0) {noGames = 'No open games found. Start your own by clicking on "New Game"!';}
     else {
+    noGames = "";
     content = (
       <div className="overview">
         <ul className="overview lobby-list">
