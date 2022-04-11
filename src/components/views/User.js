@@ -26,6 +26,20 @@ const ProfilePage = ({user}) => (
     </div>
 );
 
+//get the data for a random profilpicture from the external API
+
+  let avatarId = localStorage.getItem("id")
+  fetch('https://api.multiavatar.com/'
+      +JSON.stringify(avatarId))
+      .then(res => res.text())
+      //.then(svg => console.log(svg))
+
+  let svg = fetch('https://api.multiavatar.com/'
+      +JSON.stringify(avatarId));
+  console.log("The next thing should be the svg:")
+  console.log(svg);
+
+
 function logged_inToString(bool){
     if (bool) { return "ONLINE"; }
     return "OFFLINE";
