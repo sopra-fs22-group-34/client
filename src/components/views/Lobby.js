@@ -69,14 +69,15 @@ const LobbyPage = () => {
 
   let content = <Spinner/>;
 
-  //console.log("This is the current players amount, if its 2 or higher, should be good. " + lobby.current_players);
-  console.log("This is the id in the local storage (current user, the supposed host)" + localStorage.getItem('id'))
-  //console.log("This is the lobby.host_id " + lobby.host_id)
+
 
   if (lobby) {
-    if (true) { // (lobby.current_players >= 2) && (localStorage.getItem('id') === lobby.host_id)
+    console.log("This is the current players amount, if its 2 or higher, start should appear. -> " + lobby.current_players);
+    console.log("This is the id in the local storage (current user, the supposed host) -> " + localStorage.getItem('id'))
+    console.log("This is the lobby.host_id. If its the same as the local storage id, the start button should appear. ->" + lobby.host_id)
+    if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) { // (lobby.current_players >= 2) && (localStorage.getItem('id') === lobby.host_id)
       startNow = (<Button className="lobby leave-button" onClick={() => startGame()}>
-        &#60; Start
+        Start
       </Button>)
     }
     //TODO: if at least 2 players and current user is host: set start now button to an actual button
