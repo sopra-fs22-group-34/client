@@ -5,7 +5,7 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import "styles/views/Game.scss";
+import "styles/views/UserList.scss";
 
 const Player = ({user}, {online_status=logged_inToString(user.logged_in)}) => (
   <div className="player container">
@@ -25,7 +25,7 @@ function logged_inToString(bool){
     return "OFFLINE";
 }
 
-const Game = () => {
+const UserList = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
 
@@ -124,4 +124,4 @@ const Game = () => {
   );
 }
 
-export default Game;
+export default UserList;

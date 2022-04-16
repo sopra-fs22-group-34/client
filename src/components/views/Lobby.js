@@ -8,10 +8,17 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Lobby.scss";
 
+const PlayerName = ({player}) => (
+  <div className="lobby players-name">{player}</div>
+);
+
 const LobbyPage = () => {
   const history = useHistory();
   const [lobby, setLobby] = useState(null);
   const [host, setHost] = useState(null);
+  const [p2, setP2] = useState(<Spinner/>);
+  const [p3, setP3] = useState(null);
+  const [p4, setP4] = useState(null);
 
   const startGame = () => {
     history.push(window.location.pathname+"/game");
@@ -22,11 +29,6 @@ const LobbyPage = () => {
     history.push('/home');
     };
 
-  let player1 = <Spinner/>;
-  let player2 = <Spinner/>;
-  let player3 = <Spinner/>;
-  let player4 = <Spinner/>;
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -34,13 +36,24 @@ const LobbyPage = () => {
         const lobby = new Lobby(currentLobby.data);
         setLobby(currentLobby.data);
 
+        if (lobby.total_players >= 3) { setP3(<Spinner/>);}
+        if (lobby.total_players === 4) { setP4(<Spinner/>);}
+
         let name1 = await api.get('/users/'+lobby.host_id);
-        player1 = name1.data.username;
+        setHost(name1.data.username);
 
-        for (let i = 0; i < lobby.total_players; i++){
-            player2 = await api.get('/users/'+lobby.host_id);
+        for (let i = 0; i < lobby.current_players; i++){
+            if (i === 1){
+                let name2 = await api.get('/users/'+lobby.players[i]);
+                setP2(name2.data.username);
+            } else if (i === 2){
+                let name3 = await api.get('/users/'+lobby.players[i]);
+                setP3(name3.data.username);
+            } else if (i === 3){
+                let name4 = await api.get('/users/'+lobby.players[i]);
+                setP4(name4.data.username);
+            }
         };
-
         console.log(currentLobby);
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
@@ -55,6 +68,19 @@ const LobbyPage = () => {
        try {
          const response = await api.get(window.location.pathname);
          const lobby = new Lobby(response.data);
+         setLobby(response.data);
+         for (let i = 0; i < lobby.current_players; i++){
+             if (i === 1){
+                 let name2 = await api.get('/users/'+lobby.players[i]);
+                 setP2(name2.data.username);
+             } else if (i === 2){
+                 let name3 = await api.get('/users/'+lobby.players[i]);
+                 setP3(name3.data.username);
+             } else if (i === 3){
+                 let name4 = await api.get('/users/'+lobby.players[i]);
+                 setP4(name4.data.username);
+             }
+         };
        } catch (error) {
          console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
          console.error("Details:", error);
@@ -62,26 +88,21 @@ const LobbyPage = () => {
        }
      }
 
-  //setInterval(refreshLobby, 3000);
+  setInterval(refreshLobby, 3000);
 
   let startNow = null;
   let player_list = null;
+  let player_list3 = null;
+  let player_list4 = null;
 
   let content = <Spinner/>;
 
-
-
   if (lobby) {
-    console.log("This is the current players amount, if its 2 or higher, start should appear. -> " + lobby.current_players);
-    console.log("This is the id in the local storage (current user, the supposed host) -> " + localStorage.getItem('id'))
-    console.log("This is the lobby.host_id. If its the same as the local storage id, the start button should appear. ->" + lobby.host_id)
-    if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) { // (lobby.current_players >= 2) && (localStorage.getItem('id') === lobby.host_id)
+    if ((lobby.current_players >= 2) && (localStorage.getItem('id') === lobby.host_id)) { // (lobby.current_players >= 2) && (localStorage.getItem('id') === lobby.host_id)
       startNow = (<Button className="lobby leave-button" onClick={() => startGame()}>
-        Start
+        Start Now
       </Button>)
     }
-    //TODO: if at least 2 players and current user is host: set start now button to an actual button
-    //TODO: add players
     content = (
     <div className="settings container">
       <div className="settings form">
@@ -91,11 +112,10 @@ const LobbyPage = () => {
       </div>);
     player_list = (
     <div className="lobby players-container">
-        <div>{player1}
-        {player2}</div>
-        <div>{player3}
-        {player4}</div>
+        <PlayerName player={host}/> <PlayerName player={p2}/>
         </div>);
+    if (lobby.total_players >= 3){player_list3 = (<PlayerName player={p3}/>);}
+    if (lobby.total_players === 4){player_list4 = (<PlayerName player={p4}/>);}
   }
   return (
       <BaseContainer className="lobby container">
@@ -107,6 +127,10 @@ const LobbyPage = () => {
         </div>
         {content}
         {player_list}
+        <div className="lobby players-container">
+            {player_list3}
+            {player_list4}
+        </div>
       </BaseContainer>
     );
 

@@ -37,11 +37,20 @@
   }
   &.players-container {
     padding: 20px;
-    flex-direction: column;
     display: flex;
     width: 100%;
     align-items: center;
     border-radius: $borderRadius;
+    justify-content: center;
+  }
+  &.players-name {
+    border: 1px solid $accent;
+    margin: auto;
+    background: transparentize($accent, 0.85);
+    border-radius: $borderRadius;
+    width: 120px;
+    height: 45px;
+    padding: 10px;
   }
   &.lobby-list {
     list-style: none;
