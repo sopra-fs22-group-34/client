@@ -26,19 +26,17 @@ const ProfilePage = ({user}) => (
     </div>
 );
 
-//get the data for a random profilpicture from the external API
+//prepare the GET request for a random profile picture from the external API
+function buildGetRequestExternalAPI(userId, input) {
+        let URL;
+        if (input === undefined) {
+            URL = "https://avatars.dicebear.com/api/human/" + userId + ".svg";
+        } else {
+            URL = "https://avatars.dicebear.com/api/human/" + userId + input + ".svg";
+        }
+        return URL;
 
-  let avatarId = localStorage.getItem("id")
-  fetch('https://api.multiavatar.com/'
-      +JSON.stringify(avatarId))
-      .then(res => res.text())
-      //.then(svg => console.log(svg))
-
-  let svg = fetch('https://api.multiavatar.com/'
-      +JSON.stringify(avatarId));
-  console.log("The next thing should be the svg:")
-  console.log(svg);
-
+}
 
 function logged_inToString(bool){
     if (bool) { return "ONLINE"; }
@@ -68,7 +66,7 @@ const UserPage = props => {
   useEffect(() => {
       async function fetchData() {
         try {
-          const currentPage = await api.get(window.location.pathname);
+          const currentPage = await api.get(window.location.pathname); //ethan pls explain window.location.pathname
           setUser(currentPage.data);
           // See here to get more data.
           console.log(currentPage);
@@ -88,6 +86,8 @@ const UserPage = props => {
   const editUser = async () => {
     history.push('/users/edit/'+localStorage.getItem('id'));
   }
+
+  let srcProfilePicture = buildGetRequestExternalAPI(localStorage.getItem("id"));
 
   let content = <Spinner/>
   let editButton = null;
@@ -118,6 +118,7 @@ const UserPage = props => {
       </div>
     <div className="profile outer-container">
      {content}
+        <img src={srcProfilePicture}/>
      {editButton}
     </div>
     </div>
