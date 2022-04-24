@@ -8,24 +8,6 @@ import 'styles/views/User.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
-/*
-It is possible to add multiple components inside a single file,
-however be sure not to clutter your files with an endless amount!
-As a rule of thumb, use one file per component and only add small,
-specific components that belong to the main one in the same file.
- */
-const ProfilePage = ({user}) => (
-    <div className="profile container">
-      <div className="profile name-container">
-        <div className="profile username">{user.username}</div>
-        <div className="profile logged_in">{logged_inToString(user.logged_in)}</div>
-      </div>
-      <hr/>
-      <div className="profile stats">Joined: {displayDate(user.creation_date)}</div>
-      <div className="profile stats">Birthday: {displayDate(user.birthday)}</div>
-    </div>
-);
-
 //prepare the GET request for a random profile picture from the external API
 function buildGetRequestExternalAPI(userId, input) {
         let URL;
@@ -52,12 +34,6 @@ function displayDate(date){
     }
     return "N/A";
 }
-
-ProfilePage.propTypes = {
-    user: PropTypes.object,
-    //creation_date: PropTypes.string
-    //onChange: PropTypes.func
-};
 
 const UserPage = props => {
   const history = useHistory();
@@ -93,7 +69,16 @@ const UserPage = props => {
   let editButton = null;
   if (user) {
     content = (
-        <ProfilePage user={user}/>
+        <div className="profile container">
+          <div className="profile name-container">
+            <img src={srcProfilePicture}/>
+            <div className="profile username">{user.username}</div>
+            <div className="profile logged_in">{logged_inToString(user.logged_in)}</div>
+          </div>
+          <hr/>
+          <div className="profile stats">Joined: {displayDate(user.creation_date)}</div>
+          <div className="profile stats">Birthday: {displayDate(user.birthday)}</div>
+        </div>
     )
   }
   if (user && localStorage.getItem('id') == user.id){
@@ -118,7 +103,7 @@ const UserPage = props => {
       </div>
     <div className="profile outer-container">
      {content}
-        <img src={srcProfilePicture}/>
+
      {editButton}
     </div>
     </div>
