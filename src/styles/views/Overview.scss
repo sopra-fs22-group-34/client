@@ -28,9 +28,12 @@
     width: 100%;
     align-items: center;
   }
+  &.welcome-image {
+    margin-left: 10px;
+  }
   &.newgame-button {
     font-size: 18pt;
-    margin-left: 100px;
+    margin-left: 80px;
     height: 50px;
     width: 160px;
     text-transform: none;
@@ -106,7 +109,7 @@
   }
   &.lobbyname {
     margin-left: auto;
-    margin-right: 10px;
+    margin-right: 40px;
     font-family: $fontMono;
     font-size: 12pt;
     color: $accent;

@@ -4,7 +4,7 @@ import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import Login from "components/views/Login";
 import Register from "components/views/Register";
-import UserPage from "components/views/User";
+import {UserPage} from "components/views/User";
 import UserList from "components/views/UserList";
 import {EditGuard} from "components/routing/routeProtectors/EditGuard";
 import EditPage from "components/views/Edit";

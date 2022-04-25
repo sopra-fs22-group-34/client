@@ -12,9 +12,9 @@ import PropTypes from "prop-types";
 function buildGetRequestExternalAPI(userId, input) {
         let URL;
         if (input === undefined) {
-            URL = "https://avatars.dicebear.com/api/human/" + userId + ".svg";
+            URL = "https://avatars.dicebear.com/api/jdenticon/" + userId + ".svg";
         } else {
-            URL = "https://avatars.dicebear.com/api/human/" + userId + input + ".svg";
+            URL = "https://avatars.dicebear.com/api/jdenticon/" + userId + input + ".svg";
         }
         return URL;
 }
@@ -113,4 +113,4 @@ const UserPage = props => {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default UserPage;
+export {UserPage, buildGetRequestExternalAPI};

@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Overview.scss";
+import {buildGetRequestExternalAPI} from "./User";
 
 const LobbyOverview = () => {
   const history = useHistory();
@@ -77,12 +78,16 @@ const LobbyOverview = () => {
       }
     }
 
-  setInterval(refreshLobbies, 10000);
+  //setInterval(refreshLobbies, 10000);
 
+  let contentProfilePicture;
   let content = <Spinner/>;
   let userName = "Player";
   let noGames = "";
-  if (user) { userName = user.username; }
+  if (user) {
+      userName = user.username;
+      contentProfilePicture = (<img src={buildGetRequestExternalAPI(user.id)} width={50} length={50}/>);
+   }
   if (lobbies) {
     if (lobbies.length === 0) {noGames = 'No open games found. Start your own by clicking on "New Game"!';}
     else {
@@ -104,6 +109,7 @@ const LobbyOverview = () => {
         <BaseContainer className="overview container">
         <div className="overview welcome-container">
           <h2>Welcome, <span className="lobbies username">{userName}</span>!</h2>
+            <div className="overview welcome-image"> {contentProfilePicture}</div>
           <Button className="overview newgame-button" width="100%"
               onClick={() => newGame()}>
               New Game
