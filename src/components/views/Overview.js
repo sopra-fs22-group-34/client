@@ -26,8 +26,8 @@ const LobbyOverview = () => {
 
   const goToLobby = async ({lobby}) => {
       try { await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');
+            history.push('/lobbies/'+lobby.id);
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
-      history.push('/lobbies/'+lobby.id);
   }
 
   const Lobby = ({lobby}) => (

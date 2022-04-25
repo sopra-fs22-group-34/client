@@ -17,7 +17,6 @@ function buildGetRequestExternalAPI(userId, input) {
             URL = "https://avatars.dicebear.com/api/human/" + userId + input + ".svg";
         }
         return URL;
-
 }
 
 function logged_inToString(bool){

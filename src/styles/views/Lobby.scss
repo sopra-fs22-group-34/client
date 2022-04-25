@@ -35,6 +35,15 @@
     width: 160px;
     text-transform: none;
   }
+  &.kick-button {
+    font-size: 10pt;
+    margin-left: 5px;
+    height: 25px;
+    background-color: DarkRed;
+    background: DarkRed;
+    color: #FFFFFF;
+    float: right;
+  }
   &.players-container {
     padding: 20px;
     display: flex;
