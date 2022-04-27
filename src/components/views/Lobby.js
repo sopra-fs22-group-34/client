@@ -132,12 +132,12 @@ const LobbyPage = () => {
   setInterval(refreshLobby, 3000);
 
   let startNow = null;
-  let isHost = true; // TODO: set to false if start now button works again
+  let isHost = false;
 
   let content = <Spinner/>;
 
   if (lobby) {
-    if ((lobby.current_players >= 2) && (localStorage.getItem('id') === lobby.host_id)) {
+    if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) {
       isHost = true;
       startNow = (<Button className="lobby leave-button" onClick={() => startGame()}>
         Start Now
