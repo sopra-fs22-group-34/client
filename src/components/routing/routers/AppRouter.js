@@ -28,6 +28,21 @@ const AppRouter = () => {
             <GameRouter base="/game"/>
           </GameGuard>
         </Route>
+        <Route path="/home">
+          <GameGuard>
+            <LobbyOverview/>
+          </GameGuard>
+        </Route>
+        <Route path="/create">
+          <GameGuard>
+            <LobbyPage/>
+          </GameGuard>
+        </Route>
+        <Route exact path="/users">
+          <LoginGuard>
+            <UserList/>
+          </LoginGuard>
+        </Route>
         <Route path="/users/edit/">
           <EditGuard>
             <EditPage/>
