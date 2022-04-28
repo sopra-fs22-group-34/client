@@ -21,13 +21,17 @@ const LobbyOverview = () => {
     history.push('/login');
   }
 
-  const newGame = () => {
-       history.push('/create');
+  const newGame = async () => {
+       try { let inLobby = await api.get('/users/' + localStorage.getItem("id") + '/lobbies/');
+         if (inLobby.data == false) {history.push('/create');}
+         else {alert(`You are already in a lobby! Please leave it before creating a new one.`)}
+       } catch (error) { alert(`Something went wrong when trying to create a new lobby: \n${handleError(error)}`);}
     }
 
   const goToLobby = async ({lobby}) => {
-      try { await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');
-            history.push('/lobbies/'+lobby.id);
+      try { let inLobby = await api.get('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id"));
+        if (inLobby.data == false) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');}
+        history.push('/lobbies/'+lobby.id);
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
   }
 
@@ -47,38 +51,34 @@ const LobbyOverview = () => {
   };
 
   useEffect(() => {
-      async function fetchData() {
+      async function fetchPlayerData() {
         try {
           const player = await api.get('/users/'+localStorage.getItem("id"));
           setUser(player.data);
-
+        } catch (error) {
+          console.error(`Something went wrong while fetching your user data: \n${handleError(error)}`);
+          console.error("Details:", error);
+          localStorage.removeItem('token');
+          localStorage.removeItem('id');
+          history.push('/login');
+        }
+      }
+      async function refreshLobbies() {
+        try {
           const response = await api.get('/lobbies');
-          await new Promise(resolve => setTimeout(resolve, 1000));
           setLobbies(response.data);
-
-          console.log(response);
         } catch (error) {
           console.error(`Something went wrong while fetching the lobbies: \n${handleError(error)}`);
           console.error("Details:", error);
           alert("Something went wrong while fetching the lobbies! See the console for details.");
         }
       }
-      fetchData();
+      const interval = setInterval(() => {
+        refreshLobbies();
+        }, 1000);
+      fetchPlayerData();
+      return () => clearInterval(interval);
     }, []);
-
-  async function refreshLobbies() {
-      try {
-        const response = await api.get('/lobbies');
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setLobbies(response.data);
-      } catch (error) {
-        console.error(`Something went wrong while fetching the lobbies: \n${handleError(error)}`);
-        console.error("Details:", error);
-        alert("Something went wrong while fetching the lobbies! See the console for details.");
-      }
-    }
-
-  //setInterval(refreshLobbies, 10000);
 
   let contentProfilePicture;
   let content = <Spinner/>;
@@ -121,9 +121,6 @@ const LobbyOverview = () => {
           </p>
           {content}
           {noGames}
-          <Button width="80%" onClick={() => refreshLobbies()}>
-              Refresh
-            </Button>
           </div>
           <hr width="80%"/>
           <Button width="100%" onClick={() => logout()}>

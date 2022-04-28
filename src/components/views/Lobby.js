@@ -13,24 +13,21 @@ const Kick = ({player}) => {
     } catch (error) { alert(`Something went wrong while kicking the user: \n${handleError(error)}`);}
 };
 
-const PlayerName = ({player}) => (
-  <div className="lobby players-name">{player}</div>
-);
-const PlayerSpinner = () => (
-  <div className="lobby players-name"><Spinner/></div>
-);
+function PlayerNameText({player=null}) {
+  if (!player) {return (<Spinner/>)}
+  else return (player)
+};
 
-const PlayerNameKick = ({player}) => (
-  <div className="lobby players-name">{player}
-      <Button className="lobby kick-button" onClick={() => Kick({player})}>X</Button>
-  </div>
-);
+function PlayerName({player=null}, {isHost=false}) {
+    if (!isHost) return (<div className="lobby players-name"><PlayerNameText player={player}/></div>)
+    else return (<div className="lobby players-name"><PlayerNameText player={player}/><Button className="lobby kick-button" onClick={() => Kick({player})}>X</Button></div>)
+};
 
 const LobbyPage = () => {
   const history = useHistory();
   const [lobby, setLobby] = useState(null);
-  const [hostBox, setHostBox] = useState(<PlayerSpinner/>);
-  const [p2Box, setP2Box] = useState(<PlayerSpinner/>);
+  const [hostBox, setHostBox] = useState(<PlayerName/>);
+  const [p2Box, setP2Box] = useState(<PlayerName/>);
   const [p3Box, setP3Box] = useState(null);
   const [p4Box, setP4Box] = useState(null);
 
@@ -39,14 +36,16 @@ const LobbyPage = () => {
   };
   const Return = () => {
     try { const response = api.put(window.location.pathname+"/users/"+localStorage.getItem("id")+"/leave");
+        history.push('/home');
     } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
-    history.push('/home');
   };
 
   let host = null;
   let p2 = null;
   let p3 = null;
   let p4 = null;
+
+  let isHost = false;
 
   useEffect(() => {
     async function fetchData() {
@@ -55,84 +54,46 @@ const LobbyPage = () => {
         const lobby = new Lobby(currentLobby.data);
         setLobby(currentLobby.data);
 
-        if (lobby.total_players >= 3) { setP3Box(<PlayerSpinner/>);}
-        if (lobby.total_players === 4) { setP4Box(<PlayerSpinner/>);}
+        if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) { isHost = true; }
 
-        let name1 = await api.get('/users/'+lobby.host_id);
-        host = name1.data.username;
-        setHostBox(<PlayerName player={host}/>);
+        setHostBox(<PlayerName player={lobby.host_name}/>);
 
         for (let i = 0; i < lobby.current_players; i++){
-            if (i === 1){
-                let name2 = await api.get('/users/'+lobby.players[i]);
-                p2 = name2.data.username;
-            } else if (i === 2){
-                let name3 = await api.get('/users/'+lobby.players[i]);
-                p3 = name3.data.username;
-            } else if (i === 3){
-                let name4 = await api.get('/users/'+lobby.players[i]);
-                p4 = name4.data.username;
-            }
+         if (i === 1){
+             let name2 = await api.get('/users/'+lobby.players[i]);
+             p2 = name2.data.username;
+         } else if (i === 2){
+             let name3 = await api.get('/users/'+lobby.players[i]);
+             p3 = name3.data.username;
+         } else if (i === 3){
+             let name4 = await api.get('/users/'+lobby.players[i]);
+             p4 = name4.data.username;
+        }
         };
+        if (lobby.current_players < 2) { p2 = null;}
+        if (lobby.current_players < 3) { p3 = null;}
+        if (lobby.current_players < 4) { p4 = null;}
+
+        setP2Box(<PlayerName player={p2} isHost={isHost}/>);
+        if (lobby.total_players >= 3) {setP3Box(<PlayerName player={p3} isHost={isHost}/>);}
+        if (lobby.total_players === 4) {setP4Box(<PlayerName player={p4} isHost={isHost}/>);}
         console.log(currentLobby);
+
+        const isInLobby = await api.get(window.location.pathname + "/users/" + localStorage.getItem('id'));
+        if (!isInLobby.data) {history.push('/home');}
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);
         alert("Something went wrong while fetching the lobby! See the console for details.");
       }
     }
-    fetchData();
+    const interval = setInterval(() => {
+      fetchData();
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  async function refreshLobby() {
-       try {
-         const response = await api.get(window.location.pathname);
-         const lobby = new Lobby(response.data);
-         setLobby(response.data);
-
-         for (let i = 0; i < lobby.current_players; i++){
-             if (i === 1){
-                 let name2 = await api.get('/users/'+lobby.players[i]);
-                 p2 = name2.data.username;
-             } else if (i === 2){
-                 let name3 = await api.get('/users/'+lobby.players[i]);
-                 p3 = name3.data.username;
-             } else if (i === 3){
-                 let name4 = await api.get('/users/'+lobby.players[i]);
-                 p4 = name4.data.username;
-             }
-         };
-         if (lobby.current_players < 2) { p2 = null;}
-         if (lobby.current_players < 3) { p3 = null;}
-         if (lobby.current_players < 4) { p4 = null;}
-         if (p2 === null) {setP2Box(<PlayerSpinner/>);}
-         else if (isHost) {setP2Box(<PlayerNameKick player={p2}/>);}
-         else {setP2Box(<PlayerName player={p2}/>);}
-
-         if (lobby.total_players >= 3){
-             if (p3 === null) {setP3Box(<PlayerSpinner/>);}
-             else if (isHost) {setP3Box(<PlayerNameKick player={p3}/>);}
-             else {setP3Box(<PlayerName player={p3}/>);}
-         }
-
-         if (lobby.total_players === 4){
-             if (p4 === null) {setP4Box(<PlayerSpinner/>);}
-             else if (isHost) {setP4Box(<PlayerNameKick player={p4}/>);}
-             else {setP4Box(<PlayerName player={p4}/>);}
-         }
-
-       } catch (error) {
-         console.error(`Something went wrong while refreshing the lobby: \n${handleError(error)}`);
-         console.error("Details:", error);
-         alert("Something went wrong while refreshing the lobby! See the console for details.");
-       }
-       // TODO: if (lobby && !lobby.players.includes(localStorage.getItem('id'))) {history.push('/home');}
-     }
-
-  setInterval(refreshLobby, 3000);
-
   let startNow = null;
-  let isHost = false;
 
   let content = <Spinner/>;
 
