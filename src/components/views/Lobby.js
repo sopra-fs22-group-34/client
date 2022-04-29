@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import "styles/views/Lobby.scss";
 
 const Kick = (player) => {
-    console.log(player);
     try { const response = api.put(window.location.pathname+"/users/"+player+"/leave");
     } catch (error) { alert(`Something went wrong while kicking the user: \n${handleError(error)}`);}
 };
@@ -32,7 +31,8 @@ const LobbyPage = () => {
   const [p4Box, setP4Box] = useState(null);
 
   const startGame = () => {
-    history.push(window.location.pathname+"/game");
+    localStorage.setItem('game', window.location.pathname);
+    history.push("/game");
   };
   const Return = () => {
     try { const response = api.put(window.location.pathname+"/users/"+localStorage.getItem("id")+"/leave");
@@ -81,6 +81,8 @@ const LobbyPage = () => {
 
         const isInLobby = await api.get(window.location.pathname + "/users/" + localStorage.getItem('id'));
         if (!isInLobby.data) {history.push('/home');}
+
+        if (lobby.current_players == lobby.total_players) {startGame();}
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);

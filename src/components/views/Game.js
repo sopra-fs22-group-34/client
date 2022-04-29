@@ -60,9 +60,11 @@ const GamePage = props => {
 
     return (
         <BaseContainer className="game container">
+            <div className="game field">
                 <div className="middle container">
-                    <MiddleTiles zero={1}/>
+                    <MiddleTiles zero={1} col1={5} col2={2} col3={3} col4={4} col5={7}/>
                 </div>
+            </div>
         </BaseContainer>
     );
 

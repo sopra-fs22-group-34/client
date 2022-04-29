@@ -35,7 +35,9 @@ const LobbyOverview = () => {
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
   }
 
-  const Lobby = ({lobby}) => (
+  function Lobby({lobby}){
+    if (lobby.current_players === lobby.total_players) return null;
+    return (
     <div className="lobbies container">
       <div className="lobbies username">{lobby.host_name}</div>
       <div className="lobbies lobbyname">{lobby.name}</div>
@@ -43,8 +45,8 @@ const LobbyOverview = () => {
       <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
         Join &#62;
       </Button>
-    </div>
-  );
+    </div>)
+  };
 
   Lobby.propTypes = {
     lobby: PropTypes.object
