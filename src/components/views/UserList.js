@@ -95,10 +95,10 @@ const UserList = () => {
 
   if (users) {
     content = (
-      <div className="game">
-        <ul className="game user-list">
+      <div className="userlist">
+        <ul className="userlist user-list">
           {users.map(user => (
-            <Button className="game user-button" onClick={() => userPage({user})}>
+            <Button className="userlist user-button" onClick={() => userPage({user})}>
               <Player user={user} key={user.id}/>
             </Button>
           ))}
@@ -109,9 +109,9 @@ const UserList = () => {
 
 
   return (
-    <BaseContainer className="game container">
+    <BaseContainer className="userlist container">
       <h2>Welcome, {userName}!</h2>
-      <p className="game paragraph">
+      <p className="userlist paragraph">
         Registered users:
       </p>
       {content}

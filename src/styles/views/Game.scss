@@ -1,0 +1,119 @@
+@import 'styles/theme';
+
+.game {
+  &.container {
+    background: $background;
+    max-height: 50%;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: $dropShadow;
+  }
+  & p,h2 {
+    margin: 0.5em 0;
+  }
+  & hr {
+    margin: 20px;
+  }
+}
+
+.middle {
+  &.container {
+    background: transparentize($accent, 0.85);
+    border-radius: $borderRadius;
+    width: 100%;
+    padding: 5px;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+}
+
+.tile {
+  &.button-0 {
+    &:hover {
+        transform: none;
+        border: 5px solid $accentDark;
+    }
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    font-size: 15pt;
+    border: 5px hidden $accentDark;
+    background-color: $accent;
+    color: $textColor; //$background
+    background: $accent;
+  }
+  &.button-1 {
+    &:hover {
+        transform: none;
+        border: 5px solid $accentDark;
+    }
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    font-size: 15pt;
+    border: 5px hidden $accentDark;
+    background-color: $accent;
+    color: $textColor; //$background
+    background: $accent;
+  }
+  &.button-2 {
+    &:hover {
+        transform: none;
+        border: 5px solid $accentDark;
+    }
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    font-size: 15pt;
+    border: 5px hidden $accentDark;
+    background-color: $accent;
+    color: $textColor; //$background
+    background: $accent;
+  }
+  &.button-3 {
+    &:hover {
+        transform: none;
+        border: 5px solid $accentDark;
+    }
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    font-size: 15pt;
+    border: 5px hidden $accentDark;
+    background-color: $accent;
+    color: $textColor; //$background
+    background: $accent;
+  }
+  &.button-4 {
+    &:hover {
+        transform: none;
+        border: 5px solid $accentDark;
+    }
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    font-size: 15pt;
+    border: 5px hidden $accentDark;
+    background-color: $accent;
+    color: $textColor; //$background
+    background: $accent;
+  }
+  &.button-5 {
+    &:hover {
+        transform: none;
+        border: 5px solid $accentDark;
+    }
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    font-size: 15pt;
+    border: 5px hidden $accentDark;
+    background-color: $accent;
+    color: $textColor; //$background
+    background: $accent;
+  }
+}

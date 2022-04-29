@@ -41,10 +41,9 @@ const UserPage = props => {
   useEffect(() => {
       async function fetchData() {
         try {
-          const currentPage = await api.get(window.location.pathname); //ethan pls explain window.location.pathname
+          const currentPage = await api.get(window.location.pathname);
           setUser(currentPage.data);
-          // See here to get more data.
-          console.log(currentPage);
+          console.log(currentPage.data);
         } catch (error) {
           console.error(`Something went wrong while fetching the user: \n${handleError(error)}`);
           console.error("Details:", error);

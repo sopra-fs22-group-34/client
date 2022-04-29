@@ -11,6 +11,7 @@ import EditPage from "components/views/Edit";
 import LobbyOverview from "components/views/Overview";
 import LobbyPage from "components/views/Lobby";
 import CreatePage from "components/views/Create";
+import GamePage from "components/views/Game";
 
 /**
  * Main router of your application.
@@ -27,7 +28,7 @@ const AppRouter = () => {
       <Switch>
         <Route path="/game">
           <GameGuard>
-            <GameRouter base="/game"/>
+            <GamePage/>
           </GameGuard>
         </Route>
         <Route path="/home">

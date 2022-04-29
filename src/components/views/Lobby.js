@@ -8,7 +8,8 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Lobby.scss";
 
-const Kick = ({player}) => {
+const Kick = (player) => {
+    console.log(player);
     try { const response = api.put(window.location.pathname+"/users/"+player+"/leave");
     } catch (error) { alert(`Something went wrong while kicking the user: \n${handleError(error)}`);}
 };
@@ -17,10 +18,9 @@ function PlayerNameText({player=null}) {
   if (!player) {return (<Spinner/>)}
   else return (player)
 };
-
-function PlayerName({player=null}, {isHost=false}) {
-    if (!isHost) return (<div className="lobby players-name"><PlayerNameText player={player}/></div>)
-    else return (<div className="lobby players-name"><PlayerNameText player={player}/><Button className="lobby kick-button" onClick={() => Kick({player})}>X</Button></div>)
+function PlayerName(props) {
+    if (props.isHost && props.player) return (<div className="lobby players-name"><PlayerNameText player={props.player}/><Button className="lobby kick-button" onClick={() => Kick(props.player)}>X</Button></div>)
+    else return (<div className="lobby players-name"><PlayerNameText player={props.player}/></div>)
 };
 
 const LobbyPage = () => {
