@@ -29,6 +29,16 @@
     min-width: 100%;
     padding: 0 50px 20px 50px;
   }
+  &.stairs-container {
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    align-items: flex-end;
+  }
+  &.placed-tiles {
+    align-items: end; //TODO: does nothing
+  }
 }
 
 .middle {
@@ -62,96 +72,88 @@
   }
 }
 
+
+.stairs {
+  &:hover {
+      transform: none;
+      background: transparentize($accent, 0.7);
+  }
+  color: transparentize($accent, 0.5);
+  background-color: transparentize($accent, 0.5);
+  background: transparentize($accent, 0.5);
+  margin-bottom: 5px;
+  height: 80px;
+  &.back-1 {
+    width: 20%;
+  }
+  &.back-2 {
+    width: 40%;
+  }
+  &.back-3 {
+    width: 60%;
+  }
+  &.back-4 {
+    width: 80%;
+  }
+  &.back-5 {
+    width: 100%;
+  }
+}
+
 .tile {
-  border: 20px solid #000000;
+  &:hover {
+      transform: none;
+      border: 5px solid #FFFFFF;
+  }
+  &:disabled {
+    opacity: 1;
+    border: 5px hidden #FFFFFF;
+  }
+  width: 50px;
+  height: 50px;
+  border-radius: 0;
+  font-size: 16pt;
+  border: 5px hidden #FFFFFF;
+  color: $textColor;
+  flex-shrink: 1;
   &.button-0 {
     &:hover {
-        transform: none;
-        border: 5px solid $accentDark;
+      border: 5px solid $accentDark;
     }
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    font-size: 16pt;
+    &:disabled {
+      border: 5px hidden #FFFFFF;
+    }
     border: 5px hidden $accentDark;
     background-color: $col0;
-    color: $accentDark;
-    flex-shrink: 1;
     background: $col0;
+    color: $accentDark;
   }
   &.button-1 {
-    &:hover {
-        transform: none;
-        border: 5px solid #FFFFFF;
-    }
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    font-size: 16pt;
-    border: 5px hidden #FFFFFF;
     background-color: $col1;
-    color: $textColor;
-    flex-shrink: 1;
     background: $col1;
   }
   &.button-2 {
-    &:hover {
-        transform: none;
-        border: 5px solid #FFFFFF;
-    }
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    font-size: 16pt;
-    border: 5px hidden #FFFFFF;
     background-color: $col2;
-    color: $textColor;
-    flex-shrink: 1;
     background: $col2;
   }
   &.button-3 {
     &:hover {
-        transform: none;
         border: 5px solid $background;
     }
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    font-size: 16pt;
+    &:disabled {
+      border: 5px hidden #FFFFFF;
+    }
     border: 5px hidden $background;
     background-color: $col3;
-    color: $background;
-    flex-shrink: 1;
     background: $col3;
+    color: $background;
   }
   &.button-4 {
-    &:hover {
-        transform: none;
-        border: 5px solid #FFFFFF;
-    }
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    font-size: 16pt;
-    border: 5px hidden #FFFFFF;
     background-color: $col4;
-    color: $textColor;
-    flex-shrink: 1;
     background: $col4;
   }
   &.button-5 {
-    &:hover {
-        transform: none;
-        border: 5px solid #FFFFFF;
-    }
-    width: 50px;
-    height: 50px;
-    border-radius: 0;
-    font-size: 16pt;
-    border: 5px hidden #FFFFFF;
     background-color: $col5;
-    color: $textColor;
-    flex-shrink: 1;
     background: $col5;
   }
 }
