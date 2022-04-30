@@ -24,7 +24,7 @@ const LobbyOverview = () => {
   const newGame = async () => {
        try { let inLobby = await api.get('/users/' + localStorage.getItem("id") + '/lobbies/');
          if (inLobby.data == false) {history.push('/create');}
-         else {alert(`You are already in a lobby! Please leave it before creating a new one.`)}
+         else {alert(`You are already in a game! Please leave it before creating a new one.`)}
        } catch (error) { alert(`Something went wrong when trying to create a new lobby: \n${handleError(error)}`);}
     }
 
