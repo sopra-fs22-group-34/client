@@ -57,7 +57,77 @@ const GamePage = props => {
     const [colorIndex, setColorIndex] = useState(null);
     const [tileAmount, setTileAmount] = useState(null);
     const [targetRowIndex, setTargetRowIndex] = useState(null);
+    const [players, setPlayers] = useState(null);
     const [playerIndex, setPlayerIndex] = useState(1);
+
+    async function getUserNames(users) {
+        console.log("This is the list with the userIDs " + users);
+        console.log("This is the first userID of the list " + users[0]);
+        let userId1 = users[0];
+        let userId2 = users[1];
+        let userId3;
+        let userId4;
+
+
+        let username1;
+        let username2;
+        let username3;
+        let username4;
+        try {
+            const user1 = await api.get("/users/" + userId1);
+            username1 = user1.data.username;
+
+            const user2 = await api.get("/users/" + userId2);
+            username2 = user2.data.username;
+
+            if (!(userId3 == null)) {
+                let userId3 = users[2];
+                const user3 = await api.get("/users/" + userId3);
+                username3 = user3.data.username;
+            }
+            if (!(userId4 == null)) {
+                let userId4 = users[3];
+                const user4 = await api.get("/users/" + userId4);
+                username4 = user4.data.username;
+            }
+        } catch (error) {
+            console.error(`Something went wrong while fetching the usernames: \n${handleError(error)}`)
+        }
+        return [username1, username2, username3, username4]
+    }
+
+
+
+    function TurnOrder({players}) {
+        console.log("PropsPlayers" + players);
+        let usernames = getUserNames(players);
+        let turnOrder;
+        const namePlayer1 = usernames[0];
+        const namePlayer2 = usernames[1];
+        turnOrder = (<div className={"turnOrder container"}>
+            <div className="username container">{namePlayer1}</div>
+            <div className="username container">{namePlayer2}</div>
+        </div>);
+        if (usernames.length === 3) {
+            const namePlayer3 = usernames[2];
+            turnOrder = (<div className={"turnOrder container"}>
+                <div className="username container">{namePlayer1}</div>
+                <div className="username container">{namePlayer2}</div>
+                <div className="username container">{namePlayer3}</div>
+            </div>);
+        }
+        if (usernames.length === 4) {
+            const namePlayer3 = usernames[2];
+            const namePlayer4 = usernames[3];
+            turnOrder = (<div className={"turnOrder container"}>
+                <div className="username container">{namePlayer1}</div>
+                <div className="username container">{namePlayer2}</div>
+                <div className="username container">{namePlayer3}</div>
+                <div className="username container">{namePlayer4}</div>
+            </div>);
+        }
+        return turnOrder;
+    }
 
     function MiddleTiles(props){
         let zero, col1, col2, col3, col4, col5;
@@ -238,6 +308,21 @@ const GamePage = props => {
                 alert("Something went wrong while fetching the game data! See the console for details.");
             }
         }
+        async function getPlayers() {
+            try {
+                const playerResponse = await api.get("/lobbies/" + localStorage.getItem("lobby") + "/game/players");
+                setPlayers(playerResponse.data);
+                for (let id = 0; id < 4; id++) {
+                    if (id.toString() === localStorage.getItem("id")) {
+                        setPlayerIndex(id);
+                    }
+                }
+                console.log("did you fetch the players correctly?" + players);
+            } catch (error) {
+                console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
+            }
+        }
+        getPlayers();
         const interval = setInterval(() => {
           fetchData();
         }, 1000);
@@ -246,9 +331,18 @@ const GamePage = props => {
 
     let content = null;
 
+
+    let turnOrder;
+    /*
+    if (players) {
+        console.log(players);
+        turnOrder = (<TurnOrder players = {players}/>)}
+    */
+
     return (
         <BaseContainer className="game container">
             <div className="game field">
+                {turnOrder}
                 <div className="middle container">
                     <MiddleTiles zero={middle.hasMinusTile} col1={middle.colorAmounts[0]} col2={middle.colorAmounts[1]} col3={middle.colorAmounts[2]} col4={middle.colorAmounts[3]} col5={middle.colorAmounts[4]}/>
                     <MiddleFactories factoryAmount={game.factoryAmount} factories={factories}/>
