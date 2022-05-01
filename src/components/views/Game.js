@@ -127,10 +127,33 @@ function StairLine(props){
 }
 
 function Wall(props){
+    let row1 = (<WallRow row={0} positionsOccupied={props.positionsOccupied} />);
+    let row2 = (<WallRow row={1} positionsOccupied={props.positionsOccupied} />);
+    let row3 = (<WallRow row={2} positionsOccupied={props.positionsOccupied} />);
+    let row4 = (<WallRow row={3} positionsOccupied={props.positionsOccupied} />);
+    let row5 = (<WallRow row={4} positionsOccupied={props.positionsOccupied} />);
+    return (<div className="game wall">{row1} {row2} {row3} {row4} {row5} </div>);
 }
 
 function WallRow(props){
+    let tile1 = (<WallTile color={props.row} occupied={props.positionsOccupied[props.row][0]}/>);
+    let tile2 = (<WallTile color={(props.row+4)%5} occupied={props.positionsOccupied[props.row][1]}/>);
+    let tile3 = (<WallTile color={(props.row+3)%5} occupied={props.positionsOccupied[props.row][2]}/>);
+    let tile4 = (<WallTile color={(props.row+2)%5} occupied={props.positionsOccupied[props.row][3]}/>);
+    let tile5 = (<WallTile color={(props.row+1)%5} occupied={props.positionsOccupied[props.row][4]}/>);
+    return (<div className="wall row">{tile1} {tile2} {tile3} {tile4} {tile5} </div>);
 }
+
+function WallTile(props){
+    let tile;
+    if (props.occupied) tile = (<Tile color={props.color} inactive={true}/>);
+    if (props.color == 0) return (<div className="wall-tile tile-1">{tile}</div>);
+    else if (props.color == 1) return (<div className="wall-tile tile-2">{tile}</div>);
+    else if (props.color == 2) return (<div className="wall-tile tile-3">{tile}</div>);
+    else if (props.color == 3) return (<div className="wall-tile tile-4">{tile}</div>);
+    else if (props.color == 4) return (<div className="wall-tile tile-5">{tile}</div>);
+}
+
 
 const GamePage = props => {
     const history = useHistory();
@@ -144,13 +167,13 @@ const GamePage = props => {
                                                  {"length":5,"colorIndex":4,"tilesAmount":5}],
                                              "floorLine":[],"wall":{
                                                  "colorsOccupied":
-                                                     [[false,false,false,false,false],
+                                                     [[true,true,false,false,false],
                                                      [false,false,false,false,false],
                                                      [false,false,false,false,false],
                                                      [false,false,false,false,false],
                                                      [false,false,false,false,false]],
                                                  "positionsOccupied":
-                                                     [[false,false,false,false,false],
+                                                     [[true,true,true,true,true],
                                                      [false,false,false,false,false],
                                                      [false,false,false,false,false],
                                                      [false,false,false,false,false],
@@ -211,6 +234,7 @@ const GamePage = props => {
             </div>
             <div className="game board">
                 <Stairs stairs={game.players[0].playerBoard.stairs}/>
+                <Wall positionsOccupied={game.players[0].playerBoard.wall.positionsOccupied}/>
             </div>
         </BaseContainer>
     );

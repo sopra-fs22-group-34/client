@@ -24,6 +24,8 @@
   }
   &.board {
     background: $background;
+    display: flex;
+    flex-direction: row;
     border-radius: 0;
     max-height: 50%;
     min-width: 100%;
@@ -38,6 +40,13 @@
   }
   &.placed-tiles {
     align-items: end; //TODO: does nothing
+  }
+  &.wall {
+    margin: 50px;
+    width: 420px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -99,6 +108,37 @@
     width: 100%;
   }
 }
+.wall {
+    margin-bottom: 5px;
+   &.row{
+    display: flex;
+    flex-direction: row;
+   }
+}
+
+.wall-tile{
+    max-height: 80px;
+    max-width: 80px;
+    min-height: 80px;
+    min-width: 80px;
+    margin-right: 5px;
+    padding: 15px;
+    &.tile-1{
+      background: transparentize($col1, 0.5);
+    }
+    &.tile-2{
+      background: transparentize($col2, 0.5);
+    }
+    &.tile-3{
+      background: transparentize($col3, 0.5);
+    }
+    &.tile-4{
+      background: transparentize($col4, 0.5);
+    }
+    &.tile-5{
+      background: transparentize($col5, 0.5);
+    }
+}
 
 .tile {
   &:hover {
@@ -107,13 +147,13 @@
   }
   &:disabled {
     opacity: 1;
-    border: 5px hidden #FFFFFF;
+    border: 2px solid $background;
   }
   width: 50px;
   height: 50px;
   border-radius: 0;
   font-size: 16pt;
-  border: 5px hidden #FFFFFF;
+  border: 2px solid $background;
   color: $textColor;
   flex-shrink: 1;
   &.button-0 {
@@ -121,9 +161,8 @@
       border: 5px solid $accentDark;
     }
     &:disabled {
-      border: 5px hidden #FFFFFF;
+      border: 2px solid $background;
     }
-    border: 5px hidden $accentDark;
     background-color: $col0;
     background: $col0;
     color: $accentDark;
@@ -141,9 +180,8 @@
         border: 5px solid $background;
     }
     &:disabled {
-      border: 5px hidden #FFFFFF;
+      border: 2px solid $background;
     }
-    border: 5px hidden $background;
     background-color: $col3;
     background: $col3;
     color: $background;
