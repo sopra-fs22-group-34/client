@@ -11,11 +11,11 @@ function MiddleTiles(props){
     let zero, col1, col2, col3, col4, col5;
 
     if (props.zero == true) { zero = (<Tile color={6} amount={1}/>);}
-    if (props.col1 > 0) { col1 = (<Tile color={0} amount={props.col1}/>);}
-    if (props.col2 > 0) { col2 = (<Tile color={1} amount={props.col2}/>);}
-    if (props.col3 > 0) { col3 = (<Tile color={2} amount={props.col3}/>);}
-    if (props.col4 > 0) { col4 = (<Tile color={3} amount={props.col4}/>);}
-    if (props.col5 > 0) { col5 = (<Tile color={4} amount={props.col5}/>);}
+    if (props.col1 > 0) { col1 = (<Tile color={0} amount={props.col1} origin={-1}/>);}
+    if (props.col2 > 0) { col2 = (<Tile color={1} amount={props.col2} origin={-1}/>);}
+    if (props.col3 > 0) { col3 = (<Tile color={2} amount={props.col3} origin={-1}/>);}
+    if (props.col4 > 0) { col4 = (<Tile color={3} amount={props.col4} origin={-1}/>);}
+    if (props.col5 > 0) { col5 = (<Tile color={4} amount={props.col5} origin={-1}/>);}
 
     return (<div className="game tiles-container">
                 {zero} {col1} {col2} {col3} {col4} {col5} </div>)
@@ -25,45 +25,81 @@ function Tile(props){
     let amount = " ";
     if (props.amount) amount = props.amount;
     if (props.amount == 0) return null;
-    if (props.color == 0) return (<Button className="tile button-1" disabled={props.inactive}>{amount}</Button>);
-    else if (props.color == 1) return (<Button className="tile button-2" disabled={props.inactive}>{amount}</Button>);
-    else if (props.color == 2) return (<Button className="tile button-3" disabled={props.inactive}>{amount}</Button>);
-    else if (props.color == 3) return (<Button className="tile button-4" disabled={props.inactive}>{amount}</Button>);
-    else if (props.color == 4) return (<Button className="tile button-5" disabled={props.inactive}>{amount}</Button>);
-    else return (<Button className="tile button-0" disabled={props.inactive}>{amount}</Button>);
+    if (props.color == 0) return (<Button className="tile button-1" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+    else if (props.color == 1) return (<Button className="tile button-2" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+    else if (props.color == 2) return (<Button className="tile button-3" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+    else if (props.color == 3) return (<Button className="tile button-4" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+    else if (props.color == 4) return (<Button className="tile button-5" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+    else return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
+}
+
+function pickUpTiles(props) {
+  let originIndex = props.origin;
+  let colorIndex = props.color;
+  let tileAmount;
+  if (props.total != null) tileAmount = props.total;
+  else tileAmount = props.amount;
+  console.log(originIndex);
+  console.log(colorIndex);
+  console.log(tileAmount);
 }
 
 function MiddleFactories(props){
-    let fact1 = (<Factory colorAmounts={props.factories[0].colorAmounts}/>);
-    let fact2 = (<Factory colorAmounts={props.factories[1].colorAmounts}/>);
-    let fact3 = (<Factory colorAmounts={props.factories[2].colorAmounts}/>);
-    let fact4 = (<Factory colorAmounts={props.factories[3].colorAmounts}/>);
-    let fact5 = (<Factory colorAmounts={props.factories[4].colorAmounts}/>);
+    let fact1 = (<Factory factoryIndex={0} factories={props.factories}/>);
+    let fact2 = (<Factory factoryIndex={1} factories={props.factories}/>);
+    let fact3 = (<Factory factoryIndex={2} factories={props.factories}/>);
+    let fact4 = (<Factory factoryIndex={3} factories={props.factories}/>);
+    let fact5 = (<Factory factoryIndex={4} factories={props.factories}/>);
     let fact6, fact7, fact8, fact9;
     if (props.factoryAmount >= 7) {
-        fact6 = (<Factory colorAmounts={props.factories[5].colorAmounts}/>);
-        fact7 = (<Factory colorAmounts={props.factories[6].colorAmounts}/>);}
+        fact6 = (<Factory factoryIndex={5} factories={props.factories}/>);
+        fact7 = (<Factory factoryIndex={6} factories={props.factories}/>);}
     if (props.factoryAmount == 9) {
-        fact8 = (<Factory colorAmounts={props.factories[7].colorAmounts}/>);
-        fact9 = (<Factory colorAmounts={props.factories[8].colorAmounts}/>);}
+        fact8 = (<Factory factoryIndex={7} factories={props.factories}/>);
+        fact9 = (<Factory factoryIndex={8} factories={props.factories}/>);}
     return (<div className="game factories-container">
                 {fact1} {fact2} {fact3} {fact4} {fact5} {fact6} {fact7} {fact8} {fact9} </div>)
 }
 
 function Factory(props){
-    let tile1=null,tile2=null,tile3=null,tile4=null;
+    let color1=null,color2=null,color3=null,color4=null;
+    let amount1=0,amount2=0,amount3=0,amount4=0;
+    let colorAmounts = props.factories[props.factoryIndex].colorAmounts;
 
     for (let i = 0; i < 5; i++){
-        for (let j = 0; j < props.colorAmounts[i]; j++){
-            if (tile1 == null) tile1 = i;
-            else if (tile2 == null) tile2 = i;
-            else if (tile3 == null) tile3 = i;
-            else if (tile4 == null) tile4 = i;}}
+        for (let j = 0; j < colorAmounts[i]; j++){
+            if (color1 == null) {
+              color1 = i;
+              amount1 = colorAmounts[i];
+            }
+            else if (color2 == null) {
+              color2 = i;
+              amount2 = colorAmounts[i];
+            }
+            else if (color3 == null) {
+              color3 = i;
+              amount3 = colorAmounts[i];
+            }
+            else if (color4 == null) {
+              color4 = i;
+              amount4 = colorAmounts[i];
+            }
+          }
+      }
 
     return (<div className="factory container">
-                <div className="factory row"><Tile color={tile1}/> <Tile color={tile2}/></div>
-                <div className="factory row"><Tile color={tile3}/> <Tile color={tile4}/></div> </div>)
+                <div className="factory row">
+                  <Tile color={color1} total={amount1} origin={props.factoryIndex}/>
+                  <Tile color={color2} total={amount2} origin={props.factoryIndex}/>
+                </div>
+                <div className="factory row">
+                  <Tile color={color3} total={amount3} origin={props.factoryIndex}/>
+                  <Tile color={color4} total={amount4} origin={props.factoryIndex}/>
+                </div>
+              </div>)
 }
+
+
 
 function Stairs(props){
     return (<div className="game stairs-container">
@@ -142,6 +178,8 @@ const GamePage = props => {
 );
     const [factories, setFactories] = useState([{"colorAmounts":[0,0,0,2,2]},{"colorAmounts":[2,1,0,1,0]},{"colorAmounts":[0,3,0,1,0]},{"colorAmounts":[1,0,1,2,0]},{"colorAmounts":[2,1,0,0,1]}]);
     const [middle, setMiddle] = useState({"hasMinusTile":true,"colorAmounts":[0,0,0,0,0]});
+
+
 
     useEffect(() => {
         async function fetchData() {
