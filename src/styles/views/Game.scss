@@ -45,6 +45,14 @@
     width: 400px;
     align-items: flex-end;
   }
+  &.your-turn {
+    position: absolute;
+    flex: center;
+    font-size: 20px;
+    background: transparentize($accentDark, 0.5);
+    border-radius: $borderRadius;
+    padding: 10px;
+  }
   &.placed-tiles {
     align-items: end; //TODO: does nothing
   }

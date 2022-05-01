@@ -49,8 +49,6 @@ const GamePage = props => {
         return [username1, username2, username3, username4]
     }
 
-
-
     function TurnOrder({players}) {
         let usernames = getUserNames(players);
         let turnOrder;
@@ -270,6 +268,8 @@ const GamePage = props => {
                 }
                 console.log("players:");
                 console.log(players);
+                console.log("player index:");
+                console.log(playerIndex);
             } catch (error) {
                 console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
             }
@@ -283,12 +283,14 @@ const GamePage = props => {
 
     let turnOrder;
     //if (players) { turnOrder = (<TurnOrder players = {players}/>) }
-
+    let yourTurn;
     let middle;
     let factories;
     let stairs;
     let wall;
     if (game) {
+        if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">"It's your turn!"</div>); }
+        else { yourTurn = null; }
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
         factories = (<MiddleFactories factoryAmount={game.factoryAmount} factories={game.factories}/>);
         stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
@@ -300,6 +302,7 @@ const GamePage = props => {
             <div className="game field">
                 {turnOrder}
                 <div className="middle container">
+                    {yourTurn}
                     {factories}
                     {middle}
                 </div>
