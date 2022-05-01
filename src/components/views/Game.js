@@ -10,69 +10,22 @@ import "styles/views/Game.scss";
 const GamePage = props => {
     const history = useHistory();
     const [view, setView] = useState(localStorage.getItem('id'));
-    const [game, setGame] = useState({"middle":{"hasMinusTile":true,"colorAmounts":[0,0,0,0,0]},"playerTurnId":1,
-                                     "playerAmount":2,"players":[{"score":0,"playerId":0,"playerBoard":{"stairs":
-                                                 [{"length":1,"colorIndex":0,"tilesAmount":1},
-                                                 {"length":2,"colorIndex":1,"tilesAmount":2},
-                                                 {"length":3,"colorIndex":2,"tilesAmount":3},
-                                                 {"length":4,"colorIndex":3,"tilesAmount":4},
-                                                 {"length":5,"colorIndex":4,"tilesAmount":5}],
-                                             "floorLine":[],"wall":{
-                                                 "colorsOccupied":
-                                                     [[true,true,false,false,false],
-                                                     [false,false,false,false,false],
-                                                     [false,false,false,false,false],
-                                                     [false,false,false,false,false],
-                                                     [false,false,false,false,false]],
-                                                 "positionsOccupied":
-                                                     [[true,true,true,true,true],
-                                                     [false,false,false,false,false],
-                                                     [false,false,false,false,false],
-                                                     [false,false,false,false,false],
-                                                     [false,false,false,false,false]]}}},
-                                         {"score":0,"playerId":1,"playerBoard":{"stairs":
-                                                 [{"length":1,"colorIndex":-1,"tilesAmount":0},
-                                                 {"length":2,"colorIndex":-1,"tilesAmount":0},
-                                                 {"length":3,"colorIndex":-1,"tilesAmount":0},
-                                                 {"length":4,"colorIndex":-1,"tilesAmount":0},
-                                                 {"length":5,"colorIndex":-1,"tilesAmount":0}],
-                                                 "floorLine":[],"wall":{
-                                                     "colorsOccupied":
-                                                         [[false,false,false,false,false],
-                                                         [false,false,false,false,false],
-                                                         [false,false,false,false,false],
-                                                         [false,false,false,false,false],
-                                                         [false,false,false,false,false]],
-                                                     "positionsOccupied":
-                                                         [[false,false,false,false,false],
-                                                         [false,false,false,false,false],
-                                                         [false,false,false,false,false],
-                                                         [false,false,false,false,false],
-                                                         [false,false,false,false,false]]}}}],
-                                     "factories":[{"colorAmounts":[0,0,0,2,2]},{"colorAmounts":[2,1,0,1,0]},{"colorAmounts":[0,3,0,1,0]},{"colorAmounts":[1,0,1,2,0]},{"colorAmounts":[2,1,0,0,1]}],"factoryAmount":5}
-);
-    const [factories, setFactories] = useState([{"colorAmounts":[0,0,0,2,2]},{"colorAmounts":[2,1,0,1,0]},{"colorAmounts":[0,3,0,1,0]},{"colorAmounts":[1,0,1,2,0]},{"colorAmounts":[2,1,0,0,1]}]);
-    const [middle, setMiddle] = useState({"hasMinusTile":true,"colorAmounts":[0,0,0,0,0]});
-    const [originIndex, setOriginIndex] = useState(null);
-    const [colorIndex, setColorIndex] = useState(null);
-    const [tileAmount, setTileAmount] = useState(null);
-    const [targetRowIndex, setTargetRowIndex] = useState(null);
+    const [game, setGame] = useState(null);
+    let [originIndex, setOriginIndex] = useState(null);
+    let [colorIndex, setColorIndex] = useState(null);
+    let [tileAmount, setTileAmount] = useState(null);
     const [players, setPlayers] = useState(null);
     const [playerIndex, setPlayerIndex] = useState(1);
 
     async function getUserNames(users) {
-        console.log("This is the list with the userIDs " + users);
-        console.log("This is the first userID of the list " + users[0]);
+        console.log("This is the list with the userIDs: ");
+        console.log(users);
+        console.log("This is the first userID of the list: users[0]");
+        console.log(users[0]);
         let userId1 = users[0];
         let userId2 = users[1];
-        let userId3;
-        let userId4;
-
-
-        let username1;
-        let username2;
-        let username3;
-        let username4;
+        let userId3, userId4;
+        let username1, username2, username3, username4;
         try {
             const user1 = await api.get("/users/" + userId1);
             username1 = user1.data.username;
@@ -99,7 +52,6 @@ const GamePage = props => {
 
 
     function TurnOrder({players}) {
-        console.log("PropsPlayers" + players);
         let usernames = getUserNames(players);
         let turnOrder;
         const namePlayer1 = usernames[0];
@@ -132,7 +84,7 @@ const GamePage = props => {
     function MiddleTiles(props){
         let zero, col1, col2, col3, col4, col5;
 
-        if (props.zero == true) { zero = (<Tile color={6} amount={1}/>);}
+        if (props.zero == true) { zero = (<Tile color={5} amount={1}/>);}
         if (props.col1 > 0) { col1 = (<Tile color={0} amount={props.col1} origin={-1}/>);}
         if (props.col2 > 0) { col2 = (<Tile color={1} amount={props.col2} origin={-1}/>);}
         if (props.col3 > 0) { col3 = (<Tile color={2} amount={props.col3} origin={-1}/>);}
@@ -152,7 +104,8 @@ const GamePage = props => {
         else if (props.color == 2) return (<Button className="tile button-3" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 3) return (<Button className="tile button-4" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 4) return (<Button className="tile button-5" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
-        else return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
+        else if (props.color == 5) return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
+        else return null;
     }
 
     function pickUpTiles(props) {
@@ -160,26 +113,22 @@ const GamePage = props => {
         setColorIndex(props.color);
         if (props.total != null) setTileAmount(props.total);
         else setTileAmount(props.amount);
-        console.log(originIndex);
-        console.log(colorIndex);
-        console.log(tileAmount);
+        console.log("function origin: " + originIndex);
+        console.log("function color: " + colorIndex);
+        console.log("function amount: " + tileAmount);
     }
 
     async function placeTiles(row){
         console.log("playerIndex: "+playerIndex);
-        setTargetRowIndex(1);
-        console.log("targetRowIndex: " + targetRowIndex);
-
+        console.log("targetRowIndex: " + row);
+        let targetRowIndex = row;
         try {
             const move = JSON.stringify({originIndex, colorIndex, targetRowIndex, tileAmount, playerIndex});
             console.log("move = " + move);
-            const isAllowed = await api.get("/lobbies/"+localStorage.getItem("lobby")+"/game/moves/"+originIndex+"/"+colorIndex+"/"+targetRowIndex+"/"+tileAmount+"/"+playerIndex);
-            console.log(isAllowed);
-            if (isAllowed) {
-                api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
-            } else {
-                alert(`This move is not valid!`);
-            }
+            api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
+            setOriginIndex(null);
+            setColorIndex(null);
+            setTileAmount(null);
         } catch (error) {
             console.log("oh naurr");
             console.error("Details:", error);
@@ -260,10 +209,10 @@ const GamePage = props => {
         else if (props.tilesAmount == 5) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile} {tile}</div>);
         let stair = (<Button className="stairs back-1"/>);
         if (props.length == 1) return (<Button className="stairs back-1" onClick={() => placeTiles(0)}>{tiles}</Button>);
-        else if (props.length == 2) return (<Button className="stairs back-2">{tiles}</Button>);
-        else if (props.length == 3) return (<Button className="stairs back-3">{tiles}</Button>);
-        else if (props.length == 4) return (<Button className="stairs back-4">{tiles}</Button>);
-        else if (props.length == 5) return (<Button className="stairs back-5">{tiles}</Button>);
+        else if (props.length == 2) return (<Button className="stairs back-2" onClick={() => placeTiles(1)}>{tiles}</Button>);
+        else if (props.length == 3) return (<Button className="stairs back-3" onClick={() => placeTiles(2)}>{tiles}</Button>);
+        else if (props.length == 4) return (<Button className="stairs back-4" onClick={() => placeTiles(3)}>{tiles}</Button>);
+        else if (props.length == 5) return (<Button className="stairs back-5" onClick={() => placeTiles(4)}>{tiles}</Button>);
     }
 
     function Wall(props){
@@ -299,9 +248,11 @@ const GamePage = props => {
             try {
                 const currentGame = await api.get("/users/"+localStorage.getItem("id")+"/game");
                 setGame(currentGame.data);
+                console.log("game:");
                 console.log(game);
-                setFactories(game.factories);
-                setMiddle(game.middle);
+                console.log("game origin: " + originIndex);
+                console.log("game color: " + colorIndex);
+                console.log("game amount: " + tileAmount);
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);
@@ -313,44 +264,49 @@ const GamePage = props => {
                 const playerResponse = await api.get("/lobbies/" + localStorage.getItem("lobby") + "/game/players");
                 setPlayers(playerResponse.data);
                 for (let id = 0; id < 4; id++) {
-                    if (id.toString() === localStorage.getItem("id")) {
+                    if ((id+1).toString() === localStorage.getItem("id")) {
                         setPlayerIndex(id);
                     }
                 }
-                console.log("did you fetch the players correctly?" + players);
+                console.log("players:");
+                console.log(players);
             } catch (error) {
                 console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
             }
         }
-        getPlayers();
         const interval = setInterval(() => {
           fetchData();
-        }, 1000);
+        }, 5000);
+        getPlayers();
         return () => clearInterval(interval);
     }, []);
 
-    let content = null;
-
-
     let turnOrder;
-    /*
-    if (players) {
-        console.log(players);
-        turnOrder = (<TurnOrder players = {players}/>)}
-    */
+    //if (players) { turnOrder = (<TurnOrder players = {players}/>) }
+
+    let middle;
+    let factories;
+    let stairs;
+    let wall;
+    if (game) {
+        middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
+        factories = (<MiddleFactories factoryAmount={game.factoryAmount} factories={game.factories}/>);
+        stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
+        wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
+    }
 
     return (
         <BaseContainer className="game container">
             <div className="game field">
                 {turnOrder}
                 <div className="middle container">
-                    <MiddleTiles zero={middle.hasMinusTile} col1={middle.colorAmounts[0]} col2={middle.colorAmounts[1]} col3={middle.colorAmounts[2]} col4={middle.colorAmounts[3]} col5={middle.colorAmounts[4]}/>
-                    <MiddleFactories factoryAmount={game.factoryAmount} factories={factories}/>
+                    {factories}
+                    {middle}
                 </div>
             </div>
             <div className="game board">
-                <Stairs stairs={game.players[0].playerBoard.stairs}/>
-                <Wall positionsOccupied={game.players[0].playerBoard.wall.positionsOccupied}/>
+                {stairs}
+                {wall}
             </div>
         </BaseContainer>
     );
