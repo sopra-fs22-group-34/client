@@ -1,5 +1,8 @@
 # SoPra FS22 - Client Template
 
+[Server](https://sopra-fs22-group-34-server.herokuapp.com/)
+[Client](https://sopra-fs22-group-34-client.herokuapp.com/)
+
 ## Getting started 
 
 Read and go through these Tutorials. It will make your life easier!
