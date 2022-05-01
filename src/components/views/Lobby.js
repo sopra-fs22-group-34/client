@@ -30,14 +30,16 @@ const LobbyPage = () => {
   const [p3Box, setP3Box] = useState(null);
   const [p4Box, setP4Box] = useState(null);
 
-  const startGame = () => {
+  async function startGame() {
     localStorage.setItem('game', window.location.pathname);
+    await api.post(window.location.pathname+"/game");
     history.push("/game");
   };
   const Return = () => {
     try { const response = api.put(window.location.pathname+"/users/"+localStorage.getItem("id")+"/leave");
         history.push('/home');
     } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
+    localStorage.removeItem("lobby");
   };
 
   let host = null;
@@ -80,9 +82,12 @@ const LobbyPage = () => {
         console.log(currentLobby);
 
         const isInLobby = await api.get(window.location.pathname + "/users/" + localStorage.getItem('id'));
-        if (!isInLobby.data) {history.push('/home');}
+        if (!isInLobby.data) {
+            history.push('/home');
+            localStorage.removeItem("lobby");
+        }
 
-        if (lobby.current_players == lobby.total_players) {startGame();}
+        //if (lobby.current_players == lobby.total_players) {startGame();}
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);
