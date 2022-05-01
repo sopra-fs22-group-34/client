@@ -1,7 +1,8 @@
 # SoPra FS22 - Client Template
 
-[Server](https://sopra-fs22-group-34-server.herokuapp.com/)
-[Client](https://sopra-fs22-group-34-client.herokuapp.com/)
+[Open Server](https://sopra-fs22-group-34-server.herokuapp.com/)
+
+[Open Client](https://sopra-fs22-group-34-client.herokuapp.com/)
 
 ## Getting started 
 
