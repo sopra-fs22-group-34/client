@@ -13,8 +13,8 @@ const LobbyOverview = () => {
   const [lobbies, setLobbies] = useState(null);
   const [user, setUser] = useState(null);
 
-  const logout = () => {
-    try { const response = api.put('/users/'+localStorage.getItem("id")+"/logout");
+  async function logout() {
+    try { await api.put('/users/'+localStorage.getItem("id")+"/logout");
     } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}
     localStorage.removeItem('token');
     localStorage.removeItem('id');
@@ -23,14 +23,14 @@ const LobbyOverview = () => {
 
   const newGame = async () => {
        try { let inLobby = await api.get('/users/' + localStorage.getItem("id") + '/lobbies/');
-         if (inLobby.data == false) {history.push('/create');}
+         if (!inLobby.data) {history.push('/create');}
          else {alert(`You are already in a game! Please leave it before creating a new one.`)}
        } catch (error) { alert(`Something went wrong when trying to create a new lobby: \n${handleError(error)}`);}
     }
 
   const goToLobby = async ({lobby}) => {
       try { let inLobby = await api.get('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id"));
-        if (inLobby.data == false) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');}
+        if (!inLobby.data) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');}
         localStorage.setItem('lobby', lobby.id);
         history.push('/lobbies/'+lobby.id);
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
@@ -38,16 +38,16 @@ const LobbyOverview = () => {
 
   function Lobby({lobby}){
     if (lobby.current_players === lobby.total_players) return null;
-    return (
-    <div className="lobbies container">
-      <div className="lobbies username">{lobby.host_name}</div>
-      <div className="lobbies lobbyname">{lobby.name}</div>
-      <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
-      <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
-        Join &#62;
-      </Button>
-    </div>)
-  };
+        return (
+        <div className="lobbies container">
+          <div className="lobbies username">{lobby.host_name}</div>
+          <div className="lobbies lobbyname">{lobby.name}</div>
+          <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
+          <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
+            Join &#62;
+          </Button>
+        </div>)
+  }
 
   Lobby.propTypes = {
     lobby: PropTypes.object
@@ -92,6 +92,7 @@ const LobbyOverview = () => {
       contentProfilePicture = (<img src={buildGetRequestExternalAPI(user.id)} width={50} length={50}/>);
    }
   if (lobbies) {
+    //TODO: instead of checking for lengths, do a for loop and check if any are open
     if (lobbies.length === 0) {noGames = 'No open games found. Start your own by clicking on "New Game"!';}
     else {
     noGames = "";

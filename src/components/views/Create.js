@@ -85,7 +85,7 @@ const CreatePage = () => {
         <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button>
       </div>
       </div>)
-    };
+    }
 
   return (
         <BaseContainer className="lobby container">

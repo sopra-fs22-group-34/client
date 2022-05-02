@@ -1,4 +1,5 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import Header from "components/views/Header";
 import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
@@ -33,41 +34,49 @@ const AppRouter = () => {
         </Route>
         <Route path="/home">
           <GameGuard>
+            <Header height="100"/>
             <LobbyOverview/>
           </GameGuard>
         </Route>
         <Route path="/create">
           <GameGuard>
+            <Header height="100"/>
             <CreatePage/>
           </GameGuard>
         </Route>
         <Route exact path="/users">
           <LoginGuard>
+            <Header height="100"/>
             <UserList/>
           </LoginGuard>
         </Route>
         <Route path="/users/edit/">
           <EditGuard>
+            <Header height="100"/>
             <EditPage/>
           </EditGuard>
         </Route>
         <Route path="/users/">
           <GameGuard>
+            <Header height="100"/>
             <UserPage/>
           </GameGuard>
         </Route>
         <Route path="/lobbies/">
           <GameGuard>
+            <Header height="100"/>
             <LobbyPage/>
           </GameGuard>
         </Route>
         <Route exact path="/login">
           <LoginGuard>
+            <Header height="100"/>
             <Login/>
           </LoginGuard>
         </Route>
         <Route exact path="/register">
           <LoginGuard>
+            <Header height="100"/>
             <Register/>
           </LoginGuard>
         </Route>

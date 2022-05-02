@@ -8,10 +8,8 @@ import GamePage from "components/views/Game";
  * Overhauled by Kyrill Hux
  */
 const App = () => {
-  if (window.location.pathname == "/game") { return (<div><GamePage/></div>)}
   return (
     <div>
-      <Header height="100"/>
       <AppRouter/>
     </div>
   );

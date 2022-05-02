@@ -34,7 +34,6 @@ FormField.propTypes = {
 
 const Register = props => {
   const history = useHistory();
-  const [name, setName] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 

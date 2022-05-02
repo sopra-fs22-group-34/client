@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
-import User from 'models/User';
 import {Spinner} from 'components/ui/Spinner';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
@@ -38,18 +37,12 @@ FormField.propTypes = {
 
 
 function displayDate(date){
-    if (date) {
-        //let day = date.substring(8,10);
-        //let mon = date.substring(5,7);
-        //let year = date.substring(0,4);
-        //return day + " " + mon + " " + year;
-        return date.substring(0,10);
-    }
+    if (date) { return date.substring(0,10); }
     return "N/A";
 }
 
 
-const EditPage = props => {
+const EditPage = () => {
   const history = useHistory();
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState(null);
@@ -78,7 +71,7 @@ const EditPage = props => {
   const saveChanges = async () => {
     try {
         const requestBody = JSON.stringify({username, birthday});
-        const response = await api.put('/users/'+localStorage.getItem('id'), requestBody);
+        await api.put('/users/'+localStorage.getItem('id'), requestBody);
 
         // Update worked --> return to the user's profile
         history.push('/users/'+localStorage.getItem('id'));

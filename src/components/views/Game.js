@@ -4,85 +4,40 @@ import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/Game.scss";
 
-const GamePage = props => {
+const GamePage = () => {
     const history = useHistory();
     const [view, setView] = useState(localStorage.getItem('id'));
     const [game, setGame] = useState(null);
+    const [name1, setName1] = useState(null);
+    const [name2, setName2] = useState(null);
+    const [name3, setName3] = useState(null);
+    const [name4, setName4] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
     let [colorIndex, setColorIndex] = useState(null);
     let [tileAmount, setTileAmount] = useState(null);
     const [players, setPlayers] = useState(null);
-    const [playerIndex, setPlayerIndex] = useState(1);
+    const [playerIndex, setPlayerIndex] = useState(0);
 
-    async function getUserNames(users) {
-        console.log("This is the list with the userIDs: ");
-        console.log(users);
-        console.log("This is the first userID of the list: users[0]");
-        console.log(users[0]);
-        let userId1 = users[0];
-        let userId2 = users[1];
-        let userId3, userId4;
-        let username1, username2, username3, username4;
-        try {
-            const user1 = await api.get("/users/" + userId1);
-            username1 = user1.data.username;
-
-            const user2 = await api.get("/users/" + userId2);
-            username2 = user2.data.username;
-
-            if (!(userId3 == null)) {
-                let userId3 = users[2];
-                const user3 = await api.get("/users/" + userId3);
-                username3 = user3.data.username;
-            }
-            if (!(userId4 == null)) {
-                let userId4 = users[3];
-                const user4 = await api.get("/users/" + userId4);
-                username4 = user4.data.username;
-            }
-        } catch (error) {
-            console.error(`Something went wrong while fetching the usernames: \n${handleError(error)}`)
-        }
-        return [username1, username2, username3, username4]
-    }
-
-    function TurnOrder({players}) {
-        let usernames = getUserNames(players);
+    async function TurnOrder(props) {
         let turnOrder;
-        const namePlayer1 = usernames[0];
-        const namePlayer2 = usernames[1];
-        turnOrder = (<div className={"turnOrder container"}>
-            <div className="username container">{namePlayer1}</div>
-            <div className="username container">{namePlayer2}</div>
-        </div>);
-        if (usernames.length === 3) {
-            const namePlayer3 = usernames[2];
-            turnOrder = (<div className={"turnOrder container"}>
-                <div className="username container">{namePlayer1}</div>
-                <div className="username container">{namePlayer2}</div>
-                <div className="username container">{namePlayer3}</div>
-            </div>);
-        }
-        if (usernames.length === 4) {
-            const namePlayer3 = usernames[2];
-            const namePlayer4 = usernames[3];
-            turnOrder = (<div className={"turnOrder container"}>
-                <div className="username container">{namePlayer1}</div>
-                <div className="username container">{namePlayer2}</div>
-                <div className="username container">{namePlayer3}</div>
-                <div className="username container">{namePlayer4}</div>
-            </div>);
-        }
+        console.log("name1 =" + name1)
+        let namePlayer1 = (<div className="username container">{name1}</div>);
+        let namePlayer2 = (<div className="username container">{name2}</div>);
+        let namePlayer3, namePlayer4;
+        if (name3) { const namePlayer3 = (<div className="username container">{name3}</div>); }
+        if (name4) { const namePlayer4 = (<div className="username container">{name4}</div>); }
+        turnOrder = (<div className="turn container">
+                        {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
+                     </div>);
         return turnOrder;
     }
 
     function MiddleTiles(props){
         let zero, col1, col2, col3, col4, col5;
 
-        if (props.zero == true) { zero = (<Tile color={5} amount={1}/>);}
+        if (props.zero) { zero = (<Tile color={5} amount={1}/>);}
         if (props.col1 > 0) { col1 = (<Tile color={0} amount={props.col1} origin={-1}/>);}
         if (props.col2 > 0) { col2 = (<Tile color={1} amount={props.col2} origin={-1}/>);}
         if (props.col3 > 0) { col3 = (<Tile color={2} amount={props.col3} origin={-1}/>);}
@@ -128,8 +83,9 @@ const GamePage = props => {
             setColorIndex(null);
             setTileAmount(null);
         } catch (error) {
-            console.log("oh naurr");
+            console.error(`Something went wrong while executing the move: \n${handleError(error)}`);
             console.error("Details:", error);
+            alert("Something went wrong while executing the move! See the console for details.");
         }
     }
 
@@ -199,13 +155,14 @@ const GamePage = props => {
 
     function StairLine(props){
         let tiles = null;
-        let tile = (<Tile color={props.colorIndex} inactive={true}/>);
+        let tile = (<div className="game placed-tile"><Tile color={props.colorIndex} inactive={true}/></div>);
+        // Tiles that can be placed on the stairs (purely visual)
         if (props.tilesAmount == 1) tiles = (<div className="game placed-tiles">{tile}</div>);
         else if (props.tilesAmount == 2) tiles = (<div className="game placed-tiles">{tile} {tile}</div>);
         else if (props.tilesAmount == 3) tiles = (<div className="game placed-tiles">{tile} {tile} {tile}</div>);
         else if (props.tilesAmount == 4) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile}</div>);
         else if (props.tilesAmount == 5) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile} {tile}</div>);
-        let stair = (<Button className="stairs back-1"/>);
+        // The stairs themselves (buttons)
         if (props.length == 1) return (<Button className="stairs back-1" onClick={() => placeTiles(0)}>{tiles}</Button>);
         else if (props.length == 2) return (<Button className="stairs back-2" onClick={() => placeTiles(1)}>{tiles}</Button>);
         else if (props.length == 3) return (<Button className="stairs back-3" onClick={() => placeTiles(2)}>{tiles}</Button>);
@@ -248,9 +205,6 @@ const GamePage = props => {
                 setGame(currentGame.data);
                 console.log("game:");
                 console.log(game);
-                console.log("game origin: " + originIndex);
-                console.log("game color: " + colorIndex);
-                console.log("game amount: " + tileAmount);
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);
@@ -261,28 +215,29 @@ const GamePage = props => {
             try {
                 const playerResponse = await api.get("/lobbies/" + localStorage.getItem("lobby") + "/game/players");
                 setPlayers(playerResponse.data);
-                for (let id = 0; id < 4; id++) {
-                    if ((id+1).toString() === localStorage.getItem("id")) {
-                        setPlayerIndex(id);
-                    }
-                }
                 console.log("players:");
                 console.log(players);
-                console.log("player index:");
-                console.log(playerIndex);
+                if (players.one == localStorage.getItem("id")) {setPlayerIndex(0);}
+                else if (players.two == localStorage.getItem("id")) {setPlayerIndex(1);}
+                else if (players.three == localStorage.getItem("id")) {setPlayerIndex(2);}
+                else if (players.four == localStorage.getItem("id")) {setPlayerIndex(3);}
+                setName1(players.nameOne);
+                setName2(players.nameTwo);
+                if (players.current_players >= 3) setName3(players.nameThree);
+                if (players.current_players === 4) setName4(players.nameFour);
             } catch (error) {
                 console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
             }
         }
         const interval = setInterval(() => {
           fetchData();
-        }, 5000);
+        }, 1000);
         getPlayers();
         return () => clearInterval(interval);
     }, []);
 
     let turnOrder;
-    //if (players) { turnOrder = (<TurnOrder players = {players}/>) }
+    if (players) { turnOrder = (<div className="game your-turn">Players: {name1} {name2} {name3} {name4}</div>)}//<TurnOrder />) }
     let yourTurn;
     let middle;
     let factories;
@@ -308,8 +263,10 @@ const GamePage = props => {
                 </div>
             </div>
             <div className="game board">
-                {stairs}
-                {wall}
+                <div className="board container">
+                    {stairs}
+                    {wall}
+                </div>
             </div>
         </BaseContainer>
     );

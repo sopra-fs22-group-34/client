@@ -5,22 +5,20 @@ import {Button} from 'components/ui/Button';
 import Lobby from 'models/Lobby';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/Lobby.scss";
 
-const Kick = (player) => {
-    try { const response = api.put(window.location.pathname+"/users/"+player+"/leave");
+async function Kick(player) {
+    try { await api.put(window.location.pathname+"/users/"+player+"/leave");
     } catch (error) { alert(`Something went wrong while kicking the user: \n${handleError(error)}`);}
-};
-
+}
 function PlayerNameText({player=null}) {
   if (!player) {return (<Spinner/>)}
   else return (player)
-};
+}
 function PlayerName(props) {
     if (props.isHost && props.player) return (<div className="lobby players-name"><PlayerNameText player={props.player}/><Button className="lobby kick-button" onClick={() => Kick(props.player)}>X</Button></div>)
     else return (<div className="lobby players-name"><PlayerNameText player={props.player}/></div>)
-};
+}
 
 const LobbyPage = () => {
   const history = useHistory();
@@ -29,20 +27,23 @@ const LobbyPage = () => {
   const [p2Box, setP2Box] = useState(<PlayerName/>);
   const [p3Box, setP3Box] = useState(null);
   const [p4Box, setP4Box] = useState(null);
+  const [full, setFull] = useState(false);
 
   async function startGame() {
-    localStorage.setItem('game', window.location.pathname);
-    await api.post(window.location.pathname+"/game");
+    try { await api.post(window.location.pathname+"/game"); }
+    catch (error) {
+        console.error(`Something went wrong while starting the game. : \n${handleError(error)}`);
+        console.error("Details:", error);
+    }
     history.push("/game");
-  };
+  }
   async function Return() {
     try { await api.put(window.location.pathname+"/users/"+localStorage.getItem("id")+"/leave");
         history.push('/home');
     } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
     localStorage.removeItem("lobby");
-  };
+  }
 
-  let host = null;
   let p2 = null;
   let p3 = null;
   let p4 = null;
@@ -54,7 +55,7 @@ const LobbyPage = () => {
       try {
         const currentLobby = await api.get(window.location.pathname);
         const lobby = new Lobby(currentLobby.data);
-        setLobby(currentLobby.data);
+        setLobby(lobby);
 
         if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) { isHost = true; }
 
@@ -87,7 +88,11 @@ const LobbyPage = () => {
             localStorage.removeItem("lobby");
         }
 
-        if (lobby.current_players == lobby.total_players) {startGame();}
+        if (lobby.current_players == lobby.total_players) {
+            setFull(true);
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            startGame();
+        }
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);
@@ -103,6 +108,10 @@ const LobbyPage = () => {
   let startNow = null;
 
   let content = <Spinner/>;
+
+  let fullText;
+  if (full) { fullText = ("Lobby full! Game starting soon...");}
+  else fullText = "";
 
   if (lobby) {
     if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) {
@@ -136,6 +145,7 @@ const LobbyPage = () => {
             {p3Box}
             {p4Box}
         </div>
+        {fullText}
       </BaseContainer>
     );
 

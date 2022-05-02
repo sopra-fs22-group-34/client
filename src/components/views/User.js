@@ -1,12 +1,9 @@
 import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
-import User from 'models/User';
 import {Spinner} from 'components/ui/Spinner';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/User.scss';
-import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 
 //prepare the GET request for a random profile picture from the external API
 function buildGetRequestExternalAPI(userId, input) {
@@ -25,16 +22,15 @@ function logged_inToString(bool){
 }
 function displayDate(date){
     if (date) {
-        //let day = date.substring(8,10);
-        //let mon = date.substring(5,7);
-        //let year = date.substring(0,4);
-        //return day + " " + mon + " " + year;
-        return date.substring(0,10);
+        let day = date.substring(8,10);
+        let mon = date.substring(5,7);
+        let year = date.substring(0,4);
+        return day + " " + mon + " " + year;
     }
     return "N/A";
 }
 
-const UserPage = props => {
+const UserPage = () => {
   const history = useHistory();
   const [user, setUser] = useState(null);
 

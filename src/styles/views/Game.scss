@@ -20,7 +20,9 @@
   &.factories-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
+
   }
   &.tiles-container {
     margin-top: 15px;
@@ -34,9 +36,8 @@
     flex-direction: row;
     flex: center;
     border-radius: 0;
-    height: 100%;
     width: 100%;
-    padding: 0 50px 20px 50px;
+    padding-bottom: 5%;
   }
   &.stairs-container {
     margin: 50px;
@@ -54,7 +55,13 @@
     padding: 10px;
   }
   &.placed-tiles {
-    align-items: end; //TODO: does nothing
+    display: flex;
+    flex-direction: row;
+  }
+  &.placed-tile {
+    margin-left: 6px;
+    margin-right: 18px;
+    width: 80px;
   }
   &.wall {
     margin: 50px;
@@ -68,13 +75,22 @@
 
 .middle {
   &.container {
-    //background: transparentize($accent, 0.85);
     border-radius: $borderRadius;
     width: 100%;
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+}
+
+.board {
+  &.container {
+    margin:0 auto;
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
   }
 
 }
@@ -91,9 +107,6 @@
     justify-content: center;
     margin: 5px;
   }
-  &.row {
-    margin: 2px 0px;
-  }
 }
 
 
@@ -103,7 +116,6 @@
       background: transparentize($accent, 0.7);
   }
   color: transparentize($accent, 0.5);
-  background-color: transparentize($accent, 0.5);
   background: transparentize($accent, 0.5);
   margin-bottom: 5px;
   height: 80px;
@@ -137,7 +149,7 @@
     min-height: 80px;
     min-width: 80px;
     margin-right: 5px;
-    padding: 15px;
+    padding: 12px;
     &.tile-1{
       background: transparentize($col1, 0.5);
     }
@@ -164,6 +176,7 @@
     opacity: 1;
     border: 2px solid $background;
   }
+  margin: 3px;
   width: 50px;
   height: 50px;
   border-radius: 0;
@@ -178,17 +191,17 @@
     &:disabled {
       border: 2px solid $background;
     }
-    background-color: $col0;
     background: $col0;
+    background-color: $col0;
     color: $accentDark;
   }
   &.button-1 {
-    background-color: $col1;
     background: $col1;
+    background-color: $col1;
   }
   &.button-2 {
-    background-color: $col2;
     background: $col2;
+    background-color: $col2;
   }
   &.button-3 {
     &:hover {
@@ -197,16 +210,16 @@
     &:disabled {
       border: 2px solid $background;
     }
-    background-color: $col3;
     background: $col3;
+    background-color: $col3;
     color: $background;
   }
   &.button-4 {
-    background-color: $col4;
     background: $col4;
+    background-color: $col4;
   }
   &.button-5 {
-    background-color: $col5;
     background: $col5;
+    background-color: $col5;
   }
 }

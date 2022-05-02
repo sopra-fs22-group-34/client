@@ -38,7 +38,7 @@ const UserList = () => {
   const [user, setUser] = useState(null);
 
   const logout = () => {
-    try { const response = api.put('/users/'+localStorage.getItem("id")+"/logout");
+    try { api.put('/users/'+localStorage.getItem("id")+"/logout");
     } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}
 
     localStorage.removeItem('token');
@@ -61,11 +61,6 @@ const UserList = () => {
         const player = await api.get('/users/'+localStorage.getItem("id"));
         setUser(player.data);
         const response = await api.get('/users');
-
-        // delays continuous execution of an async operation for 1 second.
-        // This is just a fake async call, so that the spinner can be displayed
-        // feel free to remove it :)
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Get the returned users and update the state.
         setUsers(response.data);
@@ -97,9 +92,9 @@ const UserList = () => {
     content = (
       <div className="userlist">
         <ul className="userlist user-list">
-          {users.map(user => (
-            <Button className="userlist user-button" onClick={() => userPage({user})}>
-              <Player user={user} key={user.id}/>
+          {users.map(u => (
+            <Button className="userlist user-button" onClick={() => userPage({u})}>
+              <Player user={u} key={u.id}/>
             </Button>
           ))}
         </ul>
