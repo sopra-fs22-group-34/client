@@ -37,7 +37,7 @@ const LobbyOverview = () => {
   }
 
   function Lobby({lobby}){
-    if (lobby.current_players === lobby.total_players) return null;
+    if (!lobby.is_open) return null;
         return (
         <div className="lobbies container">
           <div className="lobbies username">{lobby.host_name}</div>

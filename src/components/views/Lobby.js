@@ -38,7 +38,7 @@ const LobbyPage = () => {
     history.push("/game");
   }
   async function Return() {
-    try { await api.put(window.location.pathname+"/users/"+localStorage.getItem("id")+"/leave");
+    try { await api.put(window.location.pathname+"/users/"+localStorage.getItem('id')+"/leave");
         history.push('/home');
     } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
     localStorage.removeItem("lobby");
@@ -80,7 +80,7 @@ const LobbyPage = () => {
         setP2Box(<PlayerName player={p2} isHost={isHost}/>);
         if (lobby.total_players >= 3) {setP3Box(<PlayerName player={p3} isHost={isHost}/>);}
         if (lobby.total_players === 4) {setP4Box(<PlayerName player={p4} isHost={isHost}/>);}
-        console.log(currentLobby);
+        console.log(lobby);
 
         const isInLobby = await api.get(window.location.pathname + "/users/" + localStorage.getItem('id'));
         if (!isInLobby.data) {
@@ -90,7 +90,7 @@ const LobbyPage = () => {
 
         if (lobby.current_players == lobby.total_players) {
             setFull(true);
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            await new Promise(resolve => setTimeout(resolve, 3000));
             startGame();
         }
       } catch (error) {

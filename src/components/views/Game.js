@@ -8,17 +8,17 @@ import "styles/views/Game.scss";
 
 const GamePage = () => {
     const history = useHistory();
-    const [view, setView] = useState(localStorage.getItem('id'));
-    const [game, setGame] = useState(null);
-    const [name1, setName1] = useState(null);
-    const [name2, setName2] = useState(null);
-    const [name3, setName3] = useState(null);
-    const [name4, setName4] = useState(null);
+    let [view, setView] = useState(localStorage.getItem('id'));
+    let [game, setGame] = useState(null);
+    let [name1, setName1] = useState(null);
+    let [name2, setName2] = useState(null);
+    let [name3, setName3] = useState(null);
+    let [name4, setName4] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
     let [colorIndex, setColorIndex] = useState(null);
     let [tileAmount, setTileAmount] = useState(null);
-    const [players, setPlayers] = useState(null);
-    const [playerIndex, setPlayerIndex] = useState(0);
+    let [players, setPlayers] = useState(null);
+    let [playerIndex, setPlayerIndex] = useState(0);
 
     async function TurnOrder(props) {
         let turnOrder;
@@ -201,8 +201,9 @@ const GamePage = () => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const currentGame = await api.get("/users/"+localStorage.getItem("id")+"/game");
-                setGame(currentGame.data);
+                let currentGame = await api.get("/users/"+localStorage.getItem('id')+"/game");
+                let game = currentGame.data;
+                setGame(game);
                 console.log("game:");
                 console.log(game);
             } catch (error) {
@@ -213,14 +214,15 @@ const GamePage = () => {
         }
         async function getPlayers() {
             try {
-                const playerResponse = await api.get("/lobbies/" + localStorage.getItem("lobby") + "/game/players");
-                setPlayers(playerResponse.data);
+                let playerResponse = await api.get("/lobbies/" + localStorage.getItem("lobby") + "/game/players");
+                let players = playerResponse.data;
+                setPlayers(players);
                 console.log("players:");
                 console.log(players);
-                if (players.one == localStorage.getItem("id")) {setPlayerIndex(0);}
-                else if (players.two == localStorage.getItem("id")) {setPlayerIndex(1);}
-                else if (players.three == localStorage.getItem("id")) {setPlayerIndex(2);}
-                else if (players.four == localStorage.getItem("id")) {setPlayerIndex(3);}
+                if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
+                else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
+                else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
+                else if (players.four == localStorage.getItem('id')) {setPlayerIndex(3);}
                 setName1(players.nameOne);
                 setName2(players.nameTwo);
                 if (players.current_players >= 3) setName3(players.nameThree);
@@ -231,8 +233,8 @@ const GamePage = () => {
         }
         const interval = setInterval(() => {
           fetchData();
+          getPlayers();
         }, 1000);
-        getPlayers();
         return () => clearInterval(interval);
     }, []);
 
