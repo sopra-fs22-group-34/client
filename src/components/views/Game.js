@@ -26,8 +26,8 @@ const GamePage = () => {
         let namePlayer1 = (<div className="username container">{name1}</div>);
         let namePlayer2 = (<div className="username container">{name2}</div>);
         let namePlayer3, namePlayer4;
-        if (name3) { const namePlayer3 = (<div className="username container">{name3}</div>); }
-        if (name4) { const namePlayer4 = (<div className="username container">{name4}</div>); }
+        if (name3) { namePlayer3 = (<div className="username container">{name3}</div>); }
+        if (name4) { namePlayer4 = (<div className="username container">{name4}</div>); }
         turnOrder = (<div className="turn container">
                         {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
                      </div>);

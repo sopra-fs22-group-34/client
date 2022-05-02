@@ -45,10 +45,10 @@ const AppRouter = () => {
           </GameGuard>
         </Route>
         <Route exact path="/users">
-          <LoginGuard>
+          <GameGuard>
             <Header height="100"/>
             <UserList/>
-          </LoginGuard>
+          </GameGuard>
         </Route>
         <Route path="/users/edit/">
           <EditGuard>

@@ -62,17 +62,17 @@ const LobbyPage = () => {
         setHostBox(<PlayerName player={lobby.host_name}/>);
 
         for (let i = 0; i < lobby.current_players; i++){
-         if (i === 1){
-             let name2 = await api.get('/users/'+lobby.players[i]);
-             p2 = name2.data.username;
-         } else if (i === 2){
-             let name3 = await api.get('/users/'+lobby.players[i]);
-             p3 = name3.data.username;
-         } else if (i === 3){
-             let name4 = await api.get('/users/'+lobby.players[i]);
-             p4 = name4.data.username;
+             if (i === 1){
+                 let name2 = await api.get('/users/'+lobby.players[i]);
+                 p2 = name2.data.username;
+             } else if (i === 2){
+                 let name3 = await api.get('/users/'+lobby.players[i]);
+                 p3 = name3.data.username;
+             } else if (i === 3){
+                 let name4 = await api.get('/users/'+lobby.players[i]);
+                 p4 = name4.data.username;
+             }
         }
-        };
         if (lobby.current_players < 2) { p2 = null;}
         if (lobby.current_players < 3) { p3 = null;}
         if (lobby.current_players < 4) { p4 = null;}

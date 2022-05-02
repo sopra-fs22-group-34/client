@@ -38,15 +38,15 @@ const LobbyOverview = () => {
 
   function Lobby({lobby}){
     if (!lobby.is_open) return null;
-        return (
-        <div className="lobbies container">
-          <div className="lobbies username">{lobby.host_name}</div>
-          <div className="lobbies lobbyname">{lobby.name}</div>
-          <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
-          <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
-            Join &#62;
-          </Button>
-        </div>)
+    return (
+    <div className="lobbies container">
+      <div className="lobbies username">{lobby.host_name}</div>
+      <div className="lobbies lobbyname">{lobby.name}</div>
+      <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
+      <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
+        Join &#62;
+      </Button>
+    </div>)
   }
 
   Lobby.propTypes = {

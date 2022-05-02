@@ -50,7 +50,7 @@ const UserPage = () => {
     }, []);
 
   const returnGame = async () => {
-    history.push('/game');
+    history.push('/users');
   }
 
   const editUser = async () => {

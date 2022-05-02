@@ -1,6 +1,4 @@
-import Header from "components/views/Header";
 import AppRouter from "components/routing/routers/AppRouter";
-import GamePage from "components/views/Game";
 
 /**
  * Happy coding!

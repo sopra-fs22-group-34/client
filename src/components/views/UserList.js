@@ -92,9 +92,9 @@ const UserList = () => {
     content = (
       <div className="userlist">
         <ul className="userlist user-list">
-          {users.map(u => (
-            <Button className="userlist user-button" onClick={() => userPage({u})}>
-              <Player user={u} key={u.id}/>
+          {users.map(user => (
+            <Button className="userlist user-button" onClick={() => userPage({user})}>
+              <Player user={user} key={user.id}/>
             </Button>
           ))}
         </ul>
