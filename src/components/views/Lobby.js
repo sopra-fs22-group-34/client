@@ -96,7 +96,7 @@ const LobbyPage = () => {
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);
-        alert("Something went wrong while fetching the lobby! See the console for details.");
+        //alert("Something went wrong while fetching the lobby! See the console for details.");
       }
     }
     const interval = setInterval(() => {
