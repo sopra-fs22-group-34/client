@@ -201,11 +201,21 @@ const GamePage = () => {
     useEffect(() => {
         async function fetchData() {
             try {
-                let currentGame = await api.get("/users/"+localStorage.getItem('id')+"/game");
+                let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
                 let game = currentGame.data;
                 setGame(game);
                 console.log("game:");
                 console.log(game);
+                let players = game.playerData;
+                setPlayers(players);
+                if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
+                else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
+                else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
+                else if (players.four == localStorage.getItem('id')) {setPlayerIndex(3);}
+                setName1(players.nameOne);
+                setName2(players.nameTwo);
+                if (players.current_players >= 3) setName3(players.nameThree);
+                if (players.current_players === 4) setName4(players.nameFour);
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);
@@ -233,7 +243,7 @@ const GamePage = () => {
         }
         const interval = setInterval(() => {
           fetchData();
-          getPlayers();
+          //getPlayers();
         }, 1000);
         return () => clearInterval(interval);
     }, []);
