@@ -37,17 +37,12 @@ const UserList = () => {
   const [users, setUsers] = useState(null);
   const [user, setUser] = useState(null);
 
-  const logout = () => {
-    try { api.put('/users/'+localStorage.getItem("id")+"/logout");
-    } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('id');
-    history.push('/login');
-  }
-
   const userPage = ({user}) => {
     history.push('/users/'+user.id);
+  }
+
+  const Return = () => {
+    history.push('home');
   }
 
   // the effect hook can be used to react to change in your component.
@@ -105,16 +100,15 @@ const UserList = () => {
 
   return (
     <BaseContainer className="userlist container">
-      <h2>Welcome, {userName}!</h2>
+      <div className="userlist button-container">
+          <Button className="blue-button margin" width="50%" onClick={() => Return()} >
+            &#60; Return
+          </Button>
+      </div>
       <p className="userlist paragraph">
         Registered users:
       </p>
       {content}
-      <Button
-        width="100%"
-        onClick={() => logout()}>
-        Logout
-      </Button>
     </BaseContainer>
   );
 }

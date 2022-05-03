@@ -14,15 +14,20 @@ const LobbyOverview = () => {
   const [user, setUser] = useState(null);
 
   async function logout() {
-    try { await api.put('/users/'+localStorage.getItem("id")+"/logout");
+    try { await api.put('/users/'+localStorage.getItem('id')+"/logout");
     } catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`);}
     localStorage.removeItem('token');
     localStorage.removeItem('id');
+    localStorage.removeItem('lobby');
     history.push('/login');
   }
 
+  const userList = () => {
+    history.push('/users');
+  }
+
   const newGame = async () => {
-       try { let inLobby = await api.get('/users/' + localStorage.getItem("id") + '/lobbies/');
+       try { let inLobby = await api.get('/users/' + localStorage.getItem('id') + '/lobbies/');
          if (!inLobby.data) {history.push('/create');}
          else {alert(`You are already in a game! Please leave it before creating a new one.`)}
        } catch (error) { alert(`Something went wrong when trying to create a new lobby: \n${handleError(error)}`);}
@@ -56,13 +61,14 @@ const LobbyOverview = () => {
   useEffect(() => {
       async function fetchPlayerData() {
         try {
-          const player = await api.get('/users/'+localStorage.getItem("id"));
+          const player = await api.get('/users/'+localStorage.getItem('id'));
           setUser(player.data);
         } catch (error) {
           console.error(`Something went wrong while fetching your user data: \n${handleError(error)}`);
           console.error("Details:", error);
           localStorage.removeItem('token');
           localStorage.removeItem('id');
+          localStorage.removeItem('lobby');
           history.push('/login');
         }
       }
@@ -127,9 +133,14 @@ const LobbyOverview = () => {
           {noGames}
           </div>
           <hr width="80%"/>
-          <Button width="100%" onClick={() => logout()}>
-            Logout
-          </Button>
+          <div className="overview button-container">
+              <Button className="blue-button margin" width="50%" onClick={() => logout()}>
+                Logout
+              </Button>
+              <Button width="50%" onClick={() => userList()}>
+                Users
+              </Button>
+          </div>
         </BaseContainer>
       );
     }

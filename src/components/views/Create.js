@@ -45,8 +45,9 @@ const CreatePage = () => {
     try {
         const requestBody = JSON.stringify({host_id, name, is_public, total_players});
         const response = await api.post('/lobbies', requestBody);
-        localStorage.setItem('game', response.data.id);
-        history.push("/lobbies/"+response.data.id);
+        let lobbyId = response.data.id;
+        localStorage.setItem('lobby', lobbyId);
+        history.push("/lobbies/"+lobbyId);
     } catch (error) { alert(`Something went wrong while creating the lobby: \n${handleError(error)}`);
         history.push('/home');}
     };
@@ -79,7 +80,7 @@ const CreatePage = () => {
           value={name}
           onChange={ln => setName(ln)}
         />
-        Players:
+        Players: <b>{total_players}</b>
         <Button className="settings players-button" onClick={() => setTotal_players(2)}> 2 </Button>
         <Button className="settings players-button" onClick={() => setTotal_players(3)}> 3 </Button>
         <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button>
@@ -90,7 +91,7 @@ const CreatePage = () => {
   return (
         <BaseContainer className="lobby container">
         <div className="lobby buttons-container">
-          <Button onClick={() => Return()}>
+          <Button className="blue-button" width="30%" onClick={() => Return()}>
               &#60; Cancel
             </Button>
           </div>

@@ -41,7 +41,7 @@ const LobbyPage = () => {
     try { await api.put(window.location.pathname+"/users/"+localStorage.getItem('id')+"/leave");
         history.push('/home');
     } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
-    localStorage.removeItem("lobby");
+    localStorage.removeItem('lobby');
   }
 
   let p2 = null;
@@ -85,10 +85,10 @@ const LobbyPage = () => {
         const isInLobby = await api.get(window.location.pathname + "/users/" + localStorage.getItem('id'));
         if (!isInLobby.data) {
             history.push('/home');
-            localStorage.removeItem("lobby");
+            localStorage.removeItem('lobby');
         }
 
-        if (lobby.current_players == lobby.total_players) {
+        if (lobby.current_players == lobby.total_players || !lobby.is_open) {
             setFull(true);
             await new Promise(resolve => setTimeout(resolve, 3000));
             startGame();
@@ -131,7 +131,7 @@ const LobbyPage = () => {
   return (
       <BaseContainer className="lobby container">
       <div className="lobby buttons-container">
-        <Button onClick={() => Return()}>
+        <Button  className="blue-button" width="30%" onClick={() => Return()}>
             &#60; Leave
           </Button>
           {startNow}

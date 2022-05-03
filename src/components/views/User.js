@@ -77,29 +77,24 @@ const UserPage = () => {
   }
   if (user && localStorage.getItem('id') == user.id){
     editButton = (
-      <div className="user edit-button-container">
-        <Button
-          width="100%"
-          onClick={() => editUser()}>
+        <Button width="50%" onClick={() => editUser()}>
           Edit Profile
-        </Button>
-      </div>
-    )
+        </Button>)
   }
   return (
     <div className="user container">
-      <div className="user button-container">
-         <Button className="user return-button"
-           width="100%"
-           onClick={() => returnGame()}>
-           &#60; Return
-         </Button>
-      </div>
-    <div className="profile outer-container">
-     {content}
+        <div className="profile outer-container">
+          <div className="user button-container">
+             <Button className="blue-button margin" width="50%"
+               onClick={() => returnGame()}>
+               &#60; Return
+             </Button>
+             {editButton}
+          </div>
+         {content}
 
-     {editButton}
-    </div>
+
+        </div>
     </div>
   );
 };
