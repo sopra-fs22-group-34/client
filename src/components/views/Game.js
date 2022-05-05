@@ -5,6 +5,7 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
+import {buildGetRequestExternalAPI} from "./User";
 
 const GamePage = () => {
     const history = useHistory();
@@ -21,8 +22,8 @@ const GamePage = () => {
     let [playerIndex, setPlayerIndex] = useState(0);
 
     function TurnOrder(props) {
-        let namePlayer1 = (<PlayerInfo index={0} name={props.data.playerData.nameOne} data={props.data}/>);
-        let namePlayer2 = (<PlayerInfo index={1} name={props.data.playerData.nameTwo} data={props.data}/>);
+        let namePlayer1 = (<PlayerInfo index={0} name={props.data.playerData.nameOne} userId={props.data.playerData.one} data={props.data}/>);
+        let namePlayer2 = (<PlayerInfo index={1} name={props.data.playerData.nameTwo} userId={props.data.playerData.two} data={props.data}/>);
         let namePlayer3, namePlayer4;
         if (props.data.playerData.current_players >= 3) { namePlayer3 = (<div className="username container">{props.playerData.nameThree}</div>); }
         if (props.data.playerData.current_players == 4) { namePlayer4 = (<div className="username container">{props.playerData.nameFour}</div>); }
@@ -34,10 +35,12 @@ const GamePage = () => {
     function PlayerInfo(props){
         let id = props.index;
         if (props.data.players[id].playerId == props.data.playerTurnId) {
-            return (<Button className="player container-current" onMouseOver={()=>{setView(id)}}>
+            return (<Button className="player-turn container-current" onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
+                        <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
                         {props.name} <div className="game score">{props.data.players[id].score}</div>
                     </Button>)}
-        else return (<Button className="player container-idle" onMouseOver={()=>{setView(id)}}>
+        else return (<Button className="player-turn container-idle" onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
+                         <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
                          {props.name} <div className="game score">{props.data.players[id].score}</div>
                      </Button>)
     }
@@ -59,6 +62,7 @@ const GamePage = () => {
     function Tile(props){
         let inactive = false;
         if (props.inactive || game.playerTurnId != playerIndex) { inactive = true; }
+        else {inactive = false;}
         let amount = " ";
         if (props.amount) amount = props.amount;
         if (props.amount == 0) return null;
@@ -68,7 +72,7 @@ const GamePage = () => {
         else if (props.color == 3) return (<Button className="tile button-4" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 4) return (<Button className="tile button-5" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 5) return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
-        else return null;
+        else return (<div className="tile empty"/>);
     }
 
     function pickUpTiles(props) {
@@ -165,7 +169,7 @@ const GamePage = () => {
 
     function StairLine(props){
         let inactive = false;
-        if (game.playerTurnId != playerIndex) inactive = true;
+        if ((view == null && game.playerTurnId != playerIndex) || (view != null && game.playerTurnId != view)) inactive = true;
         let tiles = null;
         let tile = (<div className="game placed-tile"><Tile color={props.colorIndex} inactive={true}/></div>);
         // Tiles that can be placed on the stairs (purely visual)
@@ -210,6 +214,26 @@ const GamePage = () => {
         else if (props.color == 4) return (<div className="wall-tile tile-5">{tile}</div>);
     }
 
+    function FloorLine(props){
+        return (<div className="game floorline">
+            <FloorTile value={-1} id={0} data={props.floorline}/>
+            <FloorTile value={-1} id={1} data={props.floorline}/>
+            <FloorTile value={-2} id={2} data={props.floorline}/>
+            <FloorTile value={-2} id={3} data={props.floorline}/>
+            <FloorTile value={-2} id={4} data={props.floorline}/>
+            <FloorTile value={-3} id={5} data={props.floorline}/>
+            <FloorTile value={-3} id={6} data={props.floorline}/>
+        </div>)
+    }
+
+    function FloorTile(props){
+        let tile = (<Tile color={props.data[props.id]} inactive={true}/>);
+        return (<div className="floor container">
+            <div className="floor value-container">{props.value}</div>
+            <div className="floor tile-container">{tile}</div>
+        </div>)
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -246,9 +270,10 @@ const GamePage = () => {
     let factories;
     let stairs;
     let wall;
+    let floor;
 
     if (game) {
-        if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">"It's your turn!"</div>); }
+        if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">It's your turn! (Timer will go here.)</div>); }
         else { yourTurn = null; }
         turnOrder = (<TurnOrder data={game}/>);
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
@@ -256,26 +281,31 @@ const GamePage = () => {
         if (view != null) {
             stairs = (<Stairs stairs={game.players[view].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[view].playerBoard.wall.positionsOccupied}/>);
+            floor = (<FloorLine floorline={game.players[view].playerBoard.floorLine}/>);
         } else {
             stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
+            floor = (<FloorLine floorline={game.players[playerIndex].playerBoard.floorLine}/>);
         }
     }
 
-    let viewedBoard = (<div className="board container"> {stairs} {wall} </div>);
+    let viewedBoard = (<div className="board container">
+            <div className="board main">{stairs} {wall} </div> {floor} </div>);
 
     return (
         <BaseContainer className="game container">
             <div className="game field">
                 <div className="middle container">
-                    {yourTurn}
+
                     {factories}
                     {middle}
                 </div>
             </div>
             <div className="game board">
+                {yourTurn}
                 {viewedBoard}
                 {turnOrder}
+
             </div>
         </BaseContainer>
     );

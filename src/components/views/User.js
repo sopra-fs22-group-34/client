@@ -57,15 +57,13 @@ const UserPage = () => {
     history.push('/users/edit/'+localStorage.getItem('id'));
   }
 
-  let srcProfilePicture = buildGetRequestExternalAPI(localStorage.getItem("id"));
-
   let content = <Spinner/>
   let editButton = null;
   if (user) {
     content = (
         <div className="profile container">
           <div className="profile name-container">
-            <img src={srcProfilePicture}/>
+            <img src={buildGetRequestExternalAPI(user.id)}/>
             <div className="profile username">{user.username}</div>
             <div className="profile logged_in">{logged_inToString(user.logged_in)}</div>
           </div>

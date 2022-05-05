@@ -40,13 +40,11 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    padding: 50px 0 20px 0;
   }
   &.stairs-container {
-    flex-shrink: 1;
     display: flex;
     flex-direction: column;
-    width: 400px;
+    min-width: 400px;
     align-items: flex-end;
   }
   &.turn-order{
@@ -54,10 +52,10 @@
     flex-direction: column;
     justify-content: center;
     max-width: 20%;
-    min-width: 130px;
-    align-items: flex-end;
-    position: fixed;
-    right: 0;
+    min-width: 150px;
+    height: 100%;
+    align-items: center;
+    position: sticky;
   }
   &.score{
     margin-left: 10px;
@@ -67,10 +65,13 @@
   }
   &.your-turn {
     position: absolute;
+    top: 0;
     flex: center;
     font-size: 20px;
-    background: transparentize($accentDark, 0.5);
-    border-radius: $borderRadius;
+    background: transparentize($col1, 0.5);
+    border-radius: 0 0 150px 0;
+    height: 150px;
+    width: 150px;
     padding: 10px;
   }
   &.placed-tiles {
@@ -89,6 +90,16 @@
     display: flex;
     flex-direction: column;
   }
+  &.floorline {
+    margin-left: 80px;
+    display: flex;
+    flex-direction: column;
+  }
+  &.image {
+    height: 32px;
+    width: 32px;
+    margin-right: 5px;
+  }
 }
 
 .middle {
@@ -102,12 +113,14 @@
   }
 }
 
-.player {
+.player-turn {
   &:hover {
       transform: none;
       background: transparentize($accent, 0.9);
   }
+  align-items: center;
   margin-bottom: 10px;
+  border-radius: 0.75em 0 0 0.75em;
   padding: 10px;
   height: 55px;
   width: 100%;
@@ -125,7 +138,6 @@
     flex-direction: row;
     border: 1px solid $accentDark;
   }
-
 }
 
 .board {
@@ -134,15 +146,24 @@
     display: flex;
     flex-direction: row;
     width: 1000px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
   }
-
+  &.main {
+    padding: 50px 0 20px 0;
+    margin:0 auto;
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+    margin-bottom: 20px;
+  }
 }
 
 .factory {
   &.container {
     background: transparentize($accent, 0.5);
     border-radius: 50%;
-    border: 5px solid $accent;
     width: 155px;
     height: 155px;
     display: flex;
@@ -152,7 +173,6 @@
     margin: 0px 5px;
   }
 }
-
 
 .stairs {
   &:hover {
@@ -184,10 +204,10 @@
   }
 }
 .wall {
-    margin-bottom: 5px;
+   margin-bottom: 5px;
    &.row{
-    display: flex;
-    flex-direction: row;
+     display: flex;
+     flex-direction: row;
    }
 }
 
@@ -215,6 +235,27 @@
     }
 }
 
+.floor {
+  &.container {
+    border: 2px solid transparentize($accentDark, 0.7);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 60px;
+    margin-bottom: 5px;
+  }
+  &.value-container {
+    justify-content: center;
+    padding: 0 3px;
+    display: flex;
+    font-size: 16pt;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: transparentize($accentDark, 0.7);
+  }
+}
+
 .tile {
   &:hover {
       transform: none;
@@ -231,6 +272,9 @@
   font-size: 16pt;
   border: 2px solid $background;
   color: $textColor;
+  &.empty {
+    border: 2px hidden $background;
+  }
   &.button-0 {
     &:hover {
       border: 5px solid $accentDark;
