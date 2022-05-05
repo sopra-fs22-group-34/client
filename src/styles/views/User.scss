@@ -28,21 +28,20 @@
     align-items: center;
     width: 60%;
     max-width: 30em;
-    min-height: 70vh;
+    min-height: 66vh;
     font-size: 16px;
     font-weight: 300;
-    padding-left: 37px;
-    padding-right: 37px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 50px;
     border-radius: 0.75em 0.75em 0em 0em;
     background-color: $background;
+    position: fixed;
+    bottom: 0px;
     }
   &.container {
     width: 100%;
     padding: 10px;
     border-radius: $borderRadius;
-    background: transparentize($accent, 0.85);
+    background: transparentize($accentDark, 0.85);
   }
   &.name-container {
     display: flex;

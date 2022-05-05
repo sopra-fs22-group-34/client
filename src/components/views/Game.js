@@ -8,7 +8,7 @@ import "styles/views/Game.scss";
 
 const GamePage = () => {
     const history = useHistory();
-    let [view, setView] = useState(localStorage.getItem('id'));
+    let [view, setView] = useState(null);
     let [game, setGame] = useState(null);
     let [name1, setName1] = useState(null);
     let [name2, setName2] = useState(null);
@@ -20,18 +20,26 @@ const GamePage = () => {
     let [players, setPlayers] = useState(null);
     let [playerIndex, setPlayerIndex] = useState(0);
 
-    async function TurnOrder(props) {
-        let turnOrder;
-        console.log("name1 =" + name1)
-        let namePlayer1 = (<div className="username container">{name1}</div>);
-        let namePlayer2 = (<div className="username container">{name2}</div>);
+    function TurnOrder(props) {
+        let namePlayer1 = (<PlayerInfo index={0} name={props.data.playerData.nameOne} data={props.data}/>);
+        let namePlayer2 = (<PlayerInfo index={1} name={props.data.playerData.nameTwo} data={props.data}/>);
         let namePlayer3, namePlayer4;
-        if (name3) { namePlayer3 = (<div className="username container">{name3}</div>); }
-        if (name4) { namePlayer4 = (<div className="username container">{name4}</div>); }
-        turnOrder = (<div className="turn container">
-                        {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
-                     </div>);
-        return turnOrder;
+        if (props.data.playerData.current_players >= 3) { namePlayer3 = (<div className="username container">{props.playerData.nameThree}</div>); }
+        if (props.data.playerData.current_players == 4) { namePlayer4 = (<div className="username container">{props.playerData.nameFour}</div>); }
+        return (<div className="game turn-order">
+                   {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
+                </div>);
+    }
+
+    function PlayerInfo(props){
+        let id = props.index;
+        if (props.data.players[id].playerId == props.data.playerTurnId) {
+            return (<Button className="player container-current" onMouseOver={()=>{setView(id)}}>
+                        {props.name} <div className="game score">{props.data.players[id].score}</div>
+                    </Button>)}
+        else return (<Button className="player container-idle" onMouseOver={()=>{setView(id)}}>
+                         {props.name} <div className="game score">{props.data.players[id].score}</div>
+                     </Button>)
     }
 
     function MiddleTiles(props){
@@ -49,14 +57,16 @@ const GamePage = () => {
     }
 
     function Tile(props){
+        let inactive = false;
+        if (props.inactive || game.playerTurnId != playerIndex) { inactive = true; }
         let amount = " ";
         if (props.amount) amount = props.amount;
         if (props.amount == 0) return null;
-        if (props.color == 0) return (<Button className="tile button-1" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
-        else if (props.color == 1) return (<Button className="tile button-2" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
-        else if (props.color == 2) return (<Button className="tile button-3" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
-        else if (props.color == 3) return (<Button className="tile button-4" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
-        else if (props.color == 4) return (<Button className="tile button-5" disabled={props.inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+        if (props.color == 0) return (<Button className="tile button-1" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+        else if (props.color == 1) return (<Button className="tile button-2" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+        else if (props.color == 2) return (<Button className="tile button-3" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+        else if (props.color == 3) return (<Button className="tile button-4" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
+        else if (props.color == 4) return (<Button className="tile button-5" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 5) return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
         else return null;
     }
@@ -154,6 +164,8 @@ const GamePage = () => {
     }
 
     function StairLine(props){
+        let inactive = false;
+        if (game.playerTurnId != playerIndex) inactive = true;
         let tiles = null;
         let tile = (<div className="game placed-tile"><Tile color={props.colorIndex} inactive={true}/></div>);
         // Tiles that can be placed on the stairs (purely visual)
@@ -163,11 +175,11 @@ const GamePage = () => {
         else if (props.tilesAmount == 4) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile}</div>);
         else if (props.tilesAmount == 5) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile} {tile}</div>);
         // The stairs themselves (buttons)
-        if (props.length == 1) return (<Button className="stairs back-1" onClick={() => placeTiles(0)}>{tiles}</Button>);
-        else if (props.length == 2) return (<Button className="stairs back-2" onClick={() => placeTiles(1)}>{tiles}</Button>);
-        else if (props.length == 3) return (<Button className="stairs back-3" onClick={() => placeTiles(2)}>{tiles}</Button>);
-        else if (props.length == 4) return (<Button className="stairs back-4" onClick={() => placeTiles(3)}>{tiles}</Button>);
-        else if (props.length == 5) return (<Button className="stairs back-5" onClick={() => placeTiles(4)}>{tiles}</Button>);
+        if (props.length == 1) return (<Button className="stairs back-1" disabled={inactive} onClick={() => placeTiles(0)}>{tiles}</Button>);
+        else if (props.length == 2) return (<Button className="stairs back-2" disabled={inactive} onClick={() => placeTiles(1)}>{tiles}</Button>);
+        else if (props.length == 3) return (<Button className="stairs back-3" disabled={inactive} onClick={() => placeTiles(2)}>{tiles}</Button>);
+        else if (props.length == 4) return (<Button className="stairs back-4" disabled={inactive} onClick={() => placeTiles(3)}>{tiles}</Button>);
+        else if (props.length == 5) return (<Button className="stairs back-5" disabled={inactive} onClick={() => placeTiles(4)}>{tiles}</Button>);
     }
 
     function Wall(props){
@@ -222,52 +234,39 @@ const GamePage = () => {
                 alert("Something went wrong while fetching the game data! See the console for details.");
             }
         }
-        async function getPlayers() {
-            try {
-                let playerResponse = await api.get("/lobbies/" + localStorage.getItem("lobby") + "/game/players");
-                let players = playerResponse.data;
-                setPlayers(players);
-                console.log("players:");
-                console.log(players);
-                if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
-                else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
-                else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
-                else if (players.four == localStorage.getItem('id')) {setPlayerIndex(3);}
-                setName1(players.nameOne);
-                setName2(players.nameTwo);
-                if (players.current_players >= 3) setName3(players.nameThree);
-                if (players.current_players === 4) setName4(players.nameFour);
-            } catch (error) {
-                console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
-            }
-        }
         const interval = setInterval(() => {
           fetchData();
-          //getPlayers();
         }, 1000);
         return () => clearInterval(interval);
     }, []);
 
     let turnOrder;
-    if (players) { turnOrder = (<div className="game your-turn">Players: {name1} {name2} {name3} {name4}</div>)}//<TurnOrder />) }
     let yourTurn;
     let middle;
     let factories;
     let stairs;
     let wall;
+
     if (game) {
         if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">"It's your turn!"</div>); }
         else { yourTurn = null; }
+        turnOrder = (<TurnOrder data={game}/>);
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
         factories = (<MiddleFactories factoryAmount={game.factoryAmount} factories={game.factories}/>);
-        stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
-        wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
+        if (view != null) {
+            stairs = (<Stairs stairs={game.players[view].playerBoard.stairs}/>);
+            wall = (<Wall positionsOccupied={game.players[view].playerBoard.wall.positionsOccupied}/>);
+        } else {
+            stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
+            wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
+        }
     }
+
+    let viewedBoard = (<div className="board container"> {stairs} {wall} </div>);
 
     return (
         <BaseContainer className="game container">
             <div className="game field">
-                {turnOrder}
                 <div className="middle container">
                     {yourTurn}
                     {factories}
@@ -275,10 +274,8 @@ const GamePage = () => {
                 </div>
             </div>
             <div className="game board">
-                <div className="board container">
-                    {stairs}
-                    {wall}
-                </div>
+                {viewedBoard}
+                {turnOrder}
             </div>
         </BaseContainer>
     );

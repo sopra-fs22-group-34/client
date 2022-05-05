@@ -129,7 +129,7 @@ const LobbyPage = () => {
       </div>);
   }
   return (
-      <BaseContainer className="lobby container">
+      <BaseContainer className="lobby container"><div className="lobby content">
       <div className="lobby buttons-container">
         <Button  className="blue-button" width="30%" onClick={() => Return()}>
             &#60; Leave
@@ -146,6 +146,7 @@ const LobbyPage = () => {
             {p4Box}
         </div>
         {fullText}
+        </div>
       </BaseContainer>
     );
 

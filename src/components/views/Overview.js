@@ -117,6 +117,7 @@ const LobbyOverview = () => {
 
     return (
         <BaseContainer className="overview container">
+        <div className="overview content">
         <div className="overview welcome-container">
           <h2>Welcome, <span className="lobbies username">{userName}</span>!</h2>
             <div className="overview welcome-image"> {contentProfilePicture}</div>
@@ -140,7 +141,7 @@ const LobbyOverview = () => {
               <Button width="50%" onClick={() => userList()}>
                 Users
               </Button>
-          </div>
+          </div></div>
         </BaseContainer>
       );
     }

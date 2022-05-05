@@ -9,18 +9,22 @@
 
 .lobby {
   &.container {
+    @include center;
+    flex-direction: column;
+  }
+  &.content {
     background: $background;
-    min-height: 70vh;
-    padding: 20px;
+    min-height: 66vh;
+    padding: 20px 50px;
     width: 60%;
     max-width: 30em;
-    padding-left: 50px;
-    padding-right: 50px;
     border-radius: 0.75em 0.75em 0em 0em;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: $dropShadow;
+    position: fixed;
+    bottom: 0;
   }
   &.buttons-container {
     margin-bottom: 5%;

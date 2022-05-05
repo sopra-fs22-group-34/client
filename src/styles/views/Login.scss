@@ -3,18 +3,16 @@
 .login {
   &.container {
     /*min-height: 350px;*/
-    min-height: 70vh;
     @include center;
     flex-direction: column;
   }
   &.form {
     display: flex;
     flex-direction: column;
-    //justify-content: center;
     width: 60%;
     max-width: 30em;
-    height: 100%;
     font-size: 16px;
+    min-height: 66vh;
     font-weight: 300;
     padding-left: 50px;
     padding-right: 50px;
@@ -25,6 +23,8 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
     flex-grow: 1;
+    position: fixed;
+    bottom: 0;
   }
   &.title {
     font-size: 25pt;
@@ -42,10 +42,9 @@
     }
     height: 35px;
     padding-left: 15px;
-    margin-left: -4px;
     border: 1px hidden $background;
     border-radius: 0.75em;
-    margin-bottom: 20px;
+    margin: 10px 0px 20px 0px;
     background: transparentize($accent, 0.85);
     color: $textColor;
     transition: all 0.3s ease;

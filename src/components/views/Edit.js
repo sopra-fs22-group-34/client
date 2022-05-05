@@ -17,11 +17,11 @@ const FormField = props => {
  return (
   <div className="login field">
     <label className="login label">
-      {props.label}
+    {props.label}
     </label>
     <input className="login input"
       placeholder={props.placeholder}
-      value={props.value}
+      value={props.value} maxlength={props.maxlength}
       onChange={e => props.onChange(e.target.value)}
     />
   </div>
@@ -80,7 +80,7 @@ const EditPage = () => {
     }
   }
   const Return = async () => {
-    history.push('/users'+localStorage.getItem('id'));
+    history.push('/users/'+localStorage.getItem('id'));
   }
 
   let content = <Spinner/>
@@ -91,13 +91,13 @@ const EditPage = () => {
           <FormField
             label="Username"
             placeholder={user.username}
-            value={username}
+            value={username} maxlength="15"
             onChange={un => setUsername(un)}
           />
           <FormField
             label="Birthday (Format YYYY-MM-DD)"
             placeholder={displayDate(user.birthday)}
-            value={birthday}
+            value={birthday} maxlength="10"
             onChange={b => setBirthday(b)}
           />
         </div>
@@ -109,7 +109,7 @@ const EditPage = () => {
     <div className="user container">
     <div className="profile outer-container">
       <div className="user button-container">
-            <Button className="blue-button margin" width="50%" onClick={() => saveChanges()}>
+            <Button className="blue-button margin" width="50%" onClick={() => Return()}>
                &#60; Return
              </Button>
             <Button width="50%" onClick={() => saveChanges()}>

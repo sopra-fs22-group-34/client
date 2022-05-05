@@ -15,7 +15,7 @@ const FormField = props => {
     </label>
     <input className="settings input"
       placeholder={props.placeholder}
-      value={props.value}
+      value={props.value} maxlength="15"
       onChange={e => props.onChange(e.target.value)}
     />
   </div>
@@ -89,7 +89,7 @@ const CreatePage = () => {
     }
 
   return (
-        <BaseContainer className="lobby container">
+        <BaseContainer className="lobby container"><div className="lobby content">
         <div className="lobby buttons-container">
           <Button className="blue-button" width="30%" onClick={() => Return()}>
               &#60; Cancel
@@ -101,7 +101,7 @@ const CreatePage = () => {
           <Button width="100%" onClick={() => Open()}>
             Open for Players
           </Button>
-        </div>
+        </div></div>
         </BaseContainer>
       );
 

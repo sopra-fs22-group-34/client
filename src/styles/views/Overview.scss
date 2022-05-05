@@ -9,18 +9,22 @@
 
 .overview {
   &.container {
+    @include center;
+    flex-direction: column;
+  }
+  &.content {
     background: $background;
-    min-height: 70vh;
-    padding: 20px;
+    min-height: 66vh;
+    padding: 20px 50px;
     width: 60%;
     max-width: 30em;
-    padding-left: 50px;
-    padding-right: 50px;
     border-radius: 0.75em 0.75em 0em 0em;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: $dropShadow;
+    bottom: 0;
+    position: fixed;
   }
   &.welcome-container {
     margin-bottom: 20px;
@@ -33,7 +37,7 @@
   }
   &.newgame-button {
     font-size: 18pt;
-    margin-left: 80px;
+    margin-left: 10%;
     height: 50px;
     width: 160px;
     text-transform: none;

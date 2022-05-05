@@ -16,10 +16,11 @@ specific components that belong to the main one in the same file.
 const FormField = props => {
   return (
     <div className="login field">
+      {props.label}
       <input
         className="login input"
         placeholder={props.label}
-        value={props.value}
+        value={props.value} maxlength="15"
         onChange={e => props.onChange(e.target.value)}
       />
     </div>

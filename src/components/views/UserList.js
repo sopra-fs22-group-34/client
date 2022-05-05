@@ -100,6 +100,7 @@ const UserList = () => {
 
   return (
     <BaseContainer className="userlist container">
+    <div className="userlist content">
       <div className="userlist button-container">
           <Button className="blue-button margin" width="50%" onClick={() => Return()} >
             &#60; Return
@@ -109,6 +110,7 @@ const UserList = () => {
         Registered users:
       </p>
       {content}
+      </div>
     </BaseContainer>
   );
 }
