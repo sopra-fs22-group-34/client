@@ -132,7 +132,10 @@
   }
   &.join-button {
       text-transform: none;
-      padding: 0px 10px;
+      padding: 8px 10px;
+      background: linear-gradient(to bottom right, $accentLight, $accent, $accent);
+      height: 35px;
+      border-radius: $borderRadius;
   }
 
 }

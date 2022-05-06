@@ -58,6 +58,7 @@
   &.container {
     margin: -0.5em 0;
     width: 30em;
+    height: 40px;
     padding: 10px;
     border: 1px solid $accent;
     border-radius: $borderRadius;
@@ -72,6 +73,8 @@
   }
   &.username {
     font-weight: 500;
+    font-size: 15pt;
+    margin-left: 10px;
     color: $accentDark;
   }
   &.id {

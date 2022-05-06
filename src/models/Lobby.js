@@ -12,6 +12,7 @@ class Lobby {
     this.is_open = null;
     this.is_public = null;
     this.players = null;
+    this.timer = null;
     Object.assign(this, data);
   }
 }

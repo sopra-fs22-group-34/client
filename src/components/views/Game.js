@@ -10,20 +10,20 @@ import {buildGetRequestExternalAPI} from "./User";
 
 const GamePage = () => {
     const history = useHistory();
-    const [timer, setTimer] = React.useState(30 + " seconds");
     let [view, setView] = useState(null);
     let [game, setGame] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
     let [colorIndex, setColorIndex] = useState(null);
     let [tileAmount, setTileAmount] = useState(null);
     let [playerIndex, setPlayerIndex] = useState(0);
+    let [timer, setTimer] = useState(30);
 
     function TurnOrder(props) {
-        let namePlayer1 = (<PlayerInfo index={0} name={props.data.playerData.nameOne} userId={props.data.playerData.one} data={props.data}/>);
-        let namePlayer2 = (<PlayerInfo index={1} name={props.data.playerData.nameTwo} userId={props.data.playerData.two} data={props.data}/>);
+        let namePlayer1 = (<PlayerInfo index={0} name={props.data.lobbyData.nameOne} userId={props.data.lobbyData.one} data={props.data}/>);
+        let namePlayer2 = (<PlayerInfo index={1} name={props.data.lobbyData.nameTwo} userId={props.data.lobbyData.two} data={props.data}/>);
         let namePlayer3, namePlayer4;
-        if (props.data.playerData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} name={props.data.playerData.nameThree} userId={props.data.playerData.three} data={props.data}/>); }
-        if (props.data.playerData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} name={props.data.playerData.nameFour} userId={props.data.playerData.four} data={props.data}/>); }
+        if (props.data.lobbyData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} name={props.data.lobbyData.nameThree} userId={props.data.lobbyData.three} data={props.data}/>); }
+        if (props.data.lobbyData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} name={props.data.lobbyData.nameFour} userId={props.data.lobbyData.four} data={props.data}/>); }
         return (<div className="game turn-order">
                    {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
                 </div>);
@@ -241,7 +241,7 @@ const GamePage = () => {
                 setGame(game);
                 console.log("game:");
                 console.log(game);
-                let players = game.playerData;
+                let players = game.lobbyData;
                 if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
                 else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
                 else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
@@ -258,6 +258,11 @@ const GamePage = () => {
         return () => clearInterval(interval);
     }, []);
 
+    React.useEffect(() => {
+        const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
+        return () => clearInterval(countDown);
+    }, [timer]);
+
     let turnOrder;
     let yourTurn;
     let middle;
@@ -265,12 +270,6 @@ const GamePage = () => {
     let stairs;
     let wall;
     let floor;
-
-    //Timer function
-    React.useEffect(() => {
-        const countDown = timer > 0 && setInterval(() => setTimer(timer -1), 1000);
-        return () => clearInterval(countDown);
-    }, [timer]);
 
     if (game) {
         if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>); }

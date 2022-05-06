@@ -43,7 +43,7 @@ const CreatePage = () => {
 
   const Open = async () => {
     try {
-        const requestBody = JSON.stringify({host_id, name, is_public, total_players});
+        const requestBody = JSON.stringify({host_id, name, is_public, total_players, timer});
         const response = await api.post('/lobbies', requestBody);
         let lobbyId = response.data.id;
         localStorage.setItem('lobby', lobbyId);
@@ -78,12 +78,17 @@ const CreatePage = () => {
           label="Name: "
           placeholder="New Game"
           value={name}
-          onChange={ln => setName(ln)}
-        />
-        Players: <b>{total_players}</b>
+          onChange={ln => setName(ln)} />
+        <p> Players: <b>{total_players}</b>
         <Button className="settings players-button" onClick={() => setTotal_players(2)}> 2 </Button>
         <Button className="settings players-button" onClick={() => setTotal_players(3)}> 3 </Button>
-        <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button>
+        <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button></p>
+
+        <p> Timer: <b>{timer}</b>
+        <Button className="settings players-button" onClick={() => setTimer(null)}> none </Button>
+        <Button className="settings players-button" onClick={() => setTimer(30)}> 30 </Button>
+        <Button className="settings players-button" onClick={() => setTimer(45)}> 45 </Button>
+        <Button className="settings players-button" onClick={() => setTimer(60)}> 60 </Button></p>
       </div>
       </div>)
     }

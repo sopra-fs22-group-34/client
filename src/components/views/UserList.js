@@ -6,9 +6,11 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/UserList.scss";
+import {buildGetRequestExternalAPI, loggedInToString} from "./User";
 
-const Player = ({user}, {online_status=logged_inToString(user.logged_in)}) => (
+const Player = ({user}, {online_status=loggedInToString(user)}) => (
   <div className="player container">
+    <img width="30px" height="30px" src={buildGetRequestExternalAPI(user.id)}/>
     <div className="player username">{user.username}</div>
     <div className="player logged_in">{online_status}</div>
   </div>
@@ -18,12 +20,6 @@ Player.propTypes = {
   user: PropTypes.object,
   online_status: PropTypes.string
 };
-
-// if logged_in is true, display the user to be "ONLINE", otherwise "OFFLINE"
-function logged_inToString(bool){
-    if (bool) { return "ONLINE"; }
-    return "OFFLINE";
-}
 
 const UserList = () => {
   // use react-router-dom's hook to access the history

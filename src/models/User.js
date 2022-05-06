@@ -10,7 +10,8 @@ class User {
     this.token = null;
     this.logged_in = null;
     this.creation_date = null;
-    this.birthday = null;
+    this.lobby = null;
+    this.score = null;
     Object.assign(this, data);
   }
 }

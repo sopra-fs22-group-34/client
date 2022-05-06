@@ -16,10 +16,12 @@ function buildGetRequestExternalAPI(userId, input) {
         return URL;
 }
 
-function logged_inToString(bool){
-    if (bool) { return "ONLINE"; }
+function loggedInToString(props){
+    if (props.lobby != 0) { return "PLAYING";}
+    else if (props.logged_in) { return "ONLINE"; }
     return "OFFLINE";
 }
+
 function displayDate(date){
     if (date) {
         let day = date.substring(8,10);
@@ -65,7 +67,7 @@ const UserPage = () => {
           <div className="profile name-container">
             <img src={buildGetRequestExternalAPI(user.id)}/>
             <div className="profile username">{user.username}</div>
-            <div className="profile logged_in">{logged_inToString(user.logged_in)}</div>
+            <div className="profile logged_in">{loggedInToString(user)}</div>
           </div>
           <hr/>
           <div className="profile stats">Joined: {displayDate(user.creation_date)}</div>
@@ -101,4 +103,4 @@ const UserPage = () => {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export {UserPage, buildGetRequestExternalAPI};
+export {UserPage, buildGetRequestExternalAPI, loggedInToString};

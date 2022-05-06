@@ -27,15 +27,15 @@ const LobbyOverview = () => {
   }
 
   const newGame = async () => {
-       try { let inAnyLobby = await api.get('/users/' + localStorage.getItem('id') + '/lobbies/');
-         if (!inAnyLobby.data) {history.push('/create');}
+       try {
+         if (user.lobby == 0) {history.push('/create');}
          else {alert(`You are already in a game! Please leave it before creating a new one.`)}
        } catch (error) { alert(`Something went wrong when trying to create a new lobby: \n${handleError(error)}`);}
     }
 
   const goToLobby = async ({lobby}) => {
-      try { let inThisLobby = await api.get('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id"));
-        if (!inThisLobby.data) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');}
+      try {
+        if (lobby.id != user.lobby) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');}
         localStorage.setItem('lobby', lobby.id);
         history.push('/lobbies/'+lobby.id);
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
@@ -48,9 +48,7 @@ const LobbyOverview = () => {
       <div className="lobbies username">{lobby.host_name}</div>
       <div className="lobbies lobbyname">{lobby.name}</div>
       <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
-      <Button className="lobbies join-button" onClick={() => goToLobby({lobby})}>
-        Join &#62;
-      </Button>
+      <div className="lobbies join-button"> Join &#62; </div>
     </div>)
   }
 
