@@ -11,22 +11,17 @@ const GamePage = () => {
     const history = useHistory();
     let [view, setView] = useState(null);
     let [game, setGame] = useState(null);
-    let [name1, setName1] = useState(null);
-    let [name2, setName2] = useState(null);
-    let [name3, setName3] = useState(null);
-    let [name4, setName4] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
     let [colorIndex, setColorIndex] = useState(null);
     let [tileAmount, setTileAmount] = useState(null);
-    let [players, setPlayers] = useState(null);
     let [playerIndex, setPlayerIndex] = useState(0);
 
     function TurnOrder(props) {
         let namePlayer1 = (<PlayerInfo index={0} name={props.data.playerData.nameOne} userId={props.data.playerData.one} data={props.data}/>);
         let namePlayer2 = (<PlayerInfo index={1} name={props.data.playerData.nameTwo} userId={props.data.playerData.two} data={props.data}/>);
         let namePlayer3, namePlayer4;
-        if (props.data.playerData.current_players >= 3) { namePlayer3 = (<div className="username container">{props.playerData.nameThree}</div>); }
-        if (props.data.playerData.current_players == 4) { namePlayer4 = (<div className="username container">{props.playerData.nameFour}</div>); }
+        if (props.data.playerData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} name={props.data.playerData.nameThree} userId={props.data.playerData.three} data={props.data}/>); }
+        if (props.data.playerData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} name={props.data.playerData.nameFour} userId={props.data.playerData.four} data={props.data}/>); }
         return (<div className="game turn-order">
                    {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
                 </div>);
@@ -39,7 +34,7 @@ const GamePage = () => {
                         <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
                         {props.name} <div className="game score">{props.data.players[id].score}</div>
                     </Button>)}
-        else return (<Button className="player-turn container-idle" onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
+        else return (<Button className="player-turn" onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
                          <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
                          {props.name} <div className="game score">{props.data.players[id].score}</div>
                      </Button>)
@@ -243,15 +238,10 @@ const GamePage = () => {
                 console.log("game:");
                 console.log(game);
                 let players = game.playerData;
-                setPlayers(players);
                 if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
                 else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
                 else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
                 else if (players.four == localStorage.getItem('id')) {setPlayerIndex(3);}
-                setName1(players.nameOne);
-                setName2(players.nameTwo);
-                if (players.current_players >= 3) setName3(players.nameThree);
-                if (players.current_players === 4) setName4(players.nameFour);
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);

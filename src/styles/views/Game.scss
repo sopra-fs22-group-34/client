@@ -58,7 +58,6 @@
     position: sticky;
   }
   &.score{
-    margin-left: 10px;
     color: $accent;
     position: absolute;
     right: 10px;
@@ -98,7 +97,7 @@
   &.image {
     height: 32px;
     width: 32px;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 }
 
@@ -128,15 +127,12 @@
   background: $background;
   display: flex;
   flex-direction: row;
-  color: #FFFFFF;
+  color: $textColor;
   text-transform: none;
+  padding-right: 30px;
+  border: 1px solid $accentDark;
   &.container-current {
     border: 3px solid $accent;
-  }
-  &.container-idle {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid $accentDark;
   }
 }
 
