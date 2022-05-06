@@ -1,3 +1,4 @@
+import * as React from "react";
 import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
@@ -9,6 +10,7 @@ import {buildGetRequestExternalAPI} from "./User";
 
 const GamePage = () => {
     const history = useHistory();
+    const [timer, setTimer] = React.useState(30 + " seconds");
     let [view, setView] = useState(null);
     let [game, setGame] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
@@ -264,8 +266,14 @@ const GamePage = () => {
     let wall;
     let floor;
 
+    //Timer function
+    React.useEffect(() => {
+        const countDown = timer > 0 && setInterval(() => setTimer(timer -1), 1000);
+        return () => clearInterval(countDown);
+    }, [timer]);
+
     if (game) {
-        if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">It's your turn! (Timer will go here.)</div>); }
+        if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>); }
         else { yourTurn = null; }
         turnOrder = (<TurnOrder data={game}/>);
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
@@ -297,7 +305,6 @@ const GamePage = () => {
                 {yourTurn}
                 {viewedBoard}
                 {turnOrder}
-
             </div>
         </BaseContainer>
     );
