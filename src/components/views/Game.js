@@ -29,12 +29,14 @@ const GamePage = () => {
 
     function PlayerInfo(props){
         let id = props.index;
-        if (props.data.players[id].playerId == props.data.playerTurnId) {
-            return (<Button className="player-turn container-current" onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
+        let width = "100%";
+        if (props.data.players[id].playerId == props.data.playerTurnId) width = "150%";
+        if (props.data.players[id].playerId == playerIndex) {
+            return (<Button className="player-turn you" width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
                         <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
                         {props.name} <div className="game score">{props.data.players[id].score}</div>
                     </Button>)}
-        else return (<Button className="player-turn" onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
+        else return (<Button className="player-turn" width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
                          <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
                          {props.name} <div className="game score">{props.data.players[id].score}</div>
                      </Button>)

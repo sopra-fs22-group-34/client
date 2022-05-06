@@ -54,6 +54,10 @@ const Login = () => {
       localStorage.setItem('token', user.token);
       localStorage.setItem('id', user.id);
 
+      // Restore the lobby the user was in before logging out, if there is one
+      let inAnyLobby = await api.get('/users/' + localStorage.getItem('id') + '/lobbies/');
+      if (inAnyLobby.data != null) { localStorage.setItem('lobby', inAnyLobby.data.id); }
+
       // Login successfully worked --> navigate to the route /home in the GameRouter
       history.push(`/home`);
     } catch (error) {
