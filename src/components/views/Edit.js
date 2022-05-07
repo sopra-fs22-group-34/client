@@ -69,7 +69,7 @@ const EditPage = () => {
 
   const saveChanges = async () => {
     try {
-        const requestBody = JSON.stringify({username, birthday});
+        const requestBody = JSON.stringify({username});
         await api.put('/users/'+localStorage.getItem('id'), requestBody);
 
         // Update worked --> return to the user's profile
