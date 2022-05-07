@@ -66,9 +66,11 @@
     align-items: center;
     background: lighten($background, 5);
   }
-  &.name {
+  &.score {
     font-weight: 300;
-    margin-left: 5px;
+    margin-left: auto;
+    font-size: 15pt;
+    font-family: $fontMono;
     color: #FFFFFF;
   }
   &.username {
@@ -91,5 +93,4 @@
     font-weight: 300;
     color: #FFFFFF;
   }
-
 }

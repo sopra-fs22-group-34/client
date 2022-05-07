@@ -70,8 +70,9 @@ const UserPage = () => {
             <div className="profile logged_in">{loggedInToString(user)}</div>
           </div>
           <hr/>
+          <div className="profile stats">Games Played: {user.games}</div>
+          <div className="profile stats">Score: {user.score}</div>
           <div className="profile stats">Joined: {displayDate(user.creation_date)}</div>
-          <div className="profile stats">Birthday: {displayDate(user.birthday)}</div>
         </div>
     )
   }

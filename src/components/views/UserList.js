@@ -12,6 +12,7 @@ const Player = ({user}, {online_status=loggedInToString(user)}) => (
   <div className="player container">
     <img width="30px" height="30px" src={buildGetRequestExternalAPI(user.id)}/>
     <div className="player username">{user.username}</div>
+    <div className="player score">{user.score}</div>
     <div className="player logged_in">{online_status}</div>
   </div>
 );

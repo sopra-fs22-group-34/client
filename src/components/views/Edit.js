@@ -46,7 +46,6 @@ const EditPage = () => {
   const history = useHistory();
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState(null);
-  const [birthday, setBirthday] = useState(null);
 
   useEffect(() => {
       // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
@@ -93,12 +92,6 @@ const EditPage = () => {
             placeholder={user.username}
             value={username} maxlength="15"
             onChange={un => setUsername(un)}
-          />
-          <FormField
-            label="Birthday (Format YYYY-MM-DD)"
-            placeholder={displayDate(user.birthday)}
-            value={birthday} maxlength="10"
-            onChange={b => setBirthday(b)}
           />
         </div>
         </div>

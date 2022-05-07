@@ -91,10 +91,12 @@ const GamePage = () => {
         try {
             const move = JSON.stringify({originIndex, colorIndex, targetRowIndex, tileAmount, playerIndex});
             console.log("move = " + move);
-            api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
-            setOriginIndex(null);
-            setColorIndex(null);
-            setTileAmount(null);
+            let executeMove = await api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
+            if (executeMove) {
+                setOriginIndex(null);
+                setColorIndex(null);
+                setTileAmount(null);
+            }
         } catch (error) {
             console.error(`Something went wrong while executing the move: \n${handleError(error)}`);
             console.error("Details:", error);
@@ -195,7 +197,7 @@ const GamePage = () => {
     }
 
     function WallRow(props){
-        let tile1 = (<WallTile color={props.row} occupied={props.positionsOccupied[props.row][0]}/>);
+        let tile1 = (<WallTile color={(props.row+0)%5} occupied={props.positionsOccupied[props.row][0]}/>);
         let tile2 = (<WallTile color={(props.row+4)%5} occupied={props.positionsOccupied[props.row][1]}/>);
         let tile3 = (<WallTile color={(props.row+3)%5} occupied={props.positionsOccupied[props.row][2]}/>);
         let tile4 = (<WallTile color={(props.row+2)%5} occupied={props.positionsOccupied[props.row][3]}/>);

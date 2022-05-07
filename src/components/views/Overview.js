@@ -12,6 +12,7 @@ const LobbyOverview = () => {
   const history = useHistory();
   const [lobbies, setLobbies] = useState(null);
   const [user, setUser] = useState(null);
+  const [game, setGame] = useState(null);
 
   async function logout() {
     try { await api.put('/users/'+localStorage.getItem('id')+"/logout");
@@ -70,6 +71,15 @@ const LobbyOverview = () => {
           history.push('/login');
         }
       }
+      async function isUserInGame() {
+          try {
+            const inGame = await api.get('/users/'+localStorage.getItem('id')+'/game');
+            setGame(inGame.data);
+          } catch (error) {
+            console.error(`Something went wrong while fetching your user data: \n${handleError(error)}`);
+            console.error("Details:", error);
+          }
+        }
       async function refreshLobbies() {
         try {
           const response = await api.get('/lobbies');
@@ -84,6 +94,7 @@ const LobbyOverview = () => {
         refreshLobbies();
         }, 1000);
       fetchPlayerData();
+      isUserInGame();
       return () => clearInterval(interval);
     }, []);
 
@@ -91,26 +102,32 @@ const LobbyOverview = () => {
   let content = <Spinner/>;
   let userName = "Player";
   let noGames = "";
+
   if (user) {
       userName = user.username;
       contentProfilePicture = (<img src={buildGetRequestExternalAPI(user.id)} width={50} length={50}/>);
    }
   if (lobbies) {
-    //TODO: instead of checking for lengths, do a for loop and check if any are open
-    if (lobbies.length === 0) {noGames = 'No open games found. Start your own by clicking on "New Game"!';}
-    else {
-    noGames = "";
-    content = (
-      <div className="overview">
-        <ul className="overview lobby-list">
-          {lobbies.map(lobby => (
-            <Button className="overview lobby-button"
-                onClick={() => goToLobby({lobby})}>
-              <Lobby lobby={lobby} key={lobby.id}/>
-            </Button>
-          ))}
-        </ul>
-      </div>)}
+    if (game) {
+        content = (<p>You are currently in a game! Return to it <a href="/game"> here</a>!</p>);
+    } else {
+        //TODO: instead of checking for lengths, do a for loop and check if any are open
+        if (lobbies.length === 0) {noGames = 'No open games found. Start your own by clicking on "New Game"!';}
+        else {
+            noGames = "";
+            if (!game) {
+                content = (
+                  <div className="overview">
+                  <p className="overview paragraph"> Games looking for players: </p>
+                    <ul className="overview lobby-list">
+                      {lobbies.map(lobby => (
+                        <Button className="overview lobby-button"
+                            onClick={() => goToLobby({lobby})}>
+                          <Lobby lobby={lobby} key={lobby.id}/>
+                        </Button>
+                      ))}
+                    </ul>
+                  </div>)}}}
     }
 
     return (
@@ -125,9 +142,6 @@ const LobbyOverview = () => {
             </Button>
           </div>
           <div className="overview lobby-container">
-          <p className="overview paragraph">
-            Games looking for players:
-          </p>
           {content}
           {noGames}
           </div>
