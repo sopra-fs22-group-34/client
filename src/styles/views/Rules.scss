@@ -1,0 +1,40 @@
+@import 'styles/theme';
+
+.rules {
+  &.container {
+    @include center;
+    flex-direction: column;
+    display: flex;
+    width: 65%;
+    max-width: 800px;
+  }
+  &.header {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-size: 50px;
+  }
+  &.title {
+    font-size: larger;
+    font-style: italic;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  &.subtitle {
+    font-size: larger;
+  }
+  &.list-item {
+    font-size: larger;
+  }
+  &.text {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+}
+
+.primary-button {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
