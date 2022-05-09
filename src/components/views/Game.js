@@ -261,7 +261,13 @@ const GamePage = () => {
     }, []);
 
     React.useEffect(() => {
+        async function skipTurn(){
+            await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/skip");
+        }
         const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
+        if (timer == 0) {
+            skipTurn();
+        }
         return () => clearInterval(countDown);
     }, [timer]);
 
