@@ -301,6 +301,9 @@ const GamePage = () => {
 
     return (
         <BaseContainer className="game container">
+            <Button className="rulesbutton" onClick={() => window.open("/rules")}>
+                The Game Rules
+            </Button>
             <div className="game field">
                 <div className="middle container">
 
