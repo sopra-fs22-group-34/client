@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
+import {Button} from 'components/ui/Button';
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -11,7 +12,12 @@ import "styles/views/Header.scss";
  * @FunctionalComponent
  */
 const Header = props => (
+    <div>
   <div className="header container" style={{height: props.height}}/>
+      <Button className="rulesbutton" onClick={() => window.open("/rules")}>
+        The Game Rules
+      </Button>
+  </div>
 );
 //<h1 className="header title">SoPra FS22 - Group 34</h1>
 //<ReactLogo width="60px" height="60px"/>
