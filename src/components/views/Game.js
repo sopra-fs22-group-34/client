@@ -32,16 +32,13 @@ const GamePage = () => {
     function PlayerInfo(props){
         let id = props.index;
         let width = "100%";
+        let className = "player-turn";
         if (props.data.players[id].playerId == props.data.playerTurnId) width = "150%";
-        if (props.data.players[id].playerId == playerIndex) {
-            return (<Button className="player-turn you" width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
-                        <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
-                        {props.name} <div className="game score">{props.data.players[id].score}</div>
-                    </Button>)}
-        else return (<Button className="player-turn" width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
-                         <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
-                         {props.name} <div className="game score">{props.data.players[id].score}</div>
-                     </Button>)
+        if (props.data.players[id].playerId == playerIndex) { className = "player-turn you"; }
+        else if (props.data.activePlayers[id] == "x") { className = "player-turn left"; }
+        return (<Button className={className} width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
+                 <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
+                 {props.name} <div className="game score">{props.data.players[id].score}</div> </Button>)
     }
 
     function MiddleTiles(props){
@@ -235,6 +232,18 @@ const GamePage = () => {
         </div>)
     }
 
+    async function Leave() {
+        try {
+            await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/"+localStorage.getItem('id')+"/leave");
+            history.push("/home");
+        }
+        catch (error){
+            console.error(`Something went wrong while leaving the game: \n${handleError(error)}`);
+            console.error("Details:", error);
+            alert("Something went wrong while leaving the game! See the console for details.");
+        }
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -265,7 +274,7 @@ const GamePage = () => {
             await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/skip");
         }
         const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
-        if (timer == 0) {
+        if (timer == 0 && game && game.playerTurnId == playerIndex) {
             skipTurn();
         }
         return () => clearInterval(countDown);
@@ -303,6 +312,9 @@ const GamePage = () => {
         <BaseContainer className="game container">
             <Button className="rulesbutton" onClick={() => window.open("/rules")}>
                 The Game Rules
+            </Button>
+            <Button className="blue-button" onClick={() => Leave()}>
+              &#60; Leave
             </Button>
             <div className="game field">
                 <div className="middle container">

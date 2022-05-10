@@ -134,6 +134,10 @@
   &.you {
     border: 3px solid $accent;
   }
+  &.left {
+    border: 1px solid #808080;
+    color: #808080;
+  }
 }
 
 .board {
@@ -309,13 +313,4 @@
     background: $col5;
     background-color: $col5;
   }
-}
-
-.primary-button {
-  &.rulesbutton {
-    margin-left: 1300px;
-    margin-top: 8px;
-    margin-bottom: 0px;
-  }
-
 }

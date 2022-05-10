@@ -76,7 +76,7 @@ const LobbyOverview = () => {
             const inGame = await api.get('/users/'+localStorage.getItem('id')+'/game');
             setGame(inGame.data);
           } catch (error) {
-            console.error(`Something went wrong while fetching your user data: \n${handleError(error)}`);
+            console.error(`Something went wrong while determining if you are in a game: \n${handleError(error)}`);
             console.error("Details:", error);
           }
         }

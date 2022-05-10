@@ -12,9 +12,9 @@ import {Button} from 'components/ui/Button';
  * @FunctionalComponent
  */
 const Header = props => (
-    <div>
+  <div>
   <div className="header container" style={{height: props.height}}/>
-      <Button className="rulesbutton" onClick={() => window.open("/rules")}>
+      <Button className="rules-button" onClick={() => window.open("/rules")}>
         The Game Rules
       </Button>
   </div>

@@ -96,6 +96,8 @@ const LobbyPage = () => {
       } catch (error) {
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);
+        history.push('/home');
+        localStorage.removeItem('lobby');
         //alert("Something went wrong while fetching the lobby! See the console for details.");
       }
     }
