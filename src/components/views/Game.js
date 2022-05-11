@@ -244,6 +244,10 @@ const GamePage = () => {
         }
     }
 
+    async function skipTurn(){
+        await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/skip");
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -270,9 +274,6 @@ const GamePage = () => {
     }, []);
 
     React.useEffect(() => {
-        async function skipTurn(){
-            await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/skip");
-        }
         const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
         if (timer == 0 && game && game.playerTurnId == playerIndex) {
             skipTurn();
@@ -287,9 +288,13 @@ const GamePage = () => {
     let stairs;
     let wall;
     let floor;
+    let skipButton;
 
     if (game) {
-        if (game.playerTurnId == playerIndex) { yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>); }
+        if (game.playerTurnId == playerIndex) {
+            skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
+            yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
+        }
         else { yourTurn = null; }
         turnOrder = (<TurnOrder data={game}/>);
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
@@ -318,7 +323,6 @@ const GamePage = () => {
             </Button>
             <div className="game field">
                 <div className="middle container">
-
                     {factories}
                     {middle}
                 </div>
@@ -327,6 +331,7 @@ const GamePage = () => {
                 {yourTurn}
                 {viewedBoard}
                 {turnOrder}
+                {skipButton}
             </div>
         </BaseContainer>
     );
