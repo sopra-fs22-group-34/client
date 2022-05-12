@@ -44,7 +44,7 @@
   &.stairs-container {
     display: flex;
     flex-direction: column;
-    min-width: 400px;
+    width: 400px;
     align-items: flex-end;
   }
   &.turn-order{
@@ -316,5 +316,11 @@
   &.button-5 {
     background: $col5;
     background-color: $col5;
+  }
+  &.button-6 {
+    border: 2px solid $col1;
+    background: none;
+    font-size: 9pt;
+    color: $col1;
   }
 }

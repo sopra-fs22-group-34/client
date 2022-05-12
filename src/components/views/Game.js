@@ -68,6 +68,7 @@ const GamePage = () => {
         else if (props.color == 3) return (<Button className="tile button-4" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 4) return (<Button className="tile button-5" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 5) return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
+        else if (props.color == 6) return (<Button className="tile button-6" disabled={true}>Not Valid</Button>);
         else return (<div className="tile empty"/>);
     }
 
@@ -168,20 +169,61 @@ const GamePage = () => {
     function StairLine(props){
         let inactive = false;
         if ((view == null && game.playerTurnId != playerIndex) || (view != null && game.playerTurnId != view)) inactive = true;
-        let tiles = null;
-        let tile = (<div className="game placed-tile"><Tile color={props.colorIndex} inactive={true}/></div>);
+        if (colorIndex != null) filler = (<div className="game placed-tile"><Tile color={colorIndex} inactive={true}/></div>);
         // Tiles that can be placed on the stairs (purely visual)
-        if (props.tilesAmount == 1) tiles = (<div className="game placed-tiles">{tile}</div>);
-        else if (props.tilesAmount == 2) tiles = (<div className="game placed-tiles">{tile} {tile}</div>);
-        else if (props.tilesAmount == 3) tiles = (<div className="game placed-tiles">{tile} {tile} {tile}</div>);
-        else if (props.tilesAmount == 4) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile}</div>);
-        else if (props.tilesAmount == 5) tiles = (<div className="game placed-tiles">{tile} {tile} {tile} {tile} {tile}</div>);
+
+        let [hovered, setHovered] = useState(false);
+
+        let tile = (<div className="game placed-tile"><Tile color={props.colorIndex} inactive={true}/></div>);
+        let filler = (<div className="game placed-tile"><Tile/></div>);
+        let preview = (<div className="game placed-tile"><Tile color={colorIndex} inactive={true}/></div>);
+        let invalid = (<div className="game placed-tile"><Tile color={6}/></div>);
+
+        let tile1, tile2, tile3, tile4, tile5;
+
+        if (props.length == 1) tile1 = filler;
+        else if (props.length == 2) tile1 = tile2 = filler;
+        else if (props.length == 3) tile1 = tile2 = tile3 = filler;
+        else if (props.length == 4) tile1 = tile2 = tile3 = tile4 = filler;
+        else if (props.length == 5) tile1 = tile2 = tile3 = tile4 = tile5 = filler;
+        if (props.tilesAmount == 1) tile1 = tile;
+        else if (props.tilesAmount == 2) tile1 = tile2 = tile;
+        else if (props.tilesAmount == 3) tile1 = tile2 = tile3 = tile;
+        else if (props.tilesAmount == 4) tile1 = tile2 = tile3 = tile4 = tile;
+        else if (props.tilesAmount == 5) tile1 = tile2 = tile3 = tile4 = tile5 = tile;
+
+        // Move Hover Preview
+        if (hovered) {
+            if (tile1 == filler && tileAmount > 0){
+                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile1 = invalid;}
+                else tile1 = preview;
+            }
+            if (tile2 == filler && (tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile2 = invalid;}
+                else tile2 = preview;
+            }
+            if (tile3 == filler && (tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile3 = invalid;}
+                else tile3 = preview;
+            }
+            if (tile4 == filler && (tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile4 = invalid;}
+                else tile4 = preview;
+            }
+            if (tile5 == filler && (tileAmount > 4 || tile4 == tile && tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile5 = invalid;}
+                else tile5 = preview;
+            }
+        }
+
+        let tiles = (<div className="game placed-tiles">{tile1} {tile2} {tile3} {tile4} {tile5} </div>);
+
         // The stairs themselves (buttons)
-        if (props.length == 1) return (<Button className="stairs back-1" disabled={inactive} onClick={() => placeTiles(0)}>{tiles}</Button>);
-        else if (props.length == 2) return (<Button className="stairs back-2" disabled={inactive} onClick={() => placeTiles(1)}>{tiles}</Button>);
-        else if (props.length == 3) return (<Button className="stairs back-3" disabled={inactive} onClick={() => placeTiles(2)}>{tiles}</Button>);
-        else if (props.length == 4) return (<Button className="stairs back-4" disabled={inactive} onClick={() => placeTiles(3)}>{tiles}</Button>);
-        else if (props.length == 5) return (<Button className="stairs back-5" disabled={inactive} onClick={() => placeTiles(4)}>{tiles}</Button>);
+        if (props.length == 1) return (<Button className="stairs back-1" disabled={inactive} onMouseOut={() => setHovered(false)} onMouseOver={() => setHovered(true)} onClick={() => placeTiles(0)}>{tiles}</Button>);
+        else if (props.length == 2) return (<Button className="stairs back-2" disabled={inactive} onMouseOut={() => setHovered(false)} onMouseOver={() => setHovered(true)} onClick={() => placeTiles(1)}>{tiles}</Button>);
+        else if (props.length == 3) return (<Button className="stairs back-3" disabled={inactive} onMouseOut={() => setHovered(false)} onMouseOver={() => setHovered(true)} onClick={() => placeTiles(2)}>{tiles}</Button>);
+        else if (props.length == 4) return (<Button className="stairs back-4" disabled={inactive} onMouseOut={() => setHovered(false)} onMouseOver={() => setHovered(true)} onClick={() => placeTiles(3)}>{tiles}</Button>);
+        else if (props.length == 5) return (<Button className="stairs back-5" disabled={inactive} onMouseOut={() => setHovered(false)} onMouseOver={() => setHovered(true)} onClick={() => placeTiles(4)}>{tiles}</Button>);
     }
 
     function Wall(props){
@@ -276,7 +318,8 @@ const GamePage = () => {
     React.useEffect(() => {
         const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
         if (timer == 0 && game && game.playerTurnId == playerIndex) {
-            skipTurn();
+            //skipTurn();
+            clearInterval(countDown);
         }
         return () => clearInterval(countDown);
     }, [timer]);
