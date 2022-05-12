@@ -81,6 +81,13 @@
     margin-left: 6px;
     margin-right: 18px;
     width: 80px;
+    z-index: 1;
+  }
+  &.preview-tile {
+    margin-left: 6px;
+    margin-right: 18px;
+    width: 80px;
+    z-index: -1;
   }
   &.wall {
     margin-left: 80px;
@@ -102,6 +109,13 @@
   &.skip-button{
     position: fixed;
     left: 200px;
+  }
+  &.holding {
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background: transparentize($accent, 0.5);
+    border-radius: $borderRadius;
   }
 }
 
@@ -180,15 +194,16 @@
 
 .stairs {
   &:hover {
-      transform: none;
-      background: transparentize($accent, 0.7);
+    transform: none;
+    background: transparentize($accent, 0.9);
   }
   &:disabled {
     opacity: 0.5;
-    background: transparentize($accent, 0.5);
+    background: none;
   }
   color: transparentize($accent, 0.5);
-  background: transparentize($accent, 0.5);
+  border: 2px solid transparentize($accent, 0.3);
+  background: transparentize($accent, 0.95);
   margin-bottom: 5px;
   height: 80px;
   &.back-1 {

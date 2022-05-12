@@ -169,15 +169,14 @@ const GamePage = () => {
     function StairLine(props){
         let inactive = false;
         if ((view == null && game.playerTurnId != playerIndex) || (view != null && game.playerTurnId != view)) inactive = true;
-        if (colorIndex != null) filler = (<div className="game placed-tile"><Tile color={colorIndex} inactive={true}/></div>);
-        // Tiles that can be placed on the stairs (purely visual)
 
+        // Tiles that can be placed on the stairs (purely visual)
         let [hovered, setHovered] = useState(false);
 
         let tile = (<div className="game placed-tile"><Tile color={props.colorIndex} inactive={true}/></div>);
         let filler = (<div className="game placed-tile"><Tile/></div>);
-        let preview = (<div className="game placed-tile"><Tile color={colorIndex} inactive={true}/></div>);
-        let invalid = (<div className="game placed-tile"><Tile color={6}/></div>);
+        let preview = (<div className="game preview-tile"><Tile color={colorIndex} inactive={true}/></div>);
+        let invalid = (<div className="game preview-tile"><Tile color={6}/></div>);
 
         let tile1, tile2, tile3, tile4, tile5;
 
@@ -198,19 +197,19 @@ const GamePage = () => {
                 if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile1 = invalid;}
                 else tile1 = preview;
             }
-            if (tile2 == filler && (tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+            if (tile2 == filler && (tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 2)){
                 if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile2 = invalid;}
                 else tile2 = preview;
             }
-            if (tile3 == filler && (tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+            if (tile3 == filler && (tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 3)){
                 if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile3 = invalid;}
                 else tile3 = preview;
             }
-            if (tile4 == filler && (tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+            if (tile4 == filler && (tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 4)){
                 if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile4 = invalid;}
                 else tile4 = preview;
             }
-            if (tile5 == filler && (tileAmount > 4 || tile4 == tile && tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0)){
+            if (tile5 == filler && (tileAmount > 4 || tile4 == tile && tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 5)){
                 if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile5 = invalid;}
                 else tile5 = preview;
             }
@@ -332,13 +331,27 @@ const GamePage = () => {
     let wall;
     let floor;
     let skipButton;
+    let pickedUp;
+
+    function colorString(color){
+        if (color == 0) return "red";
+        if (color == 1) return "green";
+        if (color == 2) return "yellow";
+        if (color == 3) return "orange";
+        if (color == 4) return "pink";
+    }
+
+    function tilePlural(amount){
+        if (amount > 1) return "tiles";
+        return "tile";
+    }
 
     if (game) {
         if (game.playerTurnId == playerIndex) {
+            if (colorIndex != null) pickedUp = (<div className="game holding">You are holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>);
             skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
             yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
         }
-        else { yourTurn = null; }
         turnOrder = (<TurnOrder data={game}/>);
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
         factories = (<MiddleFactories factoryAmount={game.factoryAmount} factories={game.factories}/>);
@@ -372,6 +385,7 @@ const GamePage = () => {
             </div>
             <div className="game board">
                 {yourTurn}
+                {pickedUp}
                 {viewedBoard}
                 {turnOrder}
                 {skipButton}
