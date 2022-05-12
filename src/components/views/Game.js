@@ -236,11 +236,11 @@ const GamePage = () => {
     }
 
     function WallRow(props){
-        let tile1 = (<WallTile color={(props.row+0)%5} occupied={props.positionsOccupied[props.row][0]}/>);
-        let tile2 = (<WallTile color={(props.row+4)%5} occupied={props.positionsOccupied[props.row][1]}/>);
-        let tile3 = (<WallTile color={(props.row+3)%5} occupied={props.positionsOccupied[props.row][2]}/>);
-        let tile4 = (<WallTile color={(props.row+2)%5} occupied={props.positionsOccupied[props.row][3]}/>);
-        let tile5 = (<WallTile color={(props.row+1)%5} occupied={props.positionsOccupied[props.row][4]}/>);
+        let tile1 = (<WallTile color={(5-props.row+0)%5} occupied={props.positionsOccupied[props.row][0]}/>);
+        let tile2 = (<WallTile color={(5-props.row+1)%5} occupied={props.positionsOccupied[props.row][1]}/>);
+        let tile3 = (<WallTile color={(5-props.row+2)%5} occupied={props.positionsOccupied[props.row][2]}/>);
+        let tile4 = (<WallTile color={(5-props.row+3)%5} occupied={props.positionsOccupied[props.row][3]}/>);
+        let tile5 = (<WallTile color={(5-props.row+4)%5} occupied={props.positionsOccupied[props.row][4]}/>);
         return (<div className="wall row">{tile1} {tile2} {tile3} {tile4} {tile5} </div>);
     }
 
