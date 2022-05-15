@@ -12,11 +12,11 @@ import {Button} from 'components/ui/Button';
  * @FunctionalComponent
  */
 const Header = props => (
-  <div>
-  <div className="header container" style={{height: props.height}}/>
-      <Button className="rules-button" onClick={() => window.open("/rules")}>
-        The Game Rules
-      </Button>
+  <div className="header container" style={{height: props.height}}>
+      <div>
+      <Button className="account-button" onClick={() => window.location.href="/users/edit/"+localStorage.getItem('id')}> Settings </Button>
+      <Button className="rules-button" onClick={() => window.open("/rules")}> Rules </Button>
+      </div>
   </div>
 );
 //<h1 className="header title">SoPra FS22 - Group 34</h1>
