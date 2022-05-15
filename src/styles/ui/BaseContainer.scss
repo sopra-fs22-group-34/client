@@ -11,7 +11,10 @@
 
 .popup-box {
   position: relative;
-  background: #000000;
+  background: linear-gradient(to bottom right, #f8b595, #6c5b7c);
+  font-family: "Georgia";
+  font-style: normal;
+  color: #2D1E2F;
   max-width: $DESKTOP_WIDTH;
   max-height: max-content;
   z-index: +1;

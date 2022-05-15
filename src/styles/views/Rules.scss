@@ -12,19 +12,23 @@
     margin-top: 50px;
     margin-bottom: 50px;
     font-size: 50px;
+    font-weight: bolder;
   }
   &.title {
-    font-size: larger;
-    font-style: italic;
+    font-size: x-large;
+    font-style: normal;
+    font-weight: bolder;
     position: relative;
     margin-top: 10px;
     margin-bottom: 10px;
   }
   &.subtitle {
-    font-size: larger;
+    font-size: large;
+    font-weight: bold;
   }
   &.list-item {
-    font-size: larger;
+    font-size: large;
+    font-weight: bold;
   }
   &.text {
     position: relative;
