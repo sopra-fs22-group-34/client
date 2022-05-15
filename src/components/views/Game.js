@@ -384,7 +384,7 @@ const GamePage = () => {
             <Button className="blue-button" onClick={() => Leave()}> &#60; Leave </Button>
             </div>
             <div className="game buttons-R">
-            <Button onClick={togglePopup}> Rules </Button>
+            <Button onClick={togglePopup}> Game Rules </Button>
             </div>
             <div className="game field">
                 <div className="middle container">
