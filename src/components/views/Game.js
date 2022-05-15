@@ -257,7 +257,9 @@ const GamePage = () => {
     }
 
     function FloorLine(props){
-        return (<div className="game floorline" onClick={() => placeTiles(-1)}>
+      let inactive = false;
+      if (props.inactive || game.playerTurnId != playerIndex) { inactive = true; }
+        return (<div className="game floorline" disabled={inactive} onClick={() => placeTiles(-1)}>
             <FloorTile value={-1} id={0} data={props.floorline}/>
             <FloorTile value={-1} id={1} data={props.floorline}/>
             <FloorTile value={-2} id={2} data={props.floorline}/>
