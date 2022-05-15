@@ -109,8 +109,14 @@
   &.skip-button{
     position: fixed;
     left: 200px;
+    margin-top: 10px;
   }
   &.holding {
+    position: fixed;
+    right: 0px;
+    padding: 7px 20px;
+    margin: 10px;
+    font-size: 16pt;
     height: 40px;
     align-items: center;
     justify-content: center;

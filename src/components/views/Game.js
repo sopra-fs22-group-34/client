@@ -67,7 +67,7 @@ const GamePage = () => {
         else if (props.color == 2) return (<Button className="tile button-3" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 3) return (<Button className="tile button-4" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
         else if (props.color == 4) return (<Button className="tile button-5" disabled={inactive} onClick={() => pickUpTiles(props)}>{amount}</Button>);
-        else if (props.color == 5) return (<Button className="tile button-0" disabled={true}>{amount}</Button>);
+        else if (props.color == 5) return (<Button className="tile button-0" disabled={true}>-{amount}</Button>);
         else if (props.color == 6) return (<Button className="tile button-6" disabled={true}>Not Valid</Button>);
         else return (<div className="tile empty"/>);
     }
@@ -94,6 +94,9 @@ const GamePage = () => {
                 setOriginIndex(null);
                 setColorIndex(null);
                 setTileAmount(null);
+                let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
+                let game = currentGame.data;
+                setGame(game);
             }
         } catch (error) {
             console.error(`Something went wrong while executing the move: \n${handleError(error)}`);
@@ -308,20 +311,21 @@ const GamePage = () => {
                 alert("Something went wrong while fetching the game data! See the console for details.");
             }
         }
+        fetchData();
         const interval = setInterval(() => {
           fetchData();
-        }, 1000);
+        }, 3000);
         return () => clearInterval(interval);
     }, []);
 
-    React.useEffect(() => {
-        const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
-        if (timer == 0 && game && game.playerTurnId == playerIndex) {
-            //skipTurn();
-            clearInterval(countDown);
-        }
-        return () => clearInterval(countDown);
-    }, [timer]);
+//    React.useEffect(() => {
+//        const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
+//        if (timer == 0 && game && game.playerTurnId == playerIndex) {
+//            //skipTurn();
+//            clearInterval(countDown);
+//        }
+//        return () => clearInterval(countDown);
+//    }, [timer]);
 
     let turnOrder;
     let yourTurn;
@@ -348,7 +352,7 @@ const GamePage = () => {
 
     if (game) {
         if (game.playerTurnId == playerIndex) {
-            if (colorIndex != null) pickedUp = (<div className="game holding">You are holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>);
+            if (colorIndex != null) pickedUp = (<div className="game holding">Holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>);
             skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
             yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
         }
