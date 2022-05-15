@@ -33,7 +33,7 @@ const GamePage = () => {
         let id = props.index;
         let width = "100%";
         let className = "player-turn";
-        if (props.data.players[id].playerId == props.data.playerTurnId) width = "150%";
+        if (props.data.players[id].playerId == props.data.playerTurnId) width = "120%";
         if (props.data.players[id].playerId == playerIndex) { className = "player-turn you"; }
         else if (props.data.activePlayers[id] == "x") { className = "player-turn left"; }
         return (<Button className={className} width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
@@ -375,12 +375,12 @@ const GamePage = () => {
 
     return (
         <BaseContainer className="game container">
-            <Button className="rulesbutton" onClick={() => window.open("/rules")}>
-                The Game Rules
-            </Button>
-            <Button className="blue-button" onClick={() => Leave()}>
-              &#60; Leave
-            </Button>
+            <div className="game buttons-L">
+            <Button className="blue-button" onClick={() => Leave()}> &#60; Leave </Button>
+            </div>
+            <div className="game buttons-R">
+            <Button onClick={() => window.open("/rules")}> Rules </Button>
+            </div>
             <div className="game field">
                 <div className="middle container">
                     {factories}

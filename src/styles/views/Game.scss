@@ -10,6 +10,20 @@
     align-items: center;
     padding: 0;
   }
+  &.buttons-L {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    left: 0px;
+  }
+  &.buttons-R {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    right: 0px;
+  }
   &.field {
     background: none;
     border-radius: 0;
@@ -52,10 +66,11 @@
     flex-direction: column;
     justify-content: center;
     max-width: 20%;
-    min-width: 150px;
+    min-width: 160px;
     height: 100%;
-    align-items: center;
+    align-items: end;
     position: sticky;
+    right: 0px;
   }
   &.score{
     color: $accent;

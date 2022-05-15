@@ -3,15 +3,26 @@
 .header {
   &.container {
     @include center;
-    height: 260px;
+    height: 33vh;
     background-image: url("../../assets/logo.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
   }
 }
+
 .rules-button {
-  margin-left: 1000px;
-  margin-bottom: 50px;
-  object-position: 1000px;
+    margin-top: 27vh;
+    position:relative;
+    left: 140px;
+}
+
+.account-button {
+    margin-top: 27vh;
+    position:relative;
+    right: 140px;
 }
