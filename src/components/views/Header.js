@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import {Button} from 'components/ui/Button';
@@ -11,11 +11,13 @@ import {Button} from 'components/ui/Button';
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
+
+
 const Header = props => (
   <div className="header container" style={{height: props.height}}>
       <div>
       <Button className="account-button" onClick={() => window.location.href="/users/edit/"+localStorage.getItem('id')}> Settings </Button>
-      <Button className="rules-button" onClick={() => window.open("/rules")}> Rules </Button>
+      <Button className="rules-button" onClick={() => window.open("/rules")}> Game Rules </Button>
       </div>
   </div>
 );
@@ -26,7 +28,4 @@ Header.propTypes = {
   height: PropTypes.string
 };
 
-/**
- * Don't forget to export your component!
- */
 export default Header;

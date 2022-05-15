@@ -7,9 +7,12 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
 import {buildGetRequestExternalAPI} from "./User";
+import Rules from "./Rules";
 
 const GamePage = () => {
     const history = useHistory();
+    const [isOpen, setIsOpen] = useState(false);
+    const togglePopup = () => {setIsOpen(!isOpen);}
     let [view, setView] = useState(null);
     let [game, setGame] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
@@ -381,7 +384,7 @@ const GamePage = () => {
             <Button className="blue-button" onClick={() => Leave()}> &#60; Leave </Button>
             </div>
             <div className="game buttons-R">
-            <Button onClick={() => window.open("/rules")}> Rules </Button>
+            <Button onClick={togglePopup}> Rules </Button>
             </div>
             <div className="game field">
                 <div className="middle container">
@@ -396,6 +399,11 @@ const GamePage = () => {
                 {turnOrder}
                 {skipButton}
             </div>
+            {isOpen && <Rules
+                content={<>
+                </>}
+                handleClose={togglePopup}
+            />}
         </BaseContainer>
     );
 

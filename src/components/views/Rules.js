@@ -1,15 +1,11 @@
 import * as React from "react";
-import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Rules.scss";
 import {Button} from 'components/ui/Button';
 
-const RulesPage = () => {
-    const history = useHistory();
-
-
+const RulesPage = props => {
     return (
-        <BaseContainer className="rules container">
+        <BaseContainer className="popup-box">
             <div className="rules header">Game Rules of Azul</div>
                 <div className="rules title">Object of the game:</div>
                 <div className="rules text">
@@ -18,6 +14,7 @@ const RulesPage = () => {
                 the round in which at least one player has completed a horizontal
                 line of 5 consecutive tiles on her wall. [PICTURE OF HORIZONTAL LINE]
                 </div>
+            <br/>
             <div className="rules title">Gameplay</div>
             <div className="rules text">
                 The game is played over two phases:
@@ -61,6 +58,7 @@ const RulesPage = () => {
                         Once that is done, any remaining tiles on the pattern lines stay on your player board for the next round.
                     </div>
                 </ol>
+                <br/>
                 <div className="rules title">Scoring</div>
                 <div className="rules text">
                     Each tile you move over to your wall is always placed on the space matching its color and immediately
@@ -85,18 +83,20 @@ const RulesPage = () => {
                     above it. Your score will get adjusted accordingly (however, you can never drop below 0 points.)
                     Note: If you have the "1" tile in your floor line, it counts as a normal tile.
                 </div>
+                <br/>
                 <div className="rules title">End of the game</div>
                 <div className="rules text">
                     The game ends right after the Wall-tiling phase in which at least one player has completed at least one
                     horizontal line of 5 consecutive tiles on her wall.
                 </div>
+                <br/>
             </div>
-            <Button className="blue-button"
-                width="100%"
-                onClick={() => history.goBack()}
+            <Button className="close-icon"
+                onClick={props.handleClose}
             >
-                Back
+                x
             </Button>
+            {props.content}
         </BaseContainer>
     );
 
