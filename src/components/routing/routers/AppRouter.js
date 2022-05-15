@@ -15,6 +15,7 @@ import LobbyPage from "components/views/Lobby";
 import CreatePage from "components/views/Create";
 import GamePage from "components/views/Game";
 import RulesPage from "components/views/Rules";
+import WinnerPage from "../../views/Winner";
 
 /**
  * Main router of your application.
@@ -33,6 +34,9 @@ const AppRouter = () => {
           <GameGuard>
             <GamePage/>
           </GameGuard>
+        </Route>
+        <Route exact path = "/winner">
+          <WinnerPage/>
         </Route>
         <Route exact path="/rules">
             <RulesPage/>
