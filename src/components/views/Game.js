@@ -357,10 +357,18 @@ const GamePage = () => {
         return "tile";
     }
 
+    function unpick(){
+        setOriginIndex(null);
+        setColorIndex(null);
+        setTileAmount(null);
+    }
+
     if (game) {
         if (game.playerTurnId == playerIndex) {
-            if (colorIndex != null) pickedUp = (<div
-                className="game holding">Holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>);
+            if (colorIndex != null) pickedUp = (<div className="game holding">
+                <div className="game holding-text">Holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>
+                <Button onClick={() => unpick()}> Drop </Button>
+                </div>);
             skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
             yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
         }
@@ -396,7 +404,7 @@ const GamePage = () => {
             <Button className="blue-button" onClick={() => Leave()}> &#60; Leave </Button>
             </div>
             <div className="game buttons-R">
-            <Button onClick={togglePopup}> Game Rules </Button>
+            <Button className="orange-button" onClick={togglePopup}> Game Rules </Button>
             </div>
             <div className="game field">
                 <div className="middle container">

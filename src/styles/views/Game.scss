@@ -143,16 +143,20 @@
     margin-top: 10px;
   }
   &.holding {
+    width: 100%;
     position: fixed;
-    right: 0px;
+    left: 0px;
     padding: 7px 20px;
     margin: 10px;
-    font-size: 16pt;
     height: 40px;
     align-items: center;
     justify-content: center;
-    background: transparentize($accent, 0.5);
-    border-radius: $borderRadius;
+    display: flex;
+    flex-direction: row;
+  }
+  &.holding-text{
+    font-size: 16pt;
+    margin-right: 10px;
   }
 }
 
