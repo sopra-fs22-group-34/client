@@ -317,11 +317,10 @@ const GamePage = () => {
             }
         }
         fetchData();
-        /*
         const interval = setInterval(() => {
           fetchData();
         }, 3000);
-        return () => clearInterval(interval);*/
+        return () => clearInterval(interval);
     }, []);
 
 //    React.useEffect(() => {
