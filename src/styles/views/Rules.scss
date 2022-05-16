@@ -12,7 +12,7 @@
     background: transparentize($background, 0.05);
     border: 1px solid $accent;
     border-radius: $borderRadius;
-    padding: 50px;
+    padding: 30px 50px;
   }
   &.header {
     margin-bottom: 20px;
@@ -44,15 +44,32 @@
 
 .rules-buttons {
   &:hover {
-      transform: none;
-      background: $accentDark;
-      background-color: $accentDark;
+    transform: none;
   }
+  border: 1px solid $accent;
   &.L {
     border-radius: 20px 0 0 20px;
   }
+  &.L-inactive {
+    border-radius: 20px 0 0 20px;
+    background: $background;
+    color: #FFFFFF;
+    &:hover {
+          transform: none;
+          background-color: transparentize($accent, 0.5);
+      }
+  }
   &.R {
     border-radius: 0 20px 20px 0;
+  }
+  &.R-inactive {
+    border-radius: 0 20px 20px 0;
+    background: $background;
+    color: #FFFFFF;
+    &:hover {
+          transform: none;
+          background-color: transparentize($accent, 0.5);
+      }
   }
 }
 

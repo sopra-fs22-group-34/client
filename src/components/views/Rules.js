@@ -7,7 +7,12 @@ import {Button} from 'components/ui/Button';
 const RulesPage = props => {
     let [view, setView] = useState("gameplay");
     let content;
+    let buttons;
     if (view === "gameplay") {
+        buttons = (<div className="rules buttons-container">
+                       <Button className="rules-buttons L" onClick={() => setView("gameplay")}> Gameplay </Button>
+                       <Button className="rules-buttons R-inactive" onClick={() => setView("scoring")}> Scoring </Button>
+                   </div>);
         content = (<div>
             <div className="rules title">Gameplay</div>
             <div className="rules text">
@@ -37,7 +42,12 @@ const RulesPage = props => {
             </div>
         );
     } else {
+        buttons = (<div className="rules buttons-container">
+                       <Button className="rules-buttons L-inactive" onClick={() => setView("gameplay")}> Gameplay </Button>
+                       <Button className="rules-buttons R" onClick={() => setView("scoring")}> Scoring </Button>
+                   </div>);
         content = (<div>
+
             <div className="rules title">Scoring</div>
             <div className="rules text">
                 Any tiles from your completed pattern lines will be moved over to the wall, and you will gain points as follows:
@@ -81,10 +91,7 @@ const RulesPage = props => {
                     The game ends once at least one player has completed a horizontal
                     line of 5 consecutive tiles on their wall. [PICTURE OF HORIZONTAL LINE]
                     </div>
-                <div>
-                    <Button className="rules-buttons L" onClick={() => setView("gameplay")}> Gameplay </Button>
-                    <Button className="rules-buttons R" onClick={() => setView("scoring")}> Scoring </Button>
-                </div>
+                {buttons}
                 {content}
             </div>
         </BaseContainer>
