@@ -260,9 +260,9 @@ const GamePage = () => {
     }
 
     function FloorLine(props){
-      let inactive = false;
-      if (props.inactive || game.playerTurnId != playerIndex) { inactive = true; }
-        return (<div className="game floorline" disabled={inactive} onClick={() => placeTiles(-1)}>
+      let inactive = true;
+      if (props.game.playerTurnId == playerIndex) { inactive = false; }
+        return (<Button className="game floorline" disabled={inactive} onClick={() => placeTiles(-1)}>
             <FloorTile value={-1} id={0} data={props.floorline}/>
             <FloorTile value={-1} id={1} data={props.floorline}/>
             <FloorTile value={-2} id={2} data={props.floorline}/>
@@ -270,7 +270,7 @@ const GamePage = () => {
             <FloorTile value={-2} id={4} data={props.floorline}/>
             <FloorTile value={-3} id={5} data={props.floorline}/>
             <FloorTile value={-3} id={6} data={props.floorline}/>
-        </div>)
+        </Button>)
     }
 
     function FloorTile(props){
@@ -367,11 +367,11 @@ const GamePage = () => {
         if (view != null) {
             stairs = (<Stairs stairs={game.players[view].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[view].playerBoard.wall.positionsOccupied}/>);
-            floor = (<FloorLine floorline={game.players[view].playerBoard.floorLine}/>);
+            floor = (<FloorLine floorline={game.players[view].playerBoard.floorLine} game={game}/>);
         } else {
             stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
-            floor = (<FloorLine floorline={game.players[playerIndex].playerBoard.floorLine}/>);
+            floor = (<FloorLine floorline={game.players[playerIndex].playerBoard.floorLine} game={game}/>);
         }
     }
 
@@ -380,6 +380,7 @@ const GamePage = () => {
 
     return (
         <BaseContainer className="game container">
+            {isOpen && <Rules content={<> </>} handleClose={togglePopup} />}
             <div className="game buttons-L">
             <Button className="blue-button" onClick={() => Leave()}> &#60; Leave </Button>
             </div>
@@ -399,11 +400,7 @@ const GamePage = () => {
                 {turnOrder}
                 {skipButton}
             </div>
-            {isOpen && <Rules
-                content={<>
-                </>}
-                handleClose={togglePopup}
-            />}
+
         </BaseContainer>
     );
 

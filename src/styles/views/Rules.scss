@@ -5,13 +5,18 @@
     @include center;
     flex-direction: column;
     display: flex;
-    width: 65%;
+    min-width: calc(66% - 0px);
     max-width: 800px;
+    max-height: 95%;
+    margin: 20px;
+    background: transparentize($background, 0.05);
+    border: 1px solid $accent;
+    border-radius: $borderRadius;
+    padding: 50px;
   }
   &.header {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    font-size: 50px;
+    margin-bottom: 20px;
+    font-size: 40px;
     font-weight: bolder;
   }
   &.title {
@@ -35,4 +40,27 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
+}
+
+.rules-buttons {
+  &:hover {
+      transform: none;
+      background: $accentDark;
+      background-color: $accentDark;
+  }
+  &.L {
+    border-radius: 20px 0 0 20px;
+  }
+  &.R {
+    border-radius: 0 20px 20px 0;
+  }
+}
+
+.popup-box {
+  position: fixed;
+  z-index: +1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }

@@ -68,7 +68,7 @@
     max-width: 20%;
     min-width: 160px;
     height: 100%;
-    align-items: end;
+    align-items: flex-end;
     position: sticky;
     right: 0px;
   }
@@ -118,6 +118,19 @@
     &:hover {
         cursor: pointer;
     }
+    &:disabled {
+      opacity: 1;
+      cursor: default;
+    }
+    padding: 0;
+    height: 455px;
+    border: none;
+    border-radius: $borderRadius;
+    cursor: pointer;
+    font-weight: 300;
+    color: #FFFFFF;
+    background: none;
+    background-color: none;
   }
   &.image {
     height: 32px;

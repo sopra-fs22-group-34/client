@@ -19,6 +19,11 @@
   &.margin {
     margin-right: 5%;
   }
+  &.close {
+    position: fixed;
+    right: calc(15% - 30px);
+    top: calc(120vh - 100vh - 33px);
+  }
 }
 
 .profile {

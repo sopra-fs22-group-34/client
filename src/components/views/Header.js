@@ -9,6 +9,7 @@ const Header = props => {
     const togglePopup = () => {setIsOpen(!isOpen);}
     return (
             <div>
+            <div className="popup-box">{isOpen && <Rules content={<> </>} handleClose={togglePopup} />}</div>
             <div className="header container" style={{height: props.height}}>
                 <div>
                     <Button className="account-button"
@@ -16,19 +17,9 @@ const Header = props => {
                     <Button className="rules-button" onClick={togglePopup}> Game Rules </Button>
                 </div>
             </div>
-                {isOpen && <Rules
-                    content={<>
-                    </>}
-                    handleClose={togglePopup}
-                />}
+
             </div>
     );
-    Header.propTypes = {
-        height: PropTypes.string
-    }
-
-//<h1 className="header title">SoPra FS22 - Group 34</h1>
-//<ReactLogo width="60px" height="60px"/>
 }
 
 export default Header;
