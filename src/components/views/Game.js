@@ -317,10 +317,11 @@ const GamePage = () => {
             }
         }
         fetchData();
+        /*
         const interval = setInterval(() => {
           fetchData();
         }, 3000);
-        return () => clearInterval(interval);
+        return () => clearInterval(interval);*/
     }, []);
 
 //    React.useEffect(() => {
@@ -341,6 +342,7 @@ const GamePage = () => {
     let floor;
     let skipButton;
     let pickedUp;
+    let gameOver;
 
     function colorString(color){
         if (color == 0) return "red";
@@ -357,12 +359,15 @@ const GamePage = () => {
 
     if (game) {
         if (game.playerTurnId == playerIndex) {
-            if (colorIndex != null) pickedUp = (<div className="game holding">Holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>);
+            if (colorIndex != null) pickedUp = (<div
+                className="game holding">Holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>);
             skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
             yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
         }
         turnOrder = (<TurnOrder data={game}/>);
-        middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]} col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]} col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
+        middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]}
+                               col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]}
+                               col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
         factories = (<MiddleFactories factoryAmount={game.factoryAmount} factories={game.factories}/>);
         if (view != null) {
             stairs = (<Stairs stairs={game.players[view].playerBoard.stairs}/>);
@@ -372,6 +377,12 @@ const GamePage = () => {
             stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
             floor = (<FloorLine floorline={game.players[playerIndex].playerBoard.floorLine} game={game}/>);
+        }
+        gameOver = game.gameOver;
+        console.log("The game is over: " + gameOver);
+        if (gameOver === true) {
+            console.log("game is over");
+            history.push("/winner");
         }
     }
 
