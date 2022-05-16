@@ -1,6 +1,15 @@
 @import 'styles/theme';
 
 .winner {
+  &.podium-step {
+    width: 10%;
+    color: #2884C6;
+  }
+  &.player-names {
+    font-size: 250%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
   &.container {
     @include center;
     flex-direction: column;
@@ -9,16 +18,16 @@
     max-width: 800px;
   }
   &.header {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 30%;
+    margin-bottom: 2.5%;
     font-size: 50px;
   }
   &.title {
     font-size: larger;
     font-style: italic;
     position: relative;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 2.5%;
+    margin-bottom: 15%;
   }
   &.subtitle {
     font-size: larger;
