@@ -120,10 +120,9 @@ const LobbyPage = () => {
   else fullText = "";
 
   function LobbyStat(props){
-  return (<div className="settings row">
-  <div className="settings option"> {props.option}:</div>
-  <div className="settings stat"> {props.stat}</div></div>
-  )
+      return (<div className="settings row">
+      <div className="settings option"> {props.option}:</div>
+      <div className="settings stat"> {props.stat}</div></div>)
   }
 
   if (lobby) {
