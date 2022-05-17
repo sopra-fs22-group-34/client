@@ -59,6 +59,9 @@ const WinnerPage = () => {
             }
             console.log(players[0].score);
 
+            // TODO: causes errors for now. get and delete should only be done once
+            await api.delete("/lobbies/"+localStorage.getItem('lobby'));
+
         } catch (error) {
             console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
             console.error("Details:", error);

@@ -285,6 +285,7 @@ const GamePage = () => {
         try {
             await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/"+localStorage.getItem('id')+"/leave");
             history.push("/home");
+            localStorage.removeItem('lobby');
         }
         catch (error){
             console.error(`Something went wrong while leaving the game: \n${handleError(error)}`);
