@@ -13,6 +13,7 @@ const LobbyOverview = () => {
   const [lobbies, setLobbies] = useState(null);
   const [user, setUser] = useState(null);
   const [game, setGame] = useState(null);
+  const [view, setView] = useState("join");
 
   async function logout() {
     try { await api.put('/users/'+localStorage.getItem('id')+"/logout");
@@ -41,15 +42,23 @@ const LobbyOverview = () => {
         history.push('/lobbies/'+lobby.id);
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
   }
+  const spectateLobby = async ({lobby}) => {
+        try {
+          if (lobby.id != user.lobby) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/spectate');}
+          localStorage.setItem('lobby', lobby.id);
+          history.push('/game');
+        } catch (error) { console.error("Details:", error);}
+    }
 
   function Lobby({lobby}){
-    if (!lobby.is_open) return null;
+    let text = "Join";
+    if (view == "spectate") text = "Watch";
     return (
     <div className="lobbies container">
       <div className="lobbies username">{lobby.host_name}</div>
       <div className="lobbies lobbyname">{lobby.name}</div>
       <div className="lobbies players">{lobby.current_players}/{lobby.total_players}</div>
-      <div className="lobbies join-button"> Join &#62; </div>
+      <div className="lobbies join-button"> {text} &#62; </div>
     </div>)
   }
 
@@ -102,33 +111,77 @@ const LobbyOverview = () => {
   let content = <Spinner/>;
   let userName = "Player";
   let noGames = "";
+  let buttons;
+
+  function openLobbies(lobbies){
+    for (let i = 0; i < lobbies.length; i++){
+      if (isVisible(lobbies[i])) return true;
+    }
+    return false;
+  }
+  function isVisible(lobby){
+    return lobby.is_open && !lobby.is_private;
+  }
+  function lobbiesToSpectate(lobbies){
+      for (let i = 0; i < lobbies.length; i++){
+        if (canBeSpectated(lobbies[i])) return true;
+      }
+      return false;
+    }
+    function canBeSpectated(lobby){
+      return !lobby.is_open;
+    }
+
+  if (game){
+    content = (<p>You are currently in a game! Return to it <a href="/game"> here</a>!</p>);
+  } else if (view == "join") {
+      buttons = (<div className="overview button-container">
+                     <Button className="join-buttons L" onClick={() => setView("join")}> Play </Button>
+                     <Button className="join-buttons R-inactive" onClick={() => setView("spectate")}> Spectate </Button>
+                 </div>);
+      if (lobbies) {
+          if (!openLobbies(lobbies)) {
+            content = <Spinner/>;
+            noGames = 'No open games found. Start your own by clicking on "New Game"!';
+            }
+          else {
+              noGames = "";
+              if (!game) {
+                  content = (
+                    <div className="overview view-description">
+                    <p className="overview paragraph"> Games looking for players: <hr/></p>
+                      <ul className="overview lobby-list">
+                        {lobbies.map(lobby => (
+                          isVisible(lobby) && <Button className="overview lobby-button"
+                              onClick={() => goToLobby({lobby})}>
+                            <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul> </div>)}}}
+  } else {
+    buttons = (<div className="overview button-container">
+                   <Button className="join-buttons L-inactive" onClick={() => setView("join")}> Play </Button>
+                   <Button className="join-buttons R" onClick={() => setView("spectate")}> Spectate </Button>
+               </div>);
+    if (lobbies) {
+        if (!lobbiesToSpectate(lobbies)) {
+            content = <Spinner/>;
+            noGames = 'No ongoing games found. Start your own by clicking on "New Game"!';
+            }
+        else {
+            noGames = "";
+            if (!game) {
+                content = (
+                  <div className="overview view-description">
+                  <p className="overview paragraph"> Currently ongoing games: <hr/></p>
+                    <ul className="overview lobby-list">
+                      {lobbies.map(lobby => (
+                        canBeSpectated(lobby) && <Button className="overview lobby-button"
+                            onClick={() => spectateLobby({lobby})}>
+                          <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul> </div>)}}}
+  }
 
   if (user) {
       userName = user.username;
       contentProfilePicture = (<img src={buildGetRequestExternalAPI(user.id)} width={50} length={50}/>);
    }
-  if (lobbies) {
-    if (game) {
-        content = (<p>You are currently in a game! Return to it <a href="/game"> here</a>!</p>);
-    } else {
-        //TODO: instead of checking for lengths, do a for loop and check if any are open
-        if (lobbies.length === 0) {noGames = 'No open games found. Start your own by clicking on "New Game"!';}
-        else {
-            noGames = "";
-            if (!game) {
-                content = (
-                  <div className="overview">
-                  <p className="overview paragraph"> Games looking for players: </p>
-                    <ul className="overview lobby-list">
-                      {lobbies.map(lobby => (
-                        <Button className="overview lobby-button"
-                            onClick={() => goToLobby({lobby})}>
-                          <Lobby lobby={lobby} key={lobby.id}/>
-                        </Button>
-                      ))}
-                    </ul>
-                  </div>)}}}
-    }
 
     return (
         <BaseContainer className="overview container">
@@ -141,6 +194,7 @@ const LobbyOverview = () => {
               New Game
             </Button>
           </div>
+          {buttons}
           <div className="overview lobby-container">
           {content}
           {noGames}

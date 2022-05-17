@@ -22,11 +22,11 @@ const GamePage = () => {
     let [timer, setTimer] = useState(30);
 
     function TurnOrder(props) {
-        let namePlayer1 = (<PlayerInfo index={0} name={props.data.lobbyData.nameOne} userId={props.data.lobbyData.one} data={props.data}/>);
-        let namePlayer2 = (<PlayerInfo index={1} name={props.data.lobbyData.nameTwo} userId={props.data.lobbyData.two} data={props.data}/>);
+        let namePlayer1 = (<PlayerInfo index={0} data={props.data}/>);
+        let namePlayer2 = (<PlayerInfo index={1} data={props.data}/>);
         let namePlayer3, namePlayer4;
-        if (props.data.lobbyData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} name={props.data.lobbyData.nameThree} userId={props.data.lobbyData.three} data={props.data}/>); }
-        if (props.data.lobbyData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} name={props.data.lobbyData.nameFour} userId={props.data.lobbyData.four} data={props.data}/>); }
+        if (props.data.lobbyData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} data={props.data}/>); }
+        if (props.data.lobbyData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} data={props.data}/>); }
         return (<div className="game turn-order">
                    {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
                 </div>);
@@ -40,8 +40,8 @@ const GamePage = () => {
         if (props.data.players[id].playerId == playerIndex) { className = "player-turn you"; }
         else if (props.data.activePlayers[id] == "x") { className = "player-turn left"; }
         return (<Button className={className} width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
-                 <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
-                 {props.name} <div className="game score">{props.data.players[id].score}</div> </Button>)
+                 <div className="game image"><img src={buildGetRequestExternalAPI(props.data.lobbyData.players[id].id)}/></div>
+                 {props.data.lobbyData.players[id].name} <div className="game score">{props.data.players[id].score}</div> </Button>)
     }
 
     function MiddleTiles(props){
@@ -306,20 +306,31 @@ const GamePage = () => {
                 setGame(game);
                 console.log("game:");
                 console.log(game);
-                let players = game.lobbyData;
-                if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
-                else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
-                else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
-                else if (players.four == localStorage.getItem('id')) {setPlayerIndex(3);}
+                let players = game.lobbyData.players;
+                for (let i = 0; i < players.length; i++) {
+                    if (players[i].id == localStorage.getItem('id')) {
+                        setPlayerIndex(i);
+                        break;
+                    }
+                }
+                if (playerIndex == null) setPlayerIndex(0);
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);
                 alert("Something went wrong while fetching the game data! See the console for details.");
             }
         }
+        async function quickFetch() {
+            let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
+            setGame(currentGame.data);
+            console.log(game);
+        }
         fetchData();
         const interval = setInterval(() => {
-          fetchData();
+          quickFetch();
+          if (game && game.gameOver === true) {
+              history.push("/winner");
+          }
         }, 3000);
         return () => clearInterval(interval);
     }, []);
@@ -342,7 +353,6 @@ const GamePage = () => {
     let floor;
     let skipButton;
     let pickedUp;
-    let gameOver;
 
     function colorString(color){
         if (color == 0) return "red";
@@ -386,16 +396,10 @@ const GamePage = () => {
             wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
             floor = (<FloorLine floorline={game.players[playerIndex].playerBoard.floorLine} game={game}/>);
         }
-        gameOver = game.gameOver;
-        console.log("The game is over: " + gameOver);
-        if (gameOver === true) {
-            console.log("game is over");
-            history.push("/winner");
-        }
     }
 
     let viewedBoard = (<div className="board container">
-            <div className="board main">{stairs} {wall} </div> {floor} </div>);
+            {floor} <div className="board main">{stairs} {wall} </div> </div>);
 
     return (
         <BaseContainer className="game container">

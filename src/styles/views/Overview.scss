@@ -51,6 +51,11 @@
     align-items: center;
     border-radius: $borderRadius;
   }
+  &.view-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   &.lobby-list {
     list-style: none;
     padding-left: 0;
@@ -138,4 +143,37 @@
       border-radius: $borderRadius;
   }
 
+}
+
+.join-buttons {
+  &:hover {
+    transform: none;
+  }
+  width: 50%;
+  padding: 6px 16px;
+  border: 1px solid $accent;
+  &.L {
+    border-radius: 20px 0 0 20px;
+  }
+  &.L-inactive {
+    border-radius: 20px 0 0 20px;
+    background: $background;
+    color: #FFFFFF;
+    &:hover {
+          transform: none;
+          background-color: transparentize($accent, 0.5);
+      }
+  }
+  &.R {
+    border-radius: 0 20px 20px 0;
+  }
+  &.R-inactive {
+    border-radius: 0 20px 20px 0;
+    background: $background;
+    color: #FFFFFF;
+    &:hover {
+          transform: none;
+          background-color: transparentize($accent, 0.5);
+      }
+  }
 }
