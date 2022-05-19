@@ -78,9 +78,6 @@ const EditPage = () => {
         alert(`Something went wrong while updating your profile: \n${handleError(error)}`);
     }
   }
-  const Return = async () => {
-    history.push('/users/'+localStorage.getItem('id'));
-  }
 
   let content = <Spinner/>
   if (user) {
@@ -102,7 +99,7 @@ const EditPage = () => {
     <div className="user container">
     <div className="profile outer-container">
       <div className="user button-container">
-            <Button className="blue-button margin" width="50%" onClick={() => Return()}>
+            <Button className="blue-button margin" width="50%" onClick={() => history.goBack()}>
                &#60; Return
              </Button>
             <Button width="50%" onClick={() => saveChanges()}>

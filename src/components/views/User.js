@@ -51,10 +51,6 @@ const UserPage = () => {
       fetchData();
     }, []);
 
-  const returnGame = async () => {
-    history.push('/users');
-  }
-
   const editUser = async () => {
     history.push('/users/edit/'+localStorage.getItem('id'));
   }
@@ -87,7 +83,7 @@ const UserPage = () => {
         <div className="profile outer-container">
           <div className="user button-container">
              <Button className="blue-button margin" width="50%"
-               onClick={() => returnGame()}>
+               onClick={() => history.push('/users')}>
                &#60; Return
              </Button>
              {editButton}

@@ -87,10 +87,24 @@
     background: transparentize($accent, 0.85);
     border-radius: $borderRadius;
     width: 100%;
-    padding: 5px;
-    padding-left: 20px;
+    padding: 15px 30px 0px 30px;
     display: flex;
+    flex-direction: row;
     align-items: center;
+  }
+  &.stat {
+    width: 200px;
+    font-size: 14pt;
+  }
+  &.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  &.option {
+    width: 80px;
+    font-size: 14pt;
   }
   &.name {
     font-weight: 300;
@@ -129,27 +143,18 @@
       text-transform: none;
       padding: 0px 10px;
   }
-  &.field {
-    display: flex;
-    align-items: center;
-  }
   &.input {
     &:focus {
       border: 1px solid $accent;
     }
-    height: 35px;
+    height: 40px;
     padding-left: 15px;
-    width: 290px;
-    margin-left: 10px;
+    max-width: 100%;
     border: 1px hidden $background;
     border-radius: $borderRadius;
     background: transparentize($accent, 0.85);
     color: $textColor;
     transition: all 0.3s ease;
-  }
-  &.label {
-    color: $textColor;
-    font-weight: 300;
   }
   &.button-container {
     width: 100%;

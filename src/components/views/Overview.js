@@ -120,7 +120,7 @@ const LobbyOverview = () => {
     return false;
   }
   function isVisible(lobby){
-    return lobby.is_open && !lobby.is_private;
+    return lobby.is_open && lobby.is_public;
   }
   function lobbiesToSpectate(lobbies){
       for (let i = 0; i < lobbies.length; i++){
@@ -129,15 +129,15 @@ const LobbyOverview = () => {
       return false;
     }
     function canBeSpectated(lobby){
-      return !lobby.is_open;
+      return !lobby.is_open && lobby.is_public;
     }
 
   if (game){
     content = (<p>You are currently in a game! Return to it <a href="/game"> here</a>!</p>);
   } else if (view == "join") {
       buttons = (<div className="overview button-container">
-                     <Button className="join-buttons L" onClick={() => setView("join")}> Play </Button>
-                     <Button className="join-buttons R-inactive" onClick={() => setView("spectate")}> Spectate </Button>
+                     <Button className="rules-buttons L" width="50%" onClick={() => setView("join")}> Play </Button>
+                     <Button className="rules-inactive R" width="50%" onClick={() => setView("spectate")}> Spectate </Button>
                  </div>);
       if (lobbies) {
           if (!openLobbies(lobbies)) {
@@ -157,8 +157,8 @@ const LobbyOverview = () => {
                             <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul> </div>)}}}
   } else {
     buttons = (<div className="overview button-container">
-                   <Button className="join-buttons L-inactive" onClick={() => setView("join")}> Play </Button>
-                   <Button className="join-buttons R" onClick={() => setView("spectate")}> Spectate </Button>
+                   <Button className="rules-inactive L" width="50%" onClick={() => setView("join")}> Play </Button>
+                   <Button className="rules-buttons R" width="50%" onClick={() => setView("spectate")}> Spectate </Button>
                </div>);
     if (lobbies) {
         if (!lobbiesToSpectate(lobbies)) {

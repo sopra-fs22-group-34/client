@@ -19,6 +19,10 @@ function PlayerName(props) {
     if (props.isHost && props.player) return (<div className="lobby players-name"><PlayerNameText player={props.player}/><Button className="lobby kick-button" onClick={() => Kick(props.player)}>X</Button></div>)
     else return (<div className="lobby players-name"><PlayerNameText player={props.player}/></div>)
 }
+function publicToString(arg){
+    if (arg) { return "Public";}
+    return "Private";
+}
 
 const LobbyPage = () => {
   const history = useHistory();
@@ -115,6 +119,13 @@ const LobbyPage = () => {
   if (full) { fullText = ("Lobby full! Game starting soon...");}
   else fullText = "";
 
+  function LobbyStat(props){
+  return (<div className="settings row">
+  <div className="settings option"> {props.option}:</div>
+  <div className="settings stat"> {props.stat}</div></div>
+  )
+  }
+
   if (lobby) {
     if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) {
       isHost = true;
@@ -124,10 +135,12 @@ const LobbyPage = () => {
     }
     content = (
     <div className="settings container">
-      <div className="settings form">
-        <h2>Name: {lobby.name}</h2>
-        <h2>Players: {lobby.current_players}/{lobby.total_players}</h2>
-      </div>
+        <div className="settings form">
+        <LobbyStat option="Name" stat={lobby.name}/>
+        <LobbyStat option="Players" stat={lobby.current_players+"/"+lobby.total_players}/>
+        <LobbyStat option="Timer" stat={lobby.timer}/>
+        <LobbyStat option="Type" stat={publicToString(lobby.is_public)}/>
+        </div>
       </div>);
   }
   return (

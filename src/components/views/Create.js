@@ -9,8 +9,8 @@ import "styles/views/Lobby.scss";
 
 const FormField = props => {
  return (
-  <div className="settings field">
-    <label className="settings label">
+  <div className="settings row">
+    <label className="settings option">
       {props.label}
     </label>
     <input className="settings input"
@@ -69,6 +69,34 @@ const CreatePage = () => {
       fetchData();
     }, []);
 
+  function PlayersButton(props){
+    let selected = "inactive";
+    if (total_players == props.amount) selected = "buttons";
+    let position = "M";
+    if (props.position == "L") position = "L";
+    else if (props.position == "R") position = "R";
+    return (<Button className={"rules-"+ selected +" "+position} onClick={() => setTotal_players(props.amount)}> {props.amount} </Button>)
+  }
+  function PrivacyButton(props){
+      let selected = "inactive";
+      let state = true;
+      if (props.state == "private") state = false;
+      if (is_public == state) selected = "buttons";
+      let position = "R";
+      if (props.position == "L") position = "L";
+      return (<Button width="100px" className={"rules-"+ selected +" "+position} onClick={() => setIs_public(state)}> {props.state} </Button>)
+    }
+  function TimerButton(props){
+    let selected = "inactive";
+    if (timer == props.time) selected = "buttons";
+    let text = props.time;
+    if (props.time == null) text = "x";
+    let position = "M";
+    if (props.position == "L") position = "L";
+    else if (props.position == "R") position = "R";
+    return (<Button className={"rules-"+ selected +" "+position} onClick={() => setTimer(props.time)}> {text} </Button>)
+  }
+
   let settings = <Spinner/>;
   if (host_id) {
     settings = (
@@ -79,16 +107,20 @@ const CreatePage = () => {
           placeholder="New Game"
           value={name}
           onChange={ln => setName(ln)} />
-        <p> Players: <b>{total_players}</b>
-        <Button className="settings players-button" onClick={() => setTotal_players(2)}> 2 </Button>
-        <Button className="settings players-button" onClick={() => setTotal_players(3)}> 3 </Button>
-        <Button className="settings players-button" onClick={() => setTotal_players(4)}> 4 </Button></p>
+        <div className="settings row"> <div className="settings option">Players:</div>
+        <PlayersButton amount={2} position="L"/>
+        <PlayersButton amount={3}/>
+        <PlayersButton amount={4} position="R"/></div>
 
-        <p> Timer: <b>{timer}</b>
-        <Button className="settings players-button" onClick={() => setTimer(null)}> none </Button>
-        <Button className="settings players-button" onClick={() => setTimer(30)}> 30 </Button>
-        <Button className="settings players-button" onClick={() => setTimer(45)}> 45 </Button>
-        <Button className="settings players-button" onClick={() => setTimer(60)}> 60 </Button></p>
+        <div className="settings row"> <div className="settings option">Timer:</div>
+        <TimerButton time={null} position="L"/>
+        <TimerButton time={30}/>
+        <TimerButton time={45}/>
+        <TimerButton time={60} position="R"/></div>
+
+        <div className="settings row"> <div className="settings option">Type:</div>
+        <PrivacyButton state={"public"} position="L"/>
+        <PrivacyButton state={"private"}/> </div>
       </div>
       </div>)
     }
@@ -100,7 +132,6 @@ const CreatePage = () => {
               &#60; Cancel
             </Button>
           </div>
-          <h2>Configure Game Settings:</h2>
           {settings}
         <div className="lobby players-container">
           <Button width="100%" onClick={() => Open()}>

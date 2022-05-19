@@ -11,7 +11,7 @@ const RulesPage = props => {
     if (view === "gameplay") {
         buttons = (<div className="rules buttons-container">
                        <Button className="rules-buttons L" onClick={() => setView("gameplay")}> Gameplay </Button>
-                       <Button className="rules-buttons R-inactive" onClick={() => setView("scoring")}> Scoring </Button>
+                       <Button className="rules-inactive R" onClick={() => setView("scoring")}> Scoring </Button>
                    </div>);
         content = (<div>
             <div className="rules title">Gameplay</div>
@@ -43,7 +43,7 @@ const RulesPage = props => {
         );
     } else {
         buttons = (<div className="rules buttons-container">
-                       <Button className="rules-buttons L-inactive" onClick={() => setView("gameplay")}> Gameplay </Button>
+                       <Button className="rules-inactive L" onClick={() => setView("gameplay")}> Gameplay </Button>
                        <Button className="rules-buttons R" onClick={() => setView("scoring")}> Scoring </Button>
                    </div>);
         content = (<div>

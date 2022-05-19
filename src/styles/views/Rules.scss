@@ -47,30 +47,34 @@
     transform: none;
   }
   padding: 6px 16px;
-  border: 1px solid $accent;
   &.L {
     border-radius: 20px 0 0 20px;
   }
-  &.L-inactive {
-    border-radius: 20px 0 0 20px;
-    background: $background;
-    color: #FFFFFF;
-    &:hover {
-          transform: none;
-          background-color: transparentize($accent, 0.5);
-      }
+  &.M {
+    border-radius: 0;
   }
   &.R {
     border-radius: 0 20px 20px 0;
   }
-  &.R-inactive {
+}
+
+.rules-inactive {
+  &:hover {
+    transform: none;
+    background-color: transparentize($accent, 0.8);
+  }
+  padding: 6px 16px;
+  border: 1px solid $accent;
+  background: $background;
+  color: #FFFFFF;
+  &.L {
+    border-radius: 20px 0 0 20px;
+  }
+  &.M {
+    border-radius: 0;
+  }
+  &.R {
     border-radius: 0 20px 20px 0;
-    background: $background;
-    color: #FFFFFF;
-    &:hover {
-          transform: none;
-          background-color: transparentize($accent, 0.5);
-      }
   }
 }
 
