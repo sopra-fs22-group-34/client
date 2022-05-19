@@ -63,19 +63,22 @@
     border: 1px solid $accent;
     border-radius: $borderRadius;
     display: flex;
+    flex-direction: row;
     align-items: center;
     background: lighten($background, 5);
   }
   &.score {
     font-weight: 300;
+    position: absolute;
+    left: 50%;
     margin-left: auto;
-    font-size: 15pt;
     font-family: $fontMono;
-    color: #FFFFFF;
+    color: $accent;
+    font-size: 12pt;
   }
   &.username {
     font-weight: 500;
-    font-size: 15pt;
+    font-size: 16pt;
     margin-left: 10px;
     color: $accentDark;
   }

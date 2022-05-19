@@ -319,24 +319,19 @@ const GamePage = () => {
         }
         async function quickFetch() {
             let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
-            setGame(currentGame.data);
+            let game = currentGame.data;
+            setGame(game);
             console.log(game);
         }
         fetchData();
         const interval = setInterval(() => {
           quickFetch();
+          if (game && game.gameOver === true) {
+              history.push("/winner");
+          }
         }, 3000);
         return () => clearInterval(interval);
     }, []);
-
-//    React.useEffect(() => {
-//        const countDown = timer > 0 && setInterval(() => setTimer(timer-1), 1000);
-//        if (timer == 0 && game && game.playerTurnId == playerIndex) {
-//            //skipTurn();
-//            clearInterval(countDown);
-//        }
-//        return () => clearInterval(countDown);
-//    }, [timer]);
 
     let turnOrder;
     let yourTurn;
@@ -347,7 +342,6 @@ const GamePage = () => {
     let floor;
     let skipButton;
     let pickedUp;
-    let gameOver;
 
     function colorString(color){
         if (color == 0) return "red";
@@ -390,12 +384,6 @@ const GamePage = () => {
             stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
             floor = (<FloorLine floorline={game.players[playerIndex].playerBoard.floorLine} game={game}/>);
-        }
-        gameOver = game.gameOver;
-        console.log("The game is over: " + gameOver);
-        if (gameOver === true) {
-            console.log("game is over");
-            history.push("/winner");
         }
     }
 

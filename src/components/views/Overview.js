@@ -112,6 +112,7 @@ const LobbyOverview = () => {
   let userName = "Player";
   let noGames = "";
   let buttons;
+  let description = "Games looking for players:";
 
   function openLobbies(lobbies){
     for (let i = 0; i < lobbies.length; i++){
@@ -133,7 +134,8 @@ const LobbyOverview = () => {
     }
 
   if (game){
-    content = (<p>You are currently in a game! Return to it <a href="/game"> here</a>!</p>);
+    description = "You are currently in a game!";
+    content = (<Button className="orange-button" onClick={() => history.push('/game')}>Return to Game </Button>);
   } else if (view == "join") {
       buttons = (<div className="overview button-container">
                      <Button className="rules-buttons L" width="50%" onClick={() => setView("join")}> Play </Button>
@@ -145,17 +147,15 @@ const LobbyOverview = () => {
             noGames = 'No open games found. Start your own by clicking on "New Game"!';
             }
           else {
-              noGames = "";
               if (!game) {
                   content = (
-                    <div className="overview view-description">
-                    <p className="overview paragraph"> Games looking for players: <hr/></p>
                       <ul className="overview lobby-list">
                         {lobbies.map(lobby => (
                           isVisible(lobby) && <Button className="overview lobby-button"
                               onClick={() => goToLobby({lobby})}>
-                            <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul> </div>)}}}
+                            <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul>)}}}
   } else {
+    description = "Currently ongoing games:";
     buttons = (<div className="overview button-container">
                    <Button className="rules-inactive L" width="50%" onClick={() => setView("join")}> Play </Button>
                    <Button className="rules-buttons R" width="50%" onClick={() => setView("spectate")}> Spectate </Button>
@@ -166,16 +166,13 @@ const LobbyOverview = () => {
             noGames = 'No ongoing games found. Start your own by clicking on "New Game"!';
             }
         else {
-            noGames = "";
             if (!game) {
                 content = (
-                  <div className="overview view-description">
-                  <p className="overview paragraph"> Currently ongoing games: <hr/></p>
                     <ul className="overview lobby-list">
                       {lobbies.map(lobby => (
                         canBeSpectated(lobby) && <Button className="overview lobby-button"
                             onClick={() => spectateLobby({lobby})}>
-                          <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul> </div>)}}}
+                          <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul>)}}}
   }
 
   if (user) {
@@ -196,7 +193,10 @@ const LobbyOverview = () => {
           </div>
           {buttons}
           <div className="overview lobby-container">
-          {content}
+              <div className="overview view-description">
+              <p className="overview paragraph">{description}</p>
+              {content}
+          </div>
           {noGames}
           </div>
           <hr width="80%"/>
