@@ -20,13 +20,14 @@ const GamePage = () => {
     let [tileAmount, setTileAmount] = useState(null);
     let [playerIndex, setPlayerIndex] = useState(0);
     let [timer, setTimer] = useState(30);
+    let [spectator, setSpectator] = useState(false);
 
     function TurnOrder(props) {
-        let namePlayer1 = (<PlayerInfo index={0} name={props.data.lobbyData.nameOne} userId={props.data.lobbyData.one} data={props.data}/>);
-        let namePlayer2 = (<PlayerInfo index={1} name={props.data.lobbyData.nameTwo} userId={props.data.lobbyData.two} data={props.data}/>);
+        let namePlayer1 = (<PlayerInfo index={0} data={props.data}/>);
+        let namePlayer2 = (<PlayerInfo index={1} data={props.data}/>);
         let namePlayer3, namePlayer4;
-        if (props.data.lobbyData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} name={props.data.lobbyData.nameThree} userId={props.data.lobbyData.three} data={props.data}/>); }
-        if (props.data.lobbyData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} name={props.data.lobbyData.nameFour} userId={props.data.lobbyData.four} data={props.data}/>); }
+        if (props.data.lobbyData.current_players >= 3) { namePlayer3 = (<PlayerInfo index={2} data={props.data}/>); }
+        if (props.data.lobbyData.current_players == 4) { namePlayer4 = (<PlayerInfo index={3} data={props.data}/>); }
         return (<div className="game turn-order">
                    {namePlayer1} {namePlayer2} {namePlayer3} {namePlayer4}
                 </div>);
@@ -37,11 +38,31 @@ const GamePage = () => {
         let width = "100%";
         let className = "player-turn";
         if (props.data.players[id].playerId == props.data.playerTurnId) width = "120%";
-        if (props.data.players[id].playerId == playerIndex) { className = "player-turn you"; }
+        if (props.data.players[id].playerId == playerIndex && !spectator) { className = "player-turn you"; }
         else if (props.data.activePlayers[id] == "x") { className = "player-turn left"; }
         return (<Button className={className} width={width} onMouseOut={()=>{setView(null)}} onMouseOver={()=>{setView(id)}}>
-                 <div className="game image"><img src={buildGetRequestExternalAPI(props.userId)}/></div>
-                 {props.name} <div className="game score">{props.data.players[id].score}</div> </Button>)
+                 <div className="game image"><img src={buildGetRequestExternalAPI(props.data.lobbyData.players[id].id)}/></div>
+                 {props.data.lobbyData.players[id].name} <div className="game score">{props.data.players[id].score}</div> </Button>)
+    }
+
+    function SpectatorList(props) {
+        let s1, s2, s3, s4;
+        if (props.data.lobbyData.current_spectators > 0) s1 = (<SpectatorInfo index={0} data={props.data}/>);
+        if (props.data.lobbyData.current_spectators > 1) s2 = (<SpectatorInfo index={1} data={props.data}/>);
+        if (props.data.lobbyData.current_spectators > 2) s3 = (<SpectatorInfo index={2} data={props.data}/>);
+        if (props.data.lobbyData.current_spectators > 3) s4 = (<SpectatorInfo index={3} data={props.data}/>);
+        return (<div className="game spectator-list">
+                   {s1} {s2} {s3} {s4}
+                </div>);
+    }
+
+    function SpectatorInfo(props){
+        let id = props.index;
+        let className = "spectator-turn";
+        if (props.data.lobbyData.spectators[id].id == localStorage.getItem('id')) { className = "spectator-turn you"; }
+        return (<div className={className}>
+                 <div className="game image"><img src={buildGetRequestExternalAPI(props.data.lobbyData.spectators[id].id)}/></div>
+                 {props.data.lobbyData.spectators[id].name} </div>)
     }
 
     function MiddleTiles(props){
@@ -53,14 +74,14 @@ const GamePage = () => {
         if (props.col3 > 0) { col3 = (<Tile color={2} amount={props.col3} origin={-1}/>);}
         if (props.col4 > 0) { col4 = (<Tile color={3} amount={props.col4} origin={-1}/>);}
         if (props.col5 > 0) { col5 = (<Tile color={4} amount={props.col5} origin={-1}/>);}
-
+        if (!props.zero && !col1 && !col2 && !col3 && !col4 && !col5) return null;
         return (<div className="game tiles-container">
                     {zero} {col1} {col2} {col3} {col4} {col5} </div>)
     }
 
     function Tile(props){
         let inactive = false;
-        if (props.inactive || game.playerTurnId != playerIndex) { inactive = true; }
+        if (props.inactive || game.playerTurnId != playerIndex || spectator) { inactive = true; }
         else {inactive = false;}
         let amount = " ";
         if (props.amount) amount = props.amount;
@@ -174,7 +195,7 @@ const GamePage = () => {
 
     function StairLine(props){
         let inactive = false;
-        if ((view == null && game.playerTurnId != playerIndex) || (view != null && game.playerTurnId != view)) inactive = true;
+        if ((view == null && game.playerTurnId != playerIndex) || (view != null && game.playerTurnId != view) || spectator) inactive = true;
 
         // Tiles that can be placed on the stairs (purely visual)
         let [hovered, setHovered] = useState(false);
@@ -261,7 +282,7 @@ const GamePage = () => {
 
     function FloorLine(props){
       let inactive = true;
-      if (props.game.playerTurnId == playerIndex) { inactive = false; }
+      if (props.game.playerTurnId == playerIndex && !spectator) { inactive = false; }
         return (<Button className="game floorline" disabled={inactive} onClick={() => placeTiles(-1)}>
             <FloorTile value={-1} id={0} data={props.floorline}/>
             <FloorTile value={-1} id={1} data={props.floorline}/>
@@ -281,7 +302,11 @@ const GamePage = () => {
         </div>)
     }
 
-    async function Leave() {
+    async function Leave(){
+        if (spectator) StopSpectating();
+        else QuitGame();
+    }
+    async function QuitGame() {
         try {
             await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/"+localStorage.getItem('id')+"/leave");
             history.push("/home");
@@ -292,6 +317,12 @@ const GamePage = () => {
             console.error("Details:", error);
             alert("Something went wrong while leaving the game! See the console for details.");
         }
+    }
+
+    async function StopSpectating() {
+        await api.put("/lobbies/"+localStorage.getItem('lobby')+"/users/"+localStorage.getItem('id')+"/spectate/leave");
+        history.push("/home");
+        localStorage.removeItem('lobby');
     }
 
     async function skipTurn(){
@@ -306,11 +337,16 @@ const GamePage = () => {
                 setGame(game);
                 console.log("game:");
                 console.log(game);
-                let players = game.lobbyData;
-                if (players.one == localStorage.getItem('id')) {setPlayerIndex(0);}
-                else if (players.two == localStorage.getItem('id')) {setPlayerIndex(1);}
-                else if (players.three == localStorage.getItem('id')) {setPlayerIndex(2);}
-                else if (players.four == localStorage.getItem('id')) {setPlayerIndex(3);}
+                let players = game.lobbyData.players;
+                for (let i = 0; i < game.lobbyData.current_players; i++) {
+                    if (players[i].id == localStorage.getItem('id')) {
+                        setPlayerIndex(i);
+                        break;
+                    }
+                }
+                for (let i = 0; i < game.lobbyData.current_spectators; i++){
+                    if (game.lobbyData.spectators[i].id == localStorage.getItem('id')) {setSpectator(true);}
+                }
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);
@@ -322,6 +358,8 @@ const GamePage = () => {
             let game = currentGame.data;
             setGame(game);
             console.log(game);
+            let id = game.playerTurnId;
+            if (spectator) setPlayerIndex(id);
         }
         fetchData();
         const interval = setInterval(() => {
@@ -334,6 +372,7 @@ const GamePage = () => {
     }, []);
 
     let turnOrder;
+    let spectatorList;
     let yourTurn;
     let middle;
     let factories;
@@ -363,7 +402,7 @@ const GamePage = () => {
     }
 
     if (game) {
-        if (game.playerTurnId == playerIndex) {
+        if (game.playerTurnId == playerIndex && !spectator) {
             if (colorIndex != null) pickedUp = (<div className="game holding">
                 <div className="game holding-text">Holding {tileAmount} {colorString(colorIndex)} {tilePlural(tileAmount)}</div>
                 <Button onClick={() => unpick()}> Drop </Button>
@@ -372,6 +411,7 @@ const GamePage = () => {
             yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
         }
         turnOrder = (<TurnOrder data={game}/>);
+        spectatorList = (<SpectatorList data={game}/>);
         middle = (<MiddleTiles zero={game.middle.hasMinusTile} col1={game.middle.colorAmounts[0]}
                                col2={game.middle.colorAmounts[1]} col3={game.middle.colorAmounts[2]}
                                col4={game.middle.colorAmounts[3]} col5={game.middle.colorAmounts[4]}/>);
@@ -380,6 +420,10 @@ const GamePage = () => {
             stairs = (<Stairs stairs={game.players[view].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[view].playerBoard.wall.positionsOccupied}/>);
             floor = (<FloorLine floorline={game.players[view].playerBoard.floorLine} game={game}/>);
+        } else if (spectator) {
+            stairs = (<Stairs stairs={game.players[game.playerTurnId].playerBoard.stairs}/>);
+            wall = (<Wall positionsOccupied={game.players[game.playerTurnId].playerBoard.wall.positionsOccupied}/>);
+            floor = (<FloorLine floorline={game.players[game.playerTurnId].playerBoard.floorLine} game={game}/>);
         } else {
             stairs = (<Stairs stairs={game.players[playerIndex].playerBoard.stairs}/>);
             wall = (<Wall positionsOccupied={game.players[playerIndex].playerBoard.wall.positionsOccupied}/>);
@@ -409,13 +453,14 @@ const GamePage = () => {
                 {yourTurn}
                 {pickedUp}
                 {viewedBoard}
-                {turnOrder}
+                <div className="game turn-order">
+                    {turnOrder}
+                    {spectatorList}
+                    </div>
                 {skipButton}
             </div>
-
         </BaseContainer>
     );
-
 }
 
 export default GamePage;

@@ -72,6 +72,16 @@
     position: sticky;
     right: 0px;
   }
+  &.spectator-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    max-width: 20%;
+    min-width: 120px;
+    align-items: flex-end;
+    position: sticky;
+    right: 0px;
+  }
   &.score{
     color: $accent;
     position: absolute;
@@ -182,7 +192,7 @@
   padding: 10px;
   height: 55px;
   width: 100%;
-  font-size: 18pt;
+  font-size: 17pt;
   background: $background;
   display: flex;
   flex-direction: row;
@@ -196,6 +206,24 @@
   &.left {
     border: 1px solid #808080;
     color: #808080;
+  }
+}
+
+.spectator-turn {
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 0.75em 0 0 0.75em;
+  padding: 10px;
+  height: 55px;
+  width: 80%;
+  font-size: 15pt;
+  background: $background;
+  display: flex;
+  flex-direction: row;
+  padding-right: 30px;
+  border: 1px solid $accentDark;
+  &.you {
+    border: 1px solid $accent;
   }
 }
 
