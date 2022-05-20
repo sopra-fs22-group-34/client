@@ -28,6 +28,15 @@ const WinnerPage = () => {
         return (<div className="winner podium-step">{props.data}</div>)
     }
 
+    function PlayerScore(props){
+        return (
+            <div className="winner box">
+                <div className="winner name"> {props.name} </div>
+                <div className="winner score"> {props.score} </div>
+            </div>
+        );
+    }
+
     useEffect(() => {
         async function fetchUsers() {
             try {
@@ -83,18 +92,10 @@ const WinnerPage = () => {
             </div>
             <div className="winner title">Thank you for playing Azul!</div>
             <div className="winner player-names">Scoreboard</div>
-            <div className="winner player-names">
-                {player1} {scorePlayer1}<br/>
-            </div>
-            <div className="winner player-names">
-                {player2} {scorePlayer2}<br/>
-            </div>
-            <div className="winner player-names">
-                {player3} {scorePlayer3} <br/>
-            </div>
-            <div className="winner player-names">
-                {player4} {scorePlayer4} <br/>
-            </div>
+            <PlayerScore name={player1} score={scorePlayer1} />
+            <PlayerScore name={player2} score={scorePlayer2} />
+            <PlayerScore name={player3} score={scorePlayer3} />
+            <PlayerScore name={player4} score={scorePlayer4} />
             <div>
                 <Step/>
             </div>

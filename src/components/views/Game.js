@@ -361,6 +361,7 @@ const GamePage = () => {
             let id = game.playerTurnId;
             if (spectator) setPlayerIndex(id);
             if (game.gameOver === true) {
+                await new Promise(resolve => setTimeout(resolve, 3000));
                 history.push("/winner");
             }
         }
