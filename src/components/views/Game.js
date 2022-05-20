@@ -8,11 +8,13 @@ import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
 import {buildGetRequestExternalAPI} from "./User";
 import Rules from "./Rules";
+import Leave from "./Leave";
 
 const GamePage = () => {
     const history = useHistory();
     const [isOpen, setIsOpen] = useState(false);
     const togglePopup = () => {setIsOpen(!isOpen);}
+    const togglePopup2 = () => {setIsOpen(!isOpen);}
     let [view, setView] = useState(null);
     let [game, setGame] = useState(null);
     let [originIndex, setOriginIndex] = useState(null);
@@ -440,7 +442,7 @@ const GamePage = () => {
         <BaseContainer className="game container">
             {isOpen && <Rules content={<> </>} handleClose={togglePopup} />}
             <div className="game buttons-L">
-            <Button className="blue-button" onClick={() => Leave()}> &#60; Leave </Button>
+            <Button className="blue-button" onClick={togglePopup}> &#60; Leave </Button>
             </div>
             <div className="game buttons-R">
             <Button className="orange-button" onClick={togglePopup}> Game Rules </Button>
