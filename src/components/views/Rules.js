@@ -84,8 +84,8 @@ const RulesPage = props => {
         content = (<div>
             <div className="rules title"><b>Step 1: </b>pick up all tiles of the same color from...</div>
             <div className="example list">
-                <ImageExample thing={"a Factory"} text={"Remaining tiles are moved to the middle."} image={factory}/>
-                <WideImageExample thing={"the Middle"} text={"The first player to pick tiles from the middle gets the -1 tile, but will start the next round."} image={middle} />
+                <ImageExample thing={"...a Factory"} text={"Remaining tiles are moved to the middle."} image={factory}/>
+                <WideImageExample thing={"...the Middle"} text={"The first player to pick tiles from the middle gets the -1 tile, but will start the next round."} image={middle} />
             </div>
             <div className="rules title"><b>Step 2: </b>place the chosen tiles one one of your pattern lines</div>
             <div className="example list">
@@ -124,11 +124,15 @@ const RulesPage = props => {
     return (
         <BaseContainer className="popup-box">
             <div className="rules container">
-                <Button className="blue-button" onClick={props.handleClose}> x </Button>
+                <div className="rules exit">
+                <Button className="blue-button" onClick={props.handleClose}> x </Button></div>
                 <div className="example list">
                     <InfoBox thing="Goal" text="Complete as many pattern lines as you can!"/>
+                    <div className="example greater"> &gt; </div>
                     <InfoBox thing="Complete" text="If a pattern line is full, that line is considered complete. (Incomplete pattern lines carry over to the next round.)"/>
+                    <div className="example greater"> &gt; </div>
                     <InfoBox thing="Round" text="A round ends when the middle and all factories are empty."/>
+                    <div className="example greater"> &gt; </div>
                     <InfoBox thing="Game End" text="The game ends once at least one player has a horizontal line on their wall."/>
                 </div>
                 {buttons}
