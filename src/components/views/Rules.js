@@ -4,41 +4,98 @@ import {useState} from 'react';
 import "styles/views/Rules.scss";
 import {Button} from 'components/ui/Button';
 
+import color from '../../assets/color.png'
+import connect from '../../assets/connect.png'
+import factory from '../../assets/factory.png'
+import horizontal from '../../assets/horizontal.png'
+import middle from '../../assets/middle.png'
+import single from '../../assets/single.png'
+import vertical from '../../assets/vertical.png'
+import valid from '../../assets/valid.png'
+import invalid from '../../assets/invalid.png'
+
 const RulesPage = props => {
     let [view, setView] = useState("gameplay");
     let content;
     let buttons;
+
+    function MainPointsExample(props){
+        return (
+            <div className="example big-container">
+                <div className="example points"> {props.points} Point</div>
+                <div className="example text"> {props.text} </div>
+                <img alt="image" width="100%" src={props.image}/>
+            </div>
+        );
+    }
+    function PointsExample(props){
+        return (
+            <div className="example container">
+                <div className="example points"> +{props.points} Points</div>
+                <div className="example text"> {props.text} </div>
+                <img alt="image" width="100%" src={props.image}/>
+            </div>
+        );
+    }
+
+    function ImageExample(props){
+        return (
+            <div className="example img-container">
+                <div className="example points"> {props.thing}</div>
+                <div className="example text"> <i>{props.text}</i> </div>
+                <img alt="image" height="60%" src={props.image}/>
+            </div>
+        );
+    }
+
+    function WideImageExample(props){
+        return (
+            <div className="example img-container">
+                <div className="example points"> {props.thing}</div>
+                <div className="example text"> <i>{props.text}</i> </div>
+                <img alt="image" width="100%" src={props.image}/>
+            </div>
+        );
+    }
+
+    function MoveExample(props){
+        return (
+            <div className="example img-container">
+                <div className="example points"> {props.thing}</div>
+                <div className="example text"> <i>{props.text}</i> </div>
+                <img alt="image" height="40%" src={props.image}/>
+            </div>
+        );
+    }
+    function InfoBox(props){
+        return (
+            <div className="example info-container">
+                <div className="example points"> {props.thing}</div>
+                <div className="example text"> {props.text} </div>
+            </div>
+        );
+    }
+
     if (view === "gameplay") {
         buttons = (<div className="rules buttons-container">
                        <Button className="rules-buttons L" onClick={() => setView("gameplay")}> Gameplay </Button>
                        <Button className="rules-inactive R" onClick={() => setView("scoring")}> Scoring </Button>
                    </div>);
         content = (<div>
-            <div className="rules title">Gameplay</div>
-            <div className="rules text">
-                    <div className="rules text">
-                        To start, pick up all tiles of the same color from:<p>
-                        a) A Factory display.
-                        (The remaining tiles get moved to the middle.)</p><p>
-                        b) The middle.
-                        (The first player to pick tiles from the middle gets a minus point, but also gets to play first in the next round.)</p>
-
-                        <p> Then, add the chosen tiles to one of the 5 pattern lines on your player board. [PICTURE OF PATTERN LINES] </p>
-                        <p> If a pattern line already holds tiles, you can only add tiles of the same color to it.
-                            Once all spaces of a pattern line are filled, that line is considered complete. </p>
-                        <p> If you have picked up more tiles than you can place on your chosen pattern line,
-                            the excess tiles get placed on the floor line (see Floor Line). </p>
-
-                        <i>Your goal in this phase is to complete as many pattern lines as you can!</i>
-
-                        <p>This phase ends when the middle and all Factory displays contain no more tiles.</p>
-                    </div>
-                    <div className="rules subtitle">Floor line</div>
-                    <div className="rules text">
-                        Any tiles you cannot or do not want to place according to the rules must be placed
-                        on your floor line. These tiles give minus points in the Wall-tiling phase.
-                    </div>
-                </div>
+            <div className="rules title"><b>Step 1: </b>pick up all tiles of the same color from...</div>
+            <div className="example list">
+                <ImageExample thing={"a Factory"} text={"Remaining tiles are moved to the middle."} image={factory}/>
+                <WideImageExample thing={"the Middle"} text={"The first player to pick tiles from the middle gets the -1 tile, but will start the next round."} image={middle} />
+            </div>
+            <div className="rules title"><b>Step 2: </b>place the chosen tiles one one of your pattern lines</div>
+            <div className="example list">
+                <MoveExample thing={"Valid Target"} text={"An empty pattern line, or one with tiles of the same color.*"} image={valid}/>
+                <MoveExample thing={"Invalid Target"} text={"A pattern line with tiles of a different color, or one that was previously completed."} image={invalid} />
+            </div>
+            <div className="rules title">
+                *Excess tiles, or any other tiles you cannot place according to the rules must be placed
+                on your floor line. These tiles will give you negative points.
+            </div>
             </div>
         );
     } else {
@@ -47,35 +104,19 @@ const RulesPage = props => {
                        <Button className="rules-buttons R" onClick={() => setView("scoring")}> Scoring </Button>
                    </div>);
         content = (<div>
-
-            <div className="rules title">Scoring</div>
             <div className="rules text">
-                Any tiles from your completed pattern lines will be moved over to the wall, and you will gain points as follows:
-                <ul>
-                    <li>
-                        If there are no tiles adjacent (vertically or horizontally) to the newly placed tile,
-                        you gain 1 point.
-                    </li>
-                    <li>
-                        If there are any adjacent tiles, all horizontally and vertically linked tiles
-                        earn you 1 point each. [INCLUDE PICTURE AS EXAMPLE]
-                    </li>
-                </ul>
-                Additionally, you gain:
-                <ul>
-                    <li> 2 points for each complete horizontal line of 5 consecutive tiles on your wall.</li>
-                    <li> 2 points for each complete vertical line of 5 consecutive tiles on your wall. </li>
-                    <li> 10 points for each color of which you have placed all 5 tiles on your wall. </li>
-                </ul>
-                For each tile in your floor line, you lose the number of points written next to it.
-                Your score will get adjusted accordingly, but you can never drop below 0 points.
-                <p> Once the points are calculated, any remaining tiles on the pattern lines stay on your player board for the next round.</p>
-            </div>
-            <br/>
-            <div className="rules title">End of the game</div>
-            <div className="rules text">
-                The game ends right after the Wall-tiling phase in which at least one player has completed at least one
-                horizontal line of 5 consecutive tiles on her wall.
+                <div className="rules title">Tiles from completed pattern lines are moved to the wall and earn points:</div>
+                <div className="example list">
+                    <MainPointsExample points={1} text={"single tile"} image={single}/>
+                    <MainPointsExample points={"+1"} text={"each adjacent tile"} image={connect} />
+                </div>
+                <div className="example list">
+                    <PointsExample points={2} text={"horizontal line"} image={horizontal}/>
+                    <PointsExample points={7} text={"vertical line"} image={vertical} />
+                    <PointsExample points={10} text={"all tiles of color"} image={color} />
+                </div>
+                <div className="rules title">For each tile in your floor line, you lose the number of points written next to it.<br/>
+                (You can never drop below 0 points.)</div>
             </div>
         </div>
         )
@@ -84,13 +125,12 @@ const RulesPage = props => {
         <BaseContainer className="popup-box">
             <div className="rules container">
                 <Button className="blue-button" onClick={props.handleClose}> x </Button>
-                <div className="rules header">Rules of Azul</div>
-                    <div className="rules title">Game Objective:</div>
-                    <div className="rules text">
-                    Earn as many points as you can by decorating your wall with tiles!
-                    The game ends once at least one player has completed a horizontal
-                    line of 5 consecutive tiles on their wall. [PICTURE OF HORIZONTAL LINE]
-                    </div>
+                <div className="example list">
+                    <InfoBox thing="Goal" text="Complete as many pattern lines as you can!"/>
+                    <InfoBox thing="Complete" text="If a pattern line is full, that line is considered complete. (Incomplete pattern lines carry over to the next round.)"/>
+                    <InfoBox thing="Round" text="A round ends when the middle and all factories are empty."/>
+                    <InfoBox thing="Game End" text="The game ends once at least one player has a horizontal line on their wall."/>
+                </div>
                 {buttons}
                 {content}
             </div>
