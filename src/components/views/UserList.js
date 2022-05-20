@@ -38,9 +38,7 @@ const UserList = () => {
     history.push('/users/'+user.id);
   }
 
-  const Return = () => {
-    history.push('home');
-  }
+
 
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
@@ -99,7 +97,7 @@ const UserList = () => {
     <BaseContainer className="userlist container">
     <div className="userlist content">
       <div className="userlist button-container">
-          <Button className="blue-button margin" width="50%" onClick={() => Return()} >
+          <Button className="blue-button margin" width="50%" onClick={() => history.push('home')} >
             &#60; Return
           </Button>
       </div>

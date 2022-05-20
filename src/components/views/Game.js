@@ -360,13 +360,14 @@ const GamePage = () => {
             console.log(game);
             let id = game.playerTurnId;
             if (spectator) setPlayerIndex(id);
+            if (game.gameOver === true) {
+                history.push("/winner");
+            }
         }
         fetchData();
         const interval = setInterval(() => {
           quickFetch();
-          if (game && game.gameOver === true) {
-              history.push("/winner");
-          }
+
         }, 3000);
         return () => clearInterval(interval);
     }, []);
