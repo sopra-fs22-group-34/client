@@ -14,31 +14,19 @@
     border-radius: $borderRadius;
     padding: 30px 50px;
   }
-  &.header {
-    margin-bottom: 20px;
-    font-size: 40px;
-    font-weight: bolder;
-  }
   &.title {
-    font-size: x-large;
-    font-style: normal;
-    font-weight: bolder;
+    font-size: 15pt;
     position: relative;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-bottom: 10px;
   }
-  &.subtitle {
-    font-size: large;
-    font-weight: bold;
-  }
-  &.list-item {
-    font-size: large;
-    font-weight: bold;
-  }
-  &.text {
-    position: relative;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  &.exit {
+    position: absolute;
+    display: flex;
+    top: 10px;
+    left: 33%;
+    justify-content: center;
+    width: 100%;
   }
 }
 
@@ -75,6 +63,74 @@
   }
   &.R {
     border-radius: 0 20px 20px 0;
+  }
+}
+
+.example {
+  &.list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  &.big-container {
+    max-width: 22%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparentize($accent, 0.5);
+    border-radius: $borderRadius;
+    padding: 10px 15px;
+    margin: 10px;
+  }
+  &.img-container {
+    max-width: 50%;
+    max-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparentize($accent, 0.5);
+    border-radius: $borderRadius;
+    padding: 10px 15px;
+    margin: 10px;
+  }
+  &.container {
+    max-width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparentize($accent, 0.5);
+    border-radius: $borderRadius;
+    padding: 10px 15px;
+    margin: 10px;
+  }
+  &.info-container {
+    max-width: 36%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparentize($accent, 0.5);
+    border-radius: $borderRadius;
+    padding: 10px 15px;
+    margin: 10px 5px 20px 5px;
+  }
+  &.points {
+    color: $accent;
+    font-size: 15pt;
+    margin-bottom: 5px;
+  }
+  &.text {
+    margin-bottom: 10px;
+  }
+  &.greater {
+    color: $accent;
+    display: flex;
+    align-items: center;
+    font-size: 15pt;
+    font-weight: bold;
   }
 }
 
