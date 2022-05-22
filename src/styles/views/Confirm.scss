@@ -1,0 +1,76 @@
+@import 'styles/theme';
+
+.confirm {
+  &.container {
+    @include center;
+    flex-direction: column;
+    display: flex;
+    min-width: calc(66% - 0px);
+    max-width: 800px;
+    max-height: 95%;
+    margin: 20px;
+    background: transparentize($background, 0.05);
+    border: 1px solid $accent;
+    border-radius: $borderRadius;
+    padding: 30px 50px;
+  }
+  &.title {
+    font-size: 15pt;
+    position: relative;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  &.exit {
+    position: absolute;
+    display: flex;
+    top: 10px;
+    left: 33%;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.confirm-buttons {
+  &:hover {
+    transform: none;
+  }
+  padding: 6px 16px;
+  &.L {
+    border-radius: 20px 0 0 20px;
+  }
+  &.M {
+    border-radius: 0;
+  }
+  &.R {
+    border-radius: 0 20px 20px 0;
+  }
+}
+
+.leave-inactive {
+  &:hover {
+    transform: none;
+    background-color: transparentize($accent, 0.8);
+  }
+  padding: 6px 16px;
+  border: 1px solid $accent;
+  background: $background;
+  color: #FFFFFF;
+  &.L {
+    border-radius: 20px 0 0 20px;
+  }
+  &.M {
+    border-radius: 0;
+  }
+  &.R {
+    border-radius: 0 20px 20px 0;
+  }
+}
+
+.popup-box {
+  position: fixed;
+  z-index: +1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}

@@ -6,6 +6,7 @@ import Lobby from 'models/Lobby';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Lobby.scss";
+import Confirm from "./Confirm";
 
 async function Kick(player) {
     try { await api.put(window.location.pathname+"/users/"+player+"/leave");
@@ -32,6 +33,8 @@ const LobbyPage = () => {
   const [p3Box, setP3Box] = useState(null);
   const [p4Box, setP4Box] = useState(null);
   const [full, setFull] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
+    const togglePopup2 = () => {setIsOpen2(!isOpen2);}
 
   async function startGame() {
     try { await api.post(window.location.pathname+"/game"); }
@@ -144,8 +147,9 @@ const LobbyPage = () => {
   }
   return (
       <BaseContainer className="lobby container"><div className="lobby content">
+          {isOpen2 && <Confirm content={<> </>} handleClose={togglePopup2} handleConfirm={Return}/>}
       <div className="lobby buttons-container">
-        <Button  className="blue-button" width="30%" onClick={() => Return()}>
+        <Button  className="blue-button" width="30%" onClick={togglePopup2}>
             &#60; Leave
           </Button>
           {startNow}
