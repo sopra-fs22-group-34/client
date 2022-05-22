@@ -24,7 +24,7 @@ const RulesPage = props => {
             <div className="example big-container">
                 <div className="example points"> {props.points} Point</div>
                 <div className="example text"> {props.text} </div>
-                <img alt="image" width="100%" src={props.image}/>
+                <img alt={props.text} width="100%" src={props.image}/>
             </div>
         );
     }
@@ -33,7 +33,7 @@ const RulesPage = props => {
             <div className="example container">
                 <div className="example points"> +{props.points} Points</div>
                 <div className="example text"> {props.text} </div>
-                <img alt="image" width="100%" src={props.image}/>
+                <img alt={props.text} width="100%" src={props.image}/>
             </div>
         );
     }
@@ -43,7 +43,7 @@ const RulesPage = props => {
             <div className="example img-container">
                 <div className="example points"> {props.thing}</div>
                 <div className="example text"> <i>{props.text}</i> </div>
-                <img alt="image" height="60%" src={props.image}/>
+                <img alt={props.alt} height="60%" src={props.image}/>
             </div>
         );
     }
@@ -53,7 +53,7 @@ const RulesPage = props => {
             <div className="example img-container">
                 <div className="example points"> {props.thing}</div>
                 <div className="example text"> <i>{props.text}</i> </div>
-                <img alt="image" width="100%" src={props.image}/>
+                <img alt={props.alt} width="100%" src={props.image}/>
             </div>
         );
     }
@@ -63,7 +63,7 @@ const RulesPage = props => {
             <div className="example img-container">
                 <div className="example points"> {props.thing}</div>
                 <div className="example text"> <i>{props.text}</i> </div>
-                <img alt="image" height="40%" src={props.image}/>
+                <img alt={props.thing} height="40%" src={props.image}/>
             </div>
         );
     }
@@ -84,8 +84,8 @@ const RulesPage = props => {
         content = (<div>
             <div className="rules title"><b>Step 1: </b>pick up all tiles of the same color from...</div>
             <div className="example list">
-                <ImageExample thing={"...a Factory"} text={"Remaining tiles are moved to the middle."} image={factory}/>
-                <WideImageExample thing={"...the Middle"} text={"The first player to pick tiles from the middle gets the -1 tile, but will start the next round."} image={middle} />
+                <ImageExample thing={"...a Factory"} alt="factory" text={"Remaining tiles are moved to the middle."} image={factory}/>
+                <WideImageExample thing={"...the Middle"} alt="middle" text={"The first player to pick tiles from the middle gets the -1 tile, but will start the next round."} image={middle} />
             </div>
             <div className="rules title"><b>Step 2: </b>place the chosen tiles one one of your pattern lines</div>
             <div className="example list">

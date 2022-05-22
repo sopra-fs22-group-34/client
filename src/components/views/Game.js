@@ -206,6 +206,7 @@ const GamePage = () => {
         let invalid = (<div className="game preview-tile"><Tile color={6}/></div>);
 
         let tile1, tile2, tile3, tile4, tile5;
+        let onWall = game.players[playerIndex].playerBoard.wall.colorsOccupied[props.length-1][colorIndex];
 
         if (props.length == 1) tile1 = filler;
         else if (props.length == 2) tile1 = tile2 = filler;
@@ -221,23 +222,23 @@ const GamePage = () => {
         // Move Hover Preview
         if (hovered) {
             if (tile1 == filler && tileAmount > 0){
-                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile1 = invalid;}
+                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile1 = invalid;}
                 else tile1 = preview;
             }
             if (tile2 == filler && (tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 2)){
-                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile2 = invalid;}
+                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile2 = invalid;}
                 else tile2 = preview;
             }
             if (tile3 == filler && (tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 3)){
-                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile3 = invalid;}
+                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile3 = invalid;}
                 else tile3 = preview;
             }
             if (tile4 == filler && (tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 4)){
-                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile4 = invalid;}
+                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile4 = invalid;}
                 else tile4 = preview;
             }
             if (tile5 == filler && (tileAmount > 4 || tile4 == tile && tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 5)){
-                if (props.colorIndex != -1 && colorIndex != props.colorIndex) {tile5 = invalid;}
+                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile5 = invalid;}
                 else tile5 = preview;
             }
         }
