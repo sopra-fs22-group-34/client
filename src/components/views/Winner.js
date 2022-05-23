@@ -22,6 +22,8 @@ const WinnerPage = () => {
     let [scorePlayer4, setScorePlayer4] = useState(null);
     let players;
     let lobbyData;
+    let player3Box;
+    let player4Box;
 
     //own functional component, such that a winner can get displayed on steps
     function Step(props) {
@@ -67,26 +69,20 @@ const WinnerPage = () => {
                     setPlayer3(lobbyData.players[2].name);
                     setScorePlayer3(players[2].score);
                     console.log("The score of player three is: " + scorePlayer3);
+                    player3Box = (<div>TEST!!!!<PlayerScore name={player3} score={scorePlayer3} /></div>);
                 }
                 if (lobbyData.current_players > 3) {
                     setPlayer4(lobbyData.players[3].name);
                     setScorePlayer4(players[3].score);
+                    player4Box = (<PlayerScore name={player4} score={scorePlayer4} />)
                 }
                 console.log(players[0].score);
 
 
-                if (lobbyData.current_players > 2) {
-                    let player3Box = (<div>TEST!!!!<PlayerScore name={player3} score={scorePlayer3} /></div>)
-                    console.log("there are more than two players!!!!!!!");
-                }
-                if (lobbyData.current_players > 3) {
-                    let player4Box = (<PlayerScore name={player4} score={scorePlayer4} />)
-                    console.log("there are more than three players!!")
-                }
 
                 // TODO: causes errors for now. get and delete should only be done once
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                //await api.delete("/lobbies/" + localStorage.getItem('lobby'));
+                await api.delete("/lobbies/" + localStorage.getItem('lobby'));
 
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
@@ -102,8 +98,7 @@ const WinnerPage = () => {
         console.log("lobbyData does exist!!");
     }
 
-    let player3Box;
-    let player4Box;
+
 
     return (
 
