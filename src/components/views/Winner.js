@@ -20,8 +20,8 @@ const WinnerPage = () => {
     let [scorePlayer2, setScorePlayer2] = useState(null);
     let [scorePlayer3, setScorePlayer3] = useState(null);
     let [scorePlayer4, setScorePlayer4] = useState(null);
-    let lobbyData;
     let players;
+    let lobbyData;
 
     //own functional component, such that a winner can get displayed on steps
     function Step(props) {
@@ -29,10 +29,14 @@ const WinnerPage = () => {
     }
 
     function PlayerScore(props){
+        let scoreHeight = 150 +(3*props.score);
+
         return (
-            <div className="winner box">
-                <div className="winner name"> {props.name} </div>
+            <div className="winner player">
+            <Button className="winner box" height={scoreHeight}>
                 <div className="winner score"> {props.score} </div>
+            </Button>
+                <div className="winner name"> {props.name} </div>
             </div>
         );
     }
@@ -48,28 +52,41 @@ const WinnerPage = () => {
                 console.log(players);
                 console.log(lobbyData.players[0].id);
                 console.log(lobbyData.players[1].name);
+                console.log("What follows next is the players list:");
+                console.log(lobbyData.players);
 
                 //tried to include the scores too, but something did not work out...
-                setPlayer1(lobbyData.players[0].name + ": ");
+                setPlayer1(lobbyData.players[0].name);
                 //let stepPlayer1 = <Step props = {player1}/>
                 setScorePlayer1(players[0].score);
 
-                setPlayer2(lobbyData.players[1].name + ": ");
+                setPlayer2(lobbyData.players[1].name);
                 setScorePlayer2(players[1].score);
 
                 if (lobbyData.current_players > 2) {
-                    setPlayer3(lobbyData.players[2].name + ": ");
+                    setPlayer3(lobbyData.players[2].name);
                     setScorePlayer3(players[2].score);
+                    console.log("The score of player three is: " + scorePlayer3);
                 }
                 if (lobbyData.current_players > 3) {
-                    setPlayer4(lobbyData.players[3].name + ": ");
+                    setPlayer4(lobbyData.players[3].name);
                     setScorePlayer4(players[3].score);
                 }
                 console.log(players[0].score);
 
+
+                if (lobbyData.current_players > 2) {
+                    let player3Box = (<div>TEST!!!!<PlayerScore name={player3} score={scorePlayer3} /></div>)
+                    console.log("there are more than two players!!!!!!!");
+                }
+                if (lobbyData.current_players > 3) {
+                    let player4Box = (<PlayerScore name={player4} score={scorePlayer4} />)
+                    console.log("there are more than three players!!")
+                }
+
                 // TODO: causes errors for now. get and delete should only be done once
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                await api.delete("/lobbies/" + localStorage.getItem('lobby'));
+                //await api.delete("/lobbies/" + localStorage.getItem('lobby'));
 
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
@@ -81,6 +98,13 @@ const WinnerPage = () => {
 
     },[]);
 
+    if (lobbyData) {
+        console.log("lobbyData does exist!!");
+    }
+
+    let player3Box;
+    let player4Box;
+
     return (
 
         <BaseContainer className="winner container">
@@ -91,11 +115,12 @@ const WinnerPage = () => {
                 GAME OVER
             </div>
             <div className="winner title">Thank you for playing Azul!</div>
-            <div className="winner player-names">Scoreboard</div>
-            <PlayerScore name={player1} score={scorePlayer1} />
-            <PlayerScore name={player2} score={scorePlayer2} />
-            <PlayerScore name={player3} score={scorePlayer3} />
-            <PlayerScore name={player4} score={scorePlayer4} />
+            <div className="winner player-container">
+            <PlayerScore name={player1} score={scorePlayer1}/>
+            <PlayerScore name={player2} score={scorePlayer2}/>
+                {player3Box}
+                {player4Box}
+            </div>
             <div>
                 <Step/>
             </div>
