@@ -50,10 +50,34 @@ const GamePage = () => {
 
     function SpectatorList(props) {
         let s1, s2, s3, s4;
-        if (props.data.lobbyData.current_spectators > 0) s1 = (<SpectatorInfo index={0} data={props.data}/>);
-        if (props.data.lobbyData.current_spectators > 1) s2 = (<SpectatorInfo index={1} data={props.data}/>);
-        if (props.data.lobbyData.current_spectators > 2) s3 = (<SpectatorInfo index={2} data={props.data}/>);
-        if (props.data.lobbyData.current_spectators > 3) s4 = (<SpectatorInfo index={3} data={props.data}/>);
+        if (props.data.lobbyData.current_spectators > 0) {
+            s1 = (<SpectatorInfo index={0} data={props.data}/>);
+            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
+                s1 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
+                    <SpectatorInfo index={0} data={props.data}/></div>);
+            }
+        }
+        if (props.data.lobbyData.current_spectators > 1) {
+            s2 = (<SpectatorInfo index={1} data={props.data}/>);
+            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
+                s2 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
+                    <SpectatorInfo index={1} data={props.data}/></div>);
+            }
+        }
+        if (props.data.lobbyData.current_spectators > 2) {
+            s3 = (<SpectatorInfo index={2} data={props.data}/>);
+            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
+                s3 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
+                    <SpectatorInfo index={2} data={props.data}/></div>);
+            }
+        }
+        if (props.data.lobbyData.current_spectators > 3) {
+            s4 = (<SpectatorInfo index={3} data={props.data}/>);
+            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
+                s4 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
+                    <SpectatorInfo index={3} data={props.data}/></div>);
+            }
+        }
         return (<div className="game spectator-list">
                    {s1} {s2} {s3} {s4}
                 </div>);
@@ -332,6 +356,14 @@ const GamePage = () => {
 
     async function skipTurn(){
         await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/skip");
+    }
+
+    async function KickSpectator(id) {
+        try {
+            await api.put("/lobbies/" + localStorage.getItem('lobby') + "/users/" + id + "/spectate/leave");
+        } catch (error) {
+            alert(`Something went wrong while kicking the spectator: \n${handleError(error)}`);
+        }
     }
 
     useEffect(() => {
