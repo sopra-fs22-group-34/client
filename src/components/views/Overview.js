@@ -157,8 +157,15 @@ const LobbyOverview = () => {
 
     const joinPrivateLobby = async (login) => {
         try {
+            for (let i = 0; i < lobbies.length; i++){
+                if (lobbies[i].secret_url == secretCode){
+                    if (lobbies[i].id != user.lobby) {await api.put('/lobbies/'+lobbies[i].id+'/users/'+localStorage.getItem("id")+'/join');}
+                    localStorage.setItem('lobby', lobbies[i].id);
+                    history.push('/lobbies/'+lobbies[i].id);
+                }
+            }
         } catch (error) {
-
+            alert(`Something went wrong when joining the private lobby: \n${handleError(error)}`);
         }
     }
 
