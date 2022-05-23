@@ -7,39 +7,37 @@ import ReactConfetti from "react-confetti";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import {api, handleError} from "../../helpers/api";
 import {useEffect, useState} from "react";
+import {buildGetRequestExternalAPI} from "./User";
 
 
 const WinnerPage = () => {
     const history = useHistory();
     const { width, height } = useWindowSize();
-    let [player1, setPlayer1] = useState(null);
-    let [player2, setPlayer2] = useState(null);
-    let [player3, setPlayer3] = useState(null);
-    let [player4, setPlayer4] = useState(null);
     let [scorePlayer1, setScorePlayer1] = useState(null);
     let [scorePlayer2, setScorePlayer2] = useState(null);
     let [scorePlayer3, setScorePlayer3] = useState(null);
     let [scorePlayer4, setScorePlayer4] = useState(null);
-    let players;
-    let lobbyData;
-    let player3Box;
-    let player4Box;
-
-    //own functional component, such that a winner can get displayed on steps
-    function Step(props) {
-        return (<div className="winner podium-step">{props.data}</div>)
-    }
+    let [game, setGame] = useState(true);
 
     function PlayerScore(props){
-        let scoreHeight = 150 +(3*props.score);
+        if (props.score == null) return null;
+        let scoreHeight = 150 + (3 * props.score);
+        let boxColor = "winner-box";
+        let nameColor = "winner name";
+        if (game.activePlayers[props.index] == "x") {
+            boxColor = "winner-box left";
+            nameColor = "winner name-left";
+        }
 
         return (
             <div className="winner player">
-            <Button className="winner box" height={scoreHeight}>
-                <div className="winner score"> {props.score} </div>
+            <Button className={boxColor} height={scoreHeight}>
+                <div className="winner score"> {game.players[props.index].score} </div>
             </Button>
-                <div className="winner name"> {props.name} </div>
-            </div>
+            <div className="winner name-box">
+            <img width="35px" height="35px" src={buildGetRequestExternalAPI(game.lobbyData.players[props.index].id)}/>
+            <div className={nameColor}> {game.lobbyData.players[props.index].name} </div>
+            </div></div>
         );
     }
 
@@ -47,85 +45,68 @@ const WinnerPage = () => {
         async function fetchUsers() {
             try {
                 let currentGame = await api.get("/lobbies/" + localStorage.getItem('lobby') + "/game");
-                let game = currentGame.data;
+                game = currentGame.data;
+                setGame(game);
                 console.log(game);
-                lobbyData = game.lobbyData;
-                players = game.players;
-                console.log(players);
-                console.log(lobbyData.players[0].id);
-                console.log(lobbyData.players[1].name);
-                console.log("What follows next is the players list:");
-                console.log(lobbyData.players);
+                let lobbyData = game.lobbyData;
+                let players = game.players;
+                console.log(game);
 
-                //tried to include the scores too, but something did not work out...
-                setPlayer1(lobbyData.players[0].name);
-                //let stepPlayer1 = <Step props = {player1}/>
                 setScorePlayer1(players[0].score);
 
-                setPlayer2(lobbyData.players[1].name);
                 setScorePlayer2(players[1].score);
 
                 if (lobbyData.current_players > 2) {
-                    setPlayer3(lobbyData.players[2].name);
                     setScorePlayer3(players[2].score);
-                    console.log("The score of player three is: " + scorePlayer3);
-                    player3Box = (<div>TEST!!!!<PlayerScore name={player3} score={scorePlayer3} /></div>);
                 }
                 if (lobbyData.current_players > 3) {
-                    setPlayer4(lobbyData.players[3].name);
                     setScorePlayer4(players[3].score);
-                    player4Box = (<PlayerScore name={player4} score={scorePlayer4} />)
                 }
-                console.log(players[0].score);
-
-
 
                 // TODO: causes errors for now. get and delete should only be done once
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 await api.delete("/lobbies/" + localStorage.getItem('lobby'));
+                localStorage.removeItem('lobby');
 
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);
             }
         }
-
         fetchUsers();
-
     },[]);
 
-    if (lobbyData) {
-        console.log("lobbyData does exist!!");
+    function calculateWinner(){
+        let index = 0;
+        for (let i = 0; i < game.lobbyData.current_players; i++) {
+            if (game.lobbyData.players[i].id == localStorage.getItem('id')) index = i;
+        }
+        for (let i = 0; i < game.lobbyData.current_players; i++) {
+            if (game.players[i].score > game.players[index].score) return false;
+        }
+        return true;
     }
 
-
+    let showConfetti = false;
+    if (scorePlayer1 != null) {
+        showConfetti = calculateWinner();
+    }
 
     return (
-
         <BaseContainer className="winner container">
-            <Button className="blue-button margin" width="50%" onClick={() => history.push('home')} >
-                &#60; Return
-            </Button>
-            <div className="winner header">
-                GAME OVER
+            <div className="winner leave-button">
+            <Button className="blue-button" onClick={() => history.push('/home')}> &#60; Return </Button>
             </div>
-            <div className="winner title">Thank you for playing Azul!</div>
+            <div className="winner header"> GAME OVER </div>
+            <div className="winner title">Thank you for playing Azul Online!</div>
             <div className="winner player-container">
-            <PlayerScore name={player1} score={scorePlayer1}/>
-            <PlayerScore name={player2} score={scorePlayer2}/>
-                {player3Box}
-                {player4Box}
+            <PlayerScore index={0} score={scorePlayer1}/>
+            <PlayerScore index={1} score={scorePlayer2}/>
+            <PlayerScore index={2} score={scorePlayer3}/>
+            <PlayerScore index={3} score={scorePlayer4}/>
             </div>
             <div>
-                <Step/>
-            </div>
-            <div className="winner podium-step">
-            </div>
-            <div>
-                <ReactConfetti
-                    width={width}
-                    height={height}
-            />
+            {showConfetti && <ReactConfetti width={width} height={height} />}
             </div>
         </BaseContainer>
     );
