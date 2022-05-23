@@ -6,9 +6,6 @@
 
   for more information visit https://sass-lang.com/guide
  */
-.privateLobbyField{
-  border: red solid 3px;
-}
 .overview {
   &.container {
     @include center;
@@ -45,7 +42,7 @@
     text-transform: none;
   }
   &.lobby-container {
-    background: transparentize($accent, 0.85);
+    //background: transparentize($accent, 0.85);
     padding: 15px;
     flex-direction: column;
     display: flex;
@@ -63,7 +60,7 @@
     padding-left: 0;
   }
   & p,h2 {
-    margin: 0.5em 0;
+    margin: 5px 0;
   }
   & hr {
     margin: 20px;
@@ -102,6 +99,24 @@
         margin-bottom: 5%;
         display: flex;
       }
+  &.private {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  &.input {
+    &:focus {
+      border: 1px solid $accent;
+    }
+    height: 35px;
+    padding-left: 15px;
+    border: 1px hidden $background;
+    border-radius: 0.75em;
+    margin-right: 10px;
+    background: transparentize($accent, 0.85);
+    color: $textColor;
+    transition: all 0.3s ease;
+  }
 }
 
 .lobbies {

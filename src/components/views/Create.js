@@ -47,7 +47,7 @@ const CreatePage = () => {
         const response = await api.post('/lobbies', requestBody);
         let lobbyId = response.data.id;
         localStorage.setItem('lobby', lobbyId);
-        history.push("/lobbies/"+lobbyId);
+        history.push('/lobby');
     } catch (error) { alert(`Something went wrong while creating the lobby: \n${handleError(error)}`);
         history.push('/home');}
     };

@@ -1,21 +1,17 @@
 @import 'styles/theme';
 
 .winner {
-  &.podium-step {
-    width: 10%;
-    color: #2884C6;
-  }
-  &.player-names {
-    font-size: 250%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
   &.container {
     @include center;
     flex-direction: column;
     display: flex;
-    width: 65%;
-    max-width: 800px;
+    width: 100%;
+  }
+  &.leave-button {
+    margin: 10px;
+    position: fixed;
+    left: 0px;
+    top: 0px;
   }
   &.header {
     margin-top: 10%;
@@ -40,24 +36,31 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  &.box {
-    background: $accent;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
   &.name {
-    float: left;
-    //width: 200px;
+    font-size: 18pt;
+    color: $accent;
+    style: bold;
+    margin-left: 10px;
+  }
+  &.name-left {
+    font-size: 18pt;
+    color: #808080;
+    style: bold;
+    margin-left: 10px;
   }
   &.score {
-    float: left;
+    font-size: 20pt;
+    font-family: $fontMono;
     width: 100%;
   }
   &.player-container {
     flex-direction: row;
     display: flex;
+    padding: 50px 20%;
     align-items: flex-end;
-    width: 80%;
+    justify-content: center;
+    width: 100%;
+    background: $background;
   }
   &.player {
     flex-direction: column;
@@ -67,4 +70,22 @@
     width: 25%;
     margin-top: 50px;
   }
+  &.name-box {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    display: flex;
+  }
+}
+.winner-box {
+    background: $accent;
+    justify-content: center;
+    margin-bottom: 10px;
+    &.left{
+        background: #808080;
+    }
+    cursor: default;
+    &:hover {
+        transform: none;
+    }
 }

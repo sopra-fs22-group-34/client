@@ -10,16 +10,10 @@ import {buildGetRequestExternalAPI} from "./User";
 import User from "../../models/User";
 
 const FormField = props => {
-    return (
-        <div className="login field">
-            {props.label}
-            <input
-                className="login input"
-                placeholder={props.label}
-                value={props.value} maxlength="15"
-                onChange={e => props.onChange(e.target.value)}
-            />
-        </div>
+    return (<input className="overview input"
+                placeholder={props.placeholder}
+                value={props.value} maxlength="8"
+                onChange={e => props.onChange(e.target.value)} />
     );
 };
 
@@ -61,7 +55,7 @@ const LobbyOverview = () => {
       try {
         if (lobby.id != user.lobby) {await api.put('/lobbies/'+lobby.id+'/users/'+localStorage.getItem("id")+'/join');}
         localStorage.setItem('lobby', lobby.id);
-        history.push('/lobbies/'+lobby.id);
+        history.push('/lobby');
       } catch (error) { alert(`Something went wrong when joining the lobby: \n${handleError(error)}`);}
   }
   const spectateLobby = async ({lobby}) => {
@@ -71,6 +65,20 @@ const LobbyOverview = () => {
           history.push('/game');
         } catch (error) { console.error("Details:", error);}
     }
+
+  const joinPrivateLobby = async () => {
+    try {
+        for (let i = 0; i < lobbies.length; i++){
+            if (lobbies[i].secret_url == secretCode){
+                if (lobbies[i].id != user.lobby) {await api.put('/lobbies/'+lobbies[i].id+'/users/'+localStorage.getItem("id")+'/join');}
+                localStorage.setItem('lobby', lobbies[i].id);
+                history.push('/lobby');
+            }
+        }
+    } catch (error) {
+        alert(`Something went wrong when joining the private lobby: \n${handleError(error)}`);
+    }
+  }
 
   function Lobby({lobby}){
     let text = "Join";
@@ -134,7 +142,15 @@ const LobbyOverview = () => {
   let userName = "Player";
   let noGames = "";
   let buttons;
-  let description = "Games looking for players:";
+  let description = "";
+
+  function NoGamesDescription(props){
+    if (props.text == "") return null;
+    return(<div className="overview view-description">
+                <p className="overview paragraph">{props.text}</p>
+                <p className="overview paragraph">Start your own by clicking on "New Game"!</p>
+          </div>)
+    }
 
   function openLobbies(lobbies){
     for (let i = 0; i < lobbies.length; i++){
@@ -155,23 +171,12 @@ const LobbyOverview = () => {
       return !lobby.is_open && lobby.is_public;
     }
 
-    const joinPrivateLobby = async (login) => {
-        try {
-            for (let i = 0; i < lobbies.length; i++){
-                if (lobbies[i].secret_url == secretCode){
-                    if (lobbies[i].id != user.lobby) {await api.put('/lobbies/'+lobbies[i].id+'/users/'+localStorage.getItem("id")+'/join');}
-                    localStorage.setItem('lobby', lobbies[i].id);
-                    history.push('/lobbies/'+lobbies[i].id);
-                }
-            }
-        } catch (error) {
-            alert(`Something went wrong when joining the private lobby: \n${handleError(error)}`);
-        }
-    }
-
   if (game){
     description = "You are currently in a game!";
     content = (<Button className="orange-button" onClick={() => history.push('/game')}>Return to Game </Button>);
+  } else if (user && user.lobby) {
+    description = "You are currently in a lobby!";
+    content = (<Button className="orange-button" onClick={() => history.push('/lobby')}>Return to Lobby </Button>);
   } else if (view == "join") {
       buttons = (<div className="overview button-container">
                      <Button className="rules-buttons L" width="50%" onClick={() => setView("join")}> Play </Button>
@@ -180,7 +185,7 @@ const LobbyOverview = () => {
       if (lobbies) {
           if (!openLobbies(lobbies)) {
             content = <Spinner/>;
-            noGames = 'No open games found. Start your own by clicking on "New Game"!';
+            noGames = 'No open games found.';
             }
           else {
               if (!game) {
@@ -191,7 +196,7 @@ const LobbyOverview = () => {
                               onClick={() => goToLobby({lobby})}>
                             <Lobby lobby={lobby} key={lobby.id}/> </Button> ))} </ul>)}}}
   } else {
-    description = "Currently ongoing games:";
+    description = "";
     buttons = (<div className="overview button-container">
                    <Button className="rules-inactive L" width="50%" onClick={() => setView("join")}> Play </Button>
                    <Button className="rules-buttons R" width="50%" onClick={() => setView("spectate")}> Spectate </Button>
@@ -199,7 +204,7 @@ const LobbyOverview = () => {
     if (lobbies) {
         if (!lobbiesToSpectate(lobbies)) {
             content = <Spinner/>;
-            noGames = 'No ongoing games found. Start your own by clicking on "New Game"!';
+            noGames = 'No ongoing games found.';
             }
         else {
             if (!game) {
@@ -228,25 +233,23 @@ const LobbyOverview = () => {
             </Button>
           </div>
           {buttons}
-            <div className="privateLobbyField overview">
-                <FormField
-                    label="Enter secret Lobby Code"
-                    value={secretCode}
-                    onChange={p => setSecretCode(p)}
-                />
-                <Button
-                    disabled={!secretCode}
-                    width="100%"
-                    onClick={() => joinPrivateLobby(true)} >
-                    join secret lobby
-                </Button>
-            </div>
           <div className="overview lobby-container">
-              <div className="overview view-description">
-              <p className="overview paragraph">{description}</p>
-              {content}
+          <div className="overview view-description">
+          <p className="overview paragraph">{description}</p>
+          {content}
+          <NoGamesDescription text={noGames}/>
           </div>
-          {noGames}
+          </div>
+          <div className="overview private">
+              <FormField
+                  placeholder="Private Lobby Code"
+                  value={secretCode}
+                  onChange={p => setSecretCode(p)} />
+              <Button className="orange-button"
+                  disabled={!secretCode}
+                  width="100%"
+                  onClick={() => joinPrivateLobby()} >
+                  Join &#62; </Button>
           </div>
           <hr width="80%"/>
           <div className="overview button-container">

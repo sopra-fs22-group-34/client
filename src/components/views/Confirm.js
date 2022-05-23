@@ -8,32 +8,32 @@ import {QuitGame} from "./Game";
 
 
 const ConfirmPage = props => {
-    let content;
     let buttons;
+    let message;
+    if (props.text) message = props.message;
+    else message = "Are you sure you want to leave?";
 
-    buttons = (<div>
-        <div className="leave buttons-container">
-            <Button className="leave-buttons L" onClick={props.handleClose}> No </Button>
-            <Button className="leave-inactive R" onClick={props.handleConfirm}> Yes </Button>
-        </div>
-    </div>
-    )
-    content = (<div>
-            <div className="confirm text">
-                <div className="confirm title">Are you sure you want to leave?</div>
-            </div>
-        </div>
-    )
+    if (props.type == "confirm") {
+        buttons = (<div className="confirm buttons-container">
+                    <Button width="50%" className="orange-button" onClick={props.handleConfirm}> Okay </Button>
+                </div>)
+    } else {
+        buttons = (<div className="confirm buttons-container">
+                    <Button width="50%" className="blue-button margin" onClick={props.handleClose}> No </Button>
+                    <Button width="50%" className="orange-button" onClick={props.handleConfirm}> Yes </Button>
+                </div>)
+    }
 
     return (
-        <BaseContainer className="popup-box">
+        <div className="confirm background">
+        <div className="popup-box">
             <div className="confirm container">
-                <div className="confirm exit">
-                    <Button className="blue-button" onClick={props.handleClose}> x </Button></div>
-                {content}
+                <div className="confirm text">
+                    <div className="confirm title">{message}</div> </div>
                 {buttons}
             </div>
-        </BaseContainer>
+        </div>
+        </div>
     );
 
 }

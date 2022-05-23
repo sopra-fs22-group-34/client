@@ -9,7 +9,7 @@ import "styles/views/Lobby.scss";
 import Confirm from "./Confirm";
 
 async function Kick(player) {
-    try { await api.put(window.location.pathname+"/users/"+player+"/leave");
+    try { await api.put("/lobbies/"+localStorage.getItem('lobby')+"/users/"+player+"/leave");
     } catch (error) { alert(`Something went wrong while kicking the user: \n${handleError(error)}`);}
 }
 function PlayerNameText({player=null}) {
@@ -37,7 +37,7 @@ const LobbyPage = () => {
     const togglePopup2 = () => {setIsOpen2(!isOpen2);}
 
   async function startGame() {
-    try { await api.post(window.location.pathname+"/game"); }
+    try { await api.post("/lobbies/"+localStorage.getItem('lobby')+"/game"); }
     catch (error) {
         console.error(`Something went wrong while starting the game. : \n${handleError(error)}`);
         console.error("Details:", error);
@@ -45,7 +45,7 @@ const LobbyPage = () => {
     history.push("/game");
   }
   async function Return() {
-    try { await api.put(window.location.pathname+"/users/"+localStorage.getItem('id')+"/leave");
+    try { await api.put("/lobbies/"+localStorage.getItem('lobby')+"/users/"+localStorage.getItem('id')+"/leave");
         history.push('/home');
     } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
     localStorage.removeItem('lobby');
@@ -60,7 +60,7 @@ const LobbyPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const currentLobby = await api.get(window.location.pathname);
+        const currentLobby = await api.get("/lobbies/"+localStorage.getItem('lobby'));
         const lobby = new Lobby(currentLobby.data);
         setLobby(lobby);
         if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) { isHost = true; }
@@ -88,7 +88,7 @@ const LobbyPage = () => {
         if (lobby.total_players === 4) {setP4Box(<PlayerName player={p4} isHost={isHost}/>);}
         console.log(lobby);
 
-        const isInLobby = await api.get(window.location.pathname + "/users/" + localStorage.getItem('id'));
+        const isInLobby = await api.get("/lobbies/"+localStorage.getItem('lobby') + "/users/" + localStorage.getItem('id'));
         if (!isInLobby.data) {
             history.push('/home');
             localStorage.removeItem('lobby');
@@ -146,8 +146,10 @@ const LobbyPage = () => {
       </div>);
   }
   return (
-      <BaseContainer className="lobby container"><div className="lobby content">
-          {isOpen2 && <Confirm content={<> </>} handleClose={togglePopup2} handleConfirm={Return}/>}
+      <BaseContainer className="lobby container">
+      {isOpen2 && <Confirm content={<> </>} handleClose={togglePopup2} handleConfirm={Return}/>}
+      <div className="lobby content">
+
       <div className="lobby buttons-container">
         <Button  className="blue-button" width="30%" onClick={togglePopup2}>
             &#60; Leave

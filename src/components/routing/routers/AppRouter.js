@@ -30,13 +30,13 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path = "/game/over">
+          <WinnerPage/>
+        </Route>
         <Route path="/game">
           <GameGuard>
             <GamePage/>
           </GameGuard>
-        </Route>
-        <Route exact path = "/winner">
-          <WinnerPage/>
         </Route>
         <Route exact path="/rules">
             <RulesPage/>
@@ -71,7 +71,7 @@ const AppRouter = () => {
             <UserPage/>
           </GameGuard>
         </Route>
-        <Route path="/lobbies/">
+        <Route path="/lobby">
           <LobbyGuard>
             <Header height="100"/>
             <LobbyPage/>
