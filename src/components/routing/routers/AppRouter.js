@@ -31,15 +31,14 @@ const AppRouter = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path = "/game/over">
-          <WinnerPage/>
+          <LobbyGuard>
+            <WinnerPage/>
+          </LobbyGuard>
         </Route>
         <Route path="/game">
-          <GameGuard>
+          <LobbyGuard>
             <GamePage/>
-          </GameGuard>
-        </Route>
-        <Route exact path="/rules">
-            <RulesPage/>
+          </LobbyGuard>
         </Route>
         <Route path="/home">
           <GameGuard>
