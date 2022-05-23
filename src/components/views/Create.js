@@ -90,7 +90,7 @@ const CreatePage = () => {
     let selected = "inactive";
     if (timer == props.time) selected = "buttons";
     let text = props.time;
-    if (props.time == null) text = "x";
+    if (props.time == 0) text = "x";
     let position = "M";
     if (props.position == "L") position = "L";
     else if (props.position == "R") position = "R";
@@ -113,7 +113,7 @@ const CreatePage = () => {
         <PlayersButton amount={4} position="R"/></div>
 
         <div className="settings row"> <div className="settings option">Timer:</div>
-        <TimerButton time={null} position="L"/>
+        <TimerButton time={0} position="L"/>
         <TimerButton time={30}/>
         <TimerButton time={45}/>
         <TimerButton time={60} position="R"/></div>

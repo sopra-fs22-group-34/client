@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
@@ -7,6 +7,27 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Overview.scss";
 import {buildGetRequestExternalAPI} from "./User";
+import User from "../../models/User";
+
+const FormField = props => {
+    return (
+        <div className="login field">
+            {props.label}
+            <input
+                className="login input"
+                placeholder={props.label}
+                value={props.value} maxlength="15"
+                onChange={e => props.onChange(e.target.value)}
+            />
+        </div>
+    );
+};
+
+FormField.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func
+};
 
 const LobbyOverview = () => {
   const history = useHistory();
@@ -14,6 +35,7 @@ const LobbyOverview = () => {
   const [user, setUser] = useState(null);
   const [game, setGame] = useState(null);
   const [view, setView] = useState("join");
+  const [secretCode, setSecretCode] = useState(null);
 
   async function logout() {
     try { await api.put('/users/'+localStorage.getItem('id')+"/logout");
@@ -133,6 +155,20 @@ const LobbyOverview = () => {
       return !lobby.is_open && lobby.is_public;
     }
 
+    const joinPrivateLobby = async (login) => {
+        try {
+            for (let i = 0; i < lobbies.length; i++){
+                if (lobbies[i].secret_url == secretCode){
+                    if (lobbies[i].id != user.lobby) {await api.put('/lobbies/'+lobbies[i].id+'/users/'+localStorage.getItem("id")+'/join');}
+                    localStorage.setItem('lobby', lobbies[i].id);
+                    history.push('/lobbies/'+lobbies[i].id);
+                }
+            }
+        } catch (error) {
+            alert(`Something went wrong when joining the private lobby: \n${handleError(error)}`);
+        }
+    }
+
   if (game){
     description = "You are currently in a game!";
     content = (<Button className="orange-button" onClick={() => history.push('/game')}>Return to Game </Button>);
@@ -192,6 +228,19 @@ const LobbyOverview = () => {
             </Button>
           </div>
           {buttons}
+            <div className="privateLobbyField overview">
+                <FormField
+                    label="Enter secret Lobby Code"
+                    value={secretCode}
+                    onChange={p => setSecretCode(p)}
+                />
+                <Button
+                    disabled={!secretCode}
+                    width="100%"
+                    onClick={() => joinPrivateLobby(true)} >
+                    join secret lobby
+                </Button>
+            </div>
           <div className="overview lobby-container">
               <div className="overview view-description">
               <p className="overview paragraph">{description}</p>

@@ -63,7 +63,6 @@ const LobbyPage = () => {
         const currentLobby = await api.get(window.location.pathname);
         const lobby = new Lobby(currentLobby.data);
         setLobby(lobby);
-
         if ((lobby.current_players >= 2) && (localStorage.getItem('id') == lobby.host_id)) { isHost = true; }
 
         setHostBox(<PlayerName player={lobby.host_name}/>);
@@ -142,6 +141,7 @@ const LobbyPage = () => {
         <LobbyStat option="Players" stat={lobby.current_players+"/"+lobby.total_players}/>
         <LobbyStat option="Timer" stat={lobby.timer}/>
         <LobbyStat option="Type" stat={publicToString(lobby.is_public)}/>
+        {(!lobby.is_public) && <LobbyStat option="Secret Code" stat={(lobby.secret_url)}/>}
         </div>
       </div>);
   }

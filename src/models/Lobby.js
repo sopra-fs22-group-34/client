@@ -13,6 +13,7 @@ class Lobby {
     this.is_public = null;
     this.players = null;
     this.timer = null;
+    this.secret_url = null;
     Object.assign(this, data);
   }
 }
