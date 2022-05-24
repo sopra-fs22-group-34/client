@@ -107,6 +107,7 @@ const LobbyOverview = () => {
           localStorage.removeItem('token');
           localStorage.removeItem('id');
           localStorage.removeItem('lobby');
+          localStorage.removeItem('game');
           history.push('/login');
         }
       }
@@ -114,6 +115,8 @@ const LobbyOverview = () => {
           try {
             const inGame = await api.get('/users/'+localStorage.getItem('id')+'/game');
             setGame(inGame.data);
+            if (game) { localStorage.setItem('game', localStorage.getItem('lobby')); }
+            else localStorage.removeItem('game');
           } catch (error) {
             console.error(`Something went wrong while determining if you are in a game: \n${handleError(error)}`);
             console.error("Details:", error);

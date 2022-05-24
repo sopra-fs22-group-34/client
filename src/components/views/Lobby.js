@@ -33,11 +33,14 @@ const LobbyPage = () => {
   const [p3Box, setP3Box] = useState(null);
   const [p4Box, setP4Box] = useState(null);
   const [full, setFull] = useState(false);
-    const [isOpen2, setIsOpen2] = useState(false);
-    const togglePopup2 = () => {setIsOpen2(!isOpen2);}
+  const [isOpen2, setIsOpen2] = useState(false);
+  const togglePopup2 = () => {setIsOpen2(!isOpen2);}
 
   async function startGame() {
-    try { await api.post("/lobbies/"+localStorage.getItem('lobby')+"/game"); }
+    try {
+        await api.post("/lobbies/"+localStorage.getItem('lobby')+"/game");
+        localStorage.setItem('game', localStorage.getItem('lobby'));
+    }
     catch (error) {
         console.error(`Something went wrong while starting the game. : \n${handleError(error)}`);
         console.error("Details:", error);
