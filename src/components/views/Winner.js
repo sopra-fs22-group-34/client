@@ -44,7 +44,7 @@ const WinnerPage = () => {
     useEffect(() => {
         async function fetchUsers() {
             try {
-                let currentGame = await api.get("/lobbies/" + localStorage.getItem('lobby') + "/game");
+                let currentGame = await api.get("/lobbies/" + localStorage.getItem('game') + "/game");
                 game = currentGame.data;
                 setGame(game);
                 console.log(game);
@@ -65,9 +65,8 @@ const WinnerPage = () => {
 
                 // TODO: causes errors for now. get and delete should only be done once
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                await api.delete("/lobbies/" + localStorage.getItem('lobby'));
-                localStorage.removeItem('lobby');
-
+                await api.delete("/lobbies/" + localStorage.getItem('game'));
+                localStorage.removeItem('game');
             } catch (error) {
                 console.error(`Something went wrong while fetching the game data: \n${handleError(error)}`);
                 console.error("Details:", error);

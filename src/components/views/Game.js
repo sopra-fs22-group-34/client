@@ -24,6 +24,14 @@ const GamePage = () => {
     let [playerIndex, setPlayerIndex] = useState(0);
     let [timer, setTimer] = useState(30);
     let [spectator, setSpectator] = useState(false);
+    let [end, setEnd] = useState(false);
+
+    function EndBanner(props) {
+        return (<div className="game end-container"><div className="game end">
+                <div className="game end-title">Game Over</div>
+                <p>Calculating results...</p>
+                </div></div>)
+    }
 
     function TurnOrder(props) {
         let namePlayer1 = (<PlayerInfo index={0} data={props.data}/>);
@@ -335,8 +343,9 @@ const GamePage = () => {
     async function QuitGame() {
         try {
             await api.put("/lobbies/"+localStorage.getItem('lobby')+"/game/"+localStorage.getItem('id')+"/leave");
-            history.push("/home");
             localStorage.removeItem('lobby');
+            localStorage.removeItem('game');
+            history.push("/home");
         }
         catch (error){
             console.error(`Something went wrong while leaving the game: \n${handleError(error)}`);
@@ -347,8 +356,9 @@ const GamePage = () => {
 
     async function StopSpectating() {
         await api.put("/lobbies/"+localStorage.getItem('lobby')+"/users/"+localStorage.getItem('id')+"/spectate/leave");
-        history.push("/home");
         localStorage.removeItem('lobby');
+        localStorage.removeItem('game');
+        history.push("/home");
     }
 
     async function skipTurn(){
@@ -395,7 +405,9 @@ const GamePage = () => {
             let id = game.playerTurnId;
             if (spectator) setPlayerIndex(id);
             if (game.gameOver === true) {
+                setEnd(true);
                 await new Promise(resolve => setTimeout(resolve, 3000));
+                localStorage.removeItem('lobby');
                 history.push("/game/over");
             }
             const isInLobby = await api.get("/lobbies/"+localStorage.getItem('lobby') + "/users/" + localStorage.getItem('id'));
@@ -479,6 +491,7 @@ const GamePage = () => {
         <BaseContainer className="game container">
             {isOpen && <Rules content={<> </>} handleClose={togglePopup} />}
             {isOpen2 && <Confirm content={<> </>} handleClose={togglePopup2} handleConfirm={Leave}/>}
+            {end && <EndBanner/>}
             <div className="game buttons-L">
             <Button className="blue-button" onClick={togglePopup2}> &#60; Leave </Button>
             </div>

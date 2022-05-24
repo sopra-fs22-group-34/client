@@ -169,6 +169,33 @@
     font-size: 16pt;
     margin-right: 10px;
   }
+  &.end-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index:1;
+  }
+  &.end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5%;
+    background: $background;
+    border: 5px solid $accent;
+    border-style: solid none solid none;
+    position: fixed;
+    width: 100%;
+    left: 0px;
+  }
+  &.end-title {
+    color: $accent;
+    font-size: 30pt;
+    font-style: bold;
+  }
 }
 
 .middle {

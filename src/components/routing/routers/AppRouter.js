@@ -1,9 +1,11 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import Header from "components/views/Header";
-import {GameGuard} from "components/routing/routeProtectors/GameGuard";
+import {HomeGuard} from "components/routing/routeProtectors/HomeGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import {LobbyGuard} from "components/routing/routeProtectors/LobbyGuard";
+import {GameGuard} from "components/routing/routeProtectors/GameGuard";
+import {GameOverGuard} from "components/routing/routeProtectors/GameOverGuard";
 import Login from "components/views/Login";
 import Register from "components/views/Register";
 import {UserPage} from "components/views/User";
@@ -31,32 +33,32 @@ const AppRouter = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path = "/game/over">
-          <LobbyGuard>
+          <GameOverGuard>
             <WinnerPage/>
-          </LobbyGuard>
+          </GameOverGuard>
         </Route>
         <Route path="/game">
-          <LobbyGuard>
+          <GameGuard>
             <GamePage/>
-          </LobbyGuard>
+          </GameGuard>
         </Route>
         <Route path="/home">
-          <GameGuard>
+          <HomeGuard>
             <Header height="100"/>
             <LobbyOverview/>
-          </GameGuard>
+          </HomeGuard>
         </Route>
         <Route path="/create">
-          <GameGuard>
+          <HomeGuard>
             <Header height="100"/>
             <CreatePage/>
-          </GameGuard>
+          </HomeGuard>
         </Route>
         <Route exact path="/users">
-          <GameGuard>
+          <HomeGuard>
             <Header height="100"/>
             <UserList/>
-          </GameGuard>
+          </HomeGuard>
         </Route>
         <Route path="/users/edit/">
           <EditGuard>
@@ -65,10 +67,10 @@ const AppRouter = () => {
           </EditGuard>
         </Route>
         <Route path="/users/">
-          <GameGuard>
+          <HomeGuard>
             <Header height="100"/>
             <UserPage/>
-          </GameGuard>
+          </HomeGuard>
         </Route>
         <Route path="/lobby">
           <LobbyGuard>
