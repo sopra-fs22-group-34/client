@@ -50,33 +50,26 @@ const GamePage = () => {
 
     function SpectatorList(props) {
         let s1, s2, s3, s4;
+        let isHost = false;
+        if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
+            isHost = true;
+        }
+
         if (props.data.lobbyData.current_spectators > 0) {
-            s1 = (<SpectatorInfo index={0} data={props.data}/>);
-            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
-                s1 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
-                    <SpectatorInfo index={0} data={props.data}/></div>);
-            }
+            s1 = (<SpectatorInfo index={0} data={props.data} host={isHost}/>);
+
         }
         if (props.data.lobbyData.current_spectators > 1) {
-            s2 = (<SpectatorInfo index={1} data={props.data}/>);
-            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
-                s2 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
-                    <SpectatorInfo index={1} data={props.data}/></div>);
-            }
+            s2 = (<SpectatorInfo index={1} data={props.data} host={isHost}/>);
+
         }
         if (props.data.lobbyData.current_spectators > 2) {
-            s3 = (<SpectatorInfo index={2} data={props.data}/>);
-            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
-                s3 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
-                    <SpectatorInfo index={2} data={props.data}/></div>);
-            }
+            s3 = (<SpectatorInfo index={2} data={props.data} host={isHost}/>);
+
         }
         if (props.data.lobbyData.current_spectators > 3) {
-            s4 = (<SpectatorInfo index={3} data={props.data}/>);
-            if (props.data.lobbyData.players[0].id.toString() === localStorage.getItem("id")) {
-                s4 = (<div><Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>
-                    <SpectatorInfo index={3} data={props.data}/></div>);
-            }
+            s4 = (<SpectatorInfo index={3} data={props.data} host={isHost}/>);
+
         }
         return (<div className="game spectator-list">
                    {s1} {s2} {s3} {s4}
@@ -84,12 +77,16 @@ const GamePage = () => {
     }
 
     function SpectatorInfo(props){
+        let kickButton;
         let id = props.index;
         let className = "spectator-turn";
+        if (props.host === true) {
+            kickButton = (<Button className="lobby kick-button" onClick={() => KickSpectator(props.data.lobbyData.spectators[0].id)}>X</Button>);
+        }
         if (props.data.lobbyData.spectators[id].id == localStorage.getItem('id')) { className = "spectator-turn you"; }
         return (<div className={className}>
                  <div className="game image"><img src={buildGetRequestExternalAPI(props.data.lobbyData.spectators[id].id)}/></div>
-                 {props.data.lobbyData.spectators[id].name} </div>)
+                 {props.data.lobbyData.spectators[id].name} {kickButton} </div>)
     }
 
     function MiddleTiles(props){
@@ -400,6 +397,11 @@ const GamePage = () => {
             if (game.gameOver === true) {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 history.push("/game/over");
+            }
+            const isInLobby = await api.get("/lobbies/"+localStorage.getItem('lobby') + "/users/" + localStorage.getItem('id'));
+            if (!isInLobby.data) {
+                history.push('/home');
+                localStorage.removeItem('lobby');
             }
         }
         fetchData();
