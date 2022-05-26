@@ -19,8 +19,8 @@ const ConfirmPage = props => {
                 </div>)
     } else {
         buttons = (<div className="confirm buttons-container">
-                    <Button width="50%" className="blue-button margin" onClick={props.handleClose}> No </Button>
-                    <Button width="50%" className="orange-button" onClick={props.handleConfirm}> Yes </Button>
+                    <Button width="50%" className="blue-button margin" onClick={props.handleConfirm}> Yes </Button>
+                    <Button width="50%" className="orange-button" onClick={props.handleClose}> No </Button>
                 </div>)
     }
 

@@ -147,14 +147,13 @@ const GamePage = () => {
             console.log("move = " + move);
             let executeMove = await api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
             if (executeMove) {
-                setOriginIndex(null);
-                setColorIndex(null);
-                setTileAmount(null);
+                unpick();
                 let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
                 let game = currentGame.data;
                 setGame(game);
             }
         } catch (error) {
+            unpick();
             console.error(`Something went wrong while executing the move: \n${handleError(error)}`);
             console.error("Details:", error);
             alert("Something went wrong while executing the move! See the console for details.");
@@ -403,6 +402,7 @@ const GamePage = () => {
             setGame(game);
             console.log(game);
             let id = game.playerTurnId;
+            if (game.playerTurnId != playerIndex) unpick();
             if (spectator) setPlayerIndex(id);
             if (game.gameOver === true) {
                 setEnd(true);
@@ -461,7 +461,7 @@ const GamePage = () => {
                 <Button onClick={() => unpick()}> Drop </Button>
                 </div>);
             skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
-            yourTurn = (<div className="game your-turn">It's your turn! <br/> Timer: {timer}</div>);
+            yourTurn = (<div className="game your-turn">Your turn! <br/></div>);
         }
         turnOrder = (<TurnOrder data={game}/>);
         spectatorList = (<SpectatorList data={game}/>);
