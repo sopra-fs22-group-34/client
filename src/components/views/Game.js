@@ -148,7 +148,7 @@ const GamePage = () => {
             const move = JSON.stringify({originIndex, colorIndex, targetRowIndex, tileAmount, playerIndex});
             console.log("move = " + move);
             let executeMove = await api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
-            if (executeMove == true) {
+            if (executeMove === true) {
                 unpick();
                 let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
                 let game = currentGame.data;
