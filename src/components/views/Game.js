@@ -26,6 +26,8 @@ const GamePage = () => {
     let [spectator, setSpectator] = useState(false);
     let [end, setEnd] = useState(false);
 
+    let playerIndexForFetch;
+
     function EndBanner(props) {
         return (<div className="game end-container"><div className="game end">
                 <div className="game end-title">Game Over</div>
@@ -384,6 +386,7 @@ const GamePage = () => {
                 for (let i = 0; i < game.lobbyData.current_players; i++) {
                     if (players[i].id == localStorage.getItem('id')) {
                         setPlayerIndex(i);
+                        playerIndexForFetch = i;
                         break;
                     }
                 }
@@ -402,7 +405,7 @@ const GamePage = () => {
             setGame(game);
             console.log(game);
             let id = game.playerTurnId;
-            if (game.playerTurnId !== playerIndex) unpick();
+            if (game.playerTurnId !== playerIndexForFetch) unpick();
             if (spectator) setPlayerIndex(id);
             if (game.gameOver === true) {
                 setEnd(true);
