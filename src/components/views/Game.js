@@ -456,6 +456,10 @@ const GamePage = () => {
         setTileAmount(null);
     }
 
+    function properTime(time){
+        return Math.floor(time/1000);
+    }
+
     if (game) {
         if (game.playerTurnId == playerIndex && !spectator) {
             if (colorIndex != null) pickedUp = (<div className="game holding">
@@ -463,7 +467,7 @@ const GamePage = () => {
                 <Button onClick={() => unpick()}> Drop </Button>
                 </div>);
             skipButton = (<Button className="game skip-button" onClick={() => skipTurn()}>Skip Turn</Button>);
-            yourTurn = (<div className="game your-turn">Your turn! <br/></div>);
+            yourTurn = (<div className="game your-turn">Your turn! <br/> {properTime(game.lobbyData.time_left)} </div>);
         }
         turnOrder = (<TurnOrder data={game}/>);
         spectatorList = (<SpectatorList data={game}/>);
