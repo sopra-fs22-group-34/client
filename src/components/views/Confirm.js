@@ -10,7 +10,7 @@ import {QuitGame} from "./Game";
 const ConfirmPage = props => {
     let buttons;
     let message;
-    if (props.text) message = props.message;
+    if (props.text) message = props.text;
     else message = "Are you sure you want to leave?";
 
     if (props.type == "confirm") {

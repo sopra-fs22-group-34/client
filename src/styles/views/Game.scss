@@ -335,14 +335,21 @@
    }
 }
 
-.wall-tile{
-    max-height: 80px;
-    max-width: 80px;
-    min-height: 80px;
-    min-width: 80px;
-    margin-right: 5px;
-    padding: 12px;
-    opacity: 0.5;
+.wall-tiles {
+  max-height: 80px;
+  max-width: 80px;
+  min-height: 80px;
+  min-width: 80px;
+  margin-right: 5px;
+  padding: 12px;
+}
+
+.wall-tile {
+    position: fixed;
+    margin: -12px;
+    height: 80px;
+    width: 80px;
+    opacity: 0.3;
     &.tile-1{
       background: $col1;
       background-image: url("../../assets/azulejo1.png");
@@ -393,7 +400,7 @@
   }
   &:disabled {
     opacity: 1;
-    border: 2px solid $background;
+    border: 3px solid $background;
   }
   margin: 3px;
   width: 50px;

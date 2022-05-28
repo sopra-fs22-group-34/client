@@ -11,11 +11,7 @@ const Header = props => {
             <div>
             <div className="popup-box">{isOpen && <Rules content={<> </>} handleClose={togglePopup} />}</div>
             <div className="header container" style={{height: props.height}}>
-                <div>
-                    <Button className="account-button"
-                        onClick={() => window.location.href = "/users/edit/" + localStorage.getItem('id')}> Settings </Button>
-                    <Button className="rules-button" onClick={togglePopup}> Game Rules </Button>
-                </div>
+            <Button className="rules-button" onClick={togglePopup}> Game Rules </Button>
             </div>
 
             </div>

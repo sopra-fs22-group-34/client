@@ -146,7 +146,7 @@ const GamePage = () => {
             const move = JSON.stringify({originIndex, colorIndex, targetRowIndex, tileAmount, playerIndex});
             console.log("move = " + move);
             let executeMove = await api.put("/lobbies/"+localStorage.getItem("lobby")+"/game/moves", move);
-            if (executeMove) {
+            if (executeMove === true) {
                 unpick();
                 let currentGame = await api.get("/lobbies/"+localStorage.getItem('lobby')+"/game");
                 let game = currentGame.data;
@@ -253,23 +253,23 @@ const GamePage = () => {
         // Move Hover Preview
         if (hovered) {
             if (tile1 == filler && tileAmount > 0){
-                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile1 = invalid;}
+                if ((props.tilesAmount > 0 && colorIndex != props.colorIndex) || onWall) {tile1 = invalid;}
                 else tile1 = preview;
             }
             if (tile2 == filler && (tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 2)){
-                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile2 = invalid;}
+                if ((props.tilesAmount > 0 && colorIndex != props.colorIndex) || onWall) {tile2 = invalid;}
                 else tile2 = preview;
             }
             if (tile3 == filler && (tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 3)){
-                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile3 = invalid;}
+                if ((props.tilesAmount > 0 && colorIndex != props.colorIndex) || onWall) {tile3 = invalid;}
                 else tile3 = preview;
             }
             if (tile4 == filler && (tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 4)){
-                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile4 = invalid;}
+                if ((props.tilesAmount > 0 && colorIndex != props.colorIndex) || onWall) {tile4 = invalid;}
                 else tile4 = preview;
             }
             if (tile5 == filler && (tileAmount > 4 || tile4 == tile && tileAmount > 3 || tile3 == tile && tileAmount > 2 || tile2 == tile && tileAmount > 1 || tile1 == tile && tileAmount > 0) && (tileAmount + props.tilesAmount >= 5)){
-                if ((props.colorIndex != -1 && colorIndex != props.colorIndex) || onWall) {tile5 = invalid;}
+                if ((props.tilesAmount > 0 && colorIndex != props.colorIndex) || onWall) {tile5 = invalid;}
                 else tile5 = preview;
             }
         }
@@ -305,11 +305,11 @@ const GamePage = () => {
     function WallTile(props){
         let tile;
         if (props.occupied) tile = (<Tile color={props.color} inactive={true}/>);
-        if (props.color == 0) return (<div className="wall-tile tile-1">{tile}</div>);
-        else if (props.color == 1) return (<div className="wall-tile tile-2">{tile}</div>);
-        else if (props.color == 2) return (<div className="wall-tile tile-3">{tile}</div>);
-        else if (props.color == 3) return (<div className="wall-tile tile-4">{tile}</div>);
-        else if (props.color == 4) return (<div className="wall-tile tile-5">{tile}</div>);
+        if (props.color == 0) return (<div className="wall-tiles"><div className="wall-tile tile-1"/>{tile}</div>);
+        else if (props.color == 1) return (<div className="wall-tiles"><div className="wall-tile tile-2"/>{tile}</div>);
+        else if (props.color == 2) return (<div className="wall-tiles"><div className="wall-tile tile-3"/>{tile}</div>);
+        else if (props.color == 3) return (<div className="wall-tiles"><div className="wall-tile tile-4"/>{tile}</div>);
+        else if (props.color == 4) return (<div className="wall-tiles"><div className="wall-tile tile-5"/>{tile}</div>);
     }
 
     function FloorLine(props){
@@ -402,7 +402,7 @@ const GamePage = () => {
             setGame(game);
             console.log(game);
             let id = game.playerTurnId;
-            if (game.playerTurnId != playerIndex) unpick();
+            if (game.playerTurnId !== playerIndex) unpick();
             if (spectator) setPlayerIndex(id);
             if (game.gameOver === true) {
                 setEnd(true);
@@ -419,7 +419,6 @@ const GamePage = () => {
         fetchData();
         const interval = setInterval(() => {
           quickFetch();
-
         }, 3000);
         return () => clearInterval(interval);
     }, []);

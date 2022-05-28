@@ -35,6 +35,10 @@ const LobbyPage = () => {
   const [full, setFull] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const togglePopup2 = () => {setIsOpen2(!isOpen2);}
+  const [confirm, setConfirm] = useState(false);
+  const togglePopup = () => {setConfirm(!confirm);}
+  const [kicked, setKicked] = useState(false);
+  const togglePopup3 = () => {setKicked(!kicked);}
 
   async function startGame() {
     try {
@@ -48,12 +52,17 @@ const LobbyPage = () => {
     history.push("/game");
   }
   async function Return() {
-    try { await api.put("/lobbies/"+localStorage.getItem('lobby')+"/users/"+localStorage.getItem('id')+"/leave");
+    try {
+        await api.put("/lobbies/"+localStorage.getItem('lobby')+"/users/"+localStorage.getItem('id')+"/leave");
         history.push('/home');
-    } catch (error) { alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
+    } catch (error) { console.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);}
     localStorage.removeItem('lobby');
   }
 
+  function Redirect(){
+      localStorage.removeItem('lobby');
+      history.push('/home');
+  }
   let p2 = null;
   let p3 = null;
   let p4 = null;
@@ -93,8 +102,7 @@ const LobbyPage = () => {
 
         const isInLobby = await api.get("/lobbies/"+localStorage.getItem('lobby') + "/users/" + localStorage.getItem('id'));
         if (!isInLobby.data) {
-            history.push('/home');
-            localStorage.removeItem('lobby');
+            setKicked(true);
         }
 
         if (lobby.current_players == lobby.total_players || !lobby.is_open) {
@@ -103,9 +111,9 @@ const LobbyPage = () => {
             startGame();
         }
       } catch (error) {
+        setConfirm(true);
         console.error(`Something went wrong while fetching the lobby: \n${handleError(error)}`);
         console.error("Details:", error);
-        history.push('/home');
         localStorage.removeItem('lobby');
         //alert("Something went wrong while fetching the lobby! See the console for details.");
       }
@@ -150,6 +158,8 @@ const LobbyPage = () => {
   }
   return (
       <BaseContainer className="lobby container">
+      {confirm && <Confirm content={<> </>} type="confirm" text="The host closed the lobby. Returning to Home." handleConfirm={Redirect}/>}
+      {kicked && <Confirm content={<> </>} type="confirm" text="The host kicked you from the lobby. Returning to Home." handleConfirm={Redirect}/>}
       {isOpen2 && <Confirm content={<> </>} handleClose={togglePopup2} handleConfirm={Return}/>}
       <div className="lobby content">
 
