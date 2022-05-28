@@ -1,10 +1,13 @@
-# SoPra FS22 - Client Template
-
+# Azul Client
 [Open Server](https://sopra-fs22-group-34-server.herokuapp.com/)
 
 [Open Client](https://sopra-fs22-group-34-client.herokuapp.com/)
 
-## Getting started 
+# Technologies
+The client application is built mostly with React.js
+
+# Launch & Deployment
+## Getting started
 
 Read and go through these Tutorials. It will make your life easier!
 
@@ -14,7 +17,7 @@ Read and go through these Tutorials. It will make your life easier!
 
 Next, there are two other technologies that you should look at:
 
-* [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) offers declarative routing for React. It is a collection of navigational components that fit nicely with the application. 
+* [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) offers declarative routing for React. It is a collection of navigational components that fit nicely with the application.
 * [react-hooks](https://reactrouter.com/web/api/Hooks) let you access the router's state and perform navigation from inside your components.
 
 ## Prerequisites and Installation
@@ -48,3 +51,18 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 
 > Thanks to Lucas Pelloni and Kyrill Hux for working on the template.
+
+# Roadmap
+- Add option in user settings to customise color scheme for tiles
+- Add option to upload custom profile picture
+- Add in-game chat
+
+# Authors and acknowledgement
+- Samuel Brander
+- Ethan Ohlin
+- Nora Beringer
+- Robin Meister
+- Maximilian Hausdorf
+
+- shoutout to whoever created the confetti in React.js
+- shoutout to Tiles API
