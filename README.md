@@ -8,6 +8,7 @@
 [Open Client](https://sopra-fs22-group-34-client.herokuapp.com/)
 
 ![example workflow](https://github.com/sopra-fs22-group-34/client/actions/workflows/deploy.yml/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sopra-fs22-group-34_client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sopra-fs22-group-34_client)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=sopra-fs22-group-34_client&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=sopra-fs22-group-34_client)
 
 # Introduction
