@@ -53,11 +53,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 > Thanks to Lucas Pelloni and Kyrill Hux for working on the template.
 
 # Roadmap
-- Add option in user settings to customise color scheme for tiles
-- Add option to upload custom profile picture
 - Add in-game chat
-- Add private user mode such that when a user choses to be private they aren't shown on user overview list
-- Private lobbies have a copy button that automatically copies copies the secret code in someone's clipboard
+- Add an overview of the game board which names the different components to the game rules page
+- Private lobbies have a copy button that automatically copies the secret code in someone's clipboard
 
 # Authors and acknowledgement
 - Samuel Brander
