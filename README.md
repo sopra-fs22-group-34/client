@@ -87,7 +87,41 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 # Illustrations
 
+After registering / logging in the user can see the lobby overview with open lobbies to join. It is also possible to create your own lobby or to join a private lobby via a secret code, which has to be shared with the players one wants to play with.
 
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image5.png?raw=true">
+
+After joining a lobby the user can see the game settings chosen by the lobby host and also who else is in the lobby. Game settings include the name of the game, number of players, the chosen timer (none, 30, 45 or 60 seconds) and the type of the game (public or private).
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image3.png?raw=true">
+
+The host of the lobby additionally has a red cross on each joined player in case he wants to kick them out of the lobby. Also the host can choose to start the game immediately even though the number of players chosen in the settings is not reached. This is useful when not many players are online in order to avoid long waiting periods until one can play.
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image1.png?raw=true">
+
+Once the game has started, the playerboard  is loaded and the player which turn’s it is will also be alerted that one has to make a move with “Your turn!”. Other than that the player can start playing, check out his opponents player board by hovering over the player name on the right hand side of the screen, read the game rules on the top right or choose to leave the game with the button on the top left.
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image2.png?raw=true">
+
+Example of a first round game play:
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image6.png?raw=true">
+
+Game rules can be accessed during the game in case of uncertainty. 
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image10.png?raw=true">
+
+Points are counted after each round and the coloured tiles are moved to the wall if the pattern line was fully filled during the round.
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image9.png?raw=true">
+
+Later on in the game the wall on the right side is filling up and the score of each player is rising.
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image7.png?raw=true">
+
+Once the game is over, each player’s score is displayed and the game has a winner. The winner is congratulated with confetti raining down.
+
+<img align="center" width="500" src="https://github.com/sopra-fs22-group-34/client/blob/master/images/image8.png?raw=true">
 
 # Roadmap
 - Add in-game chat
@@ -98,6 +132,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 Samuel Brander, Ethan Ohlin, Nora Beringer, Robin Meister, Maximilian Hausdorf
 
 Shoutout to:
+- Michael Kiesling (the creator of Azul) and publishers of the game
 - Whoever created the confetti in React.js
 - Tiles Icon API
 
