@@ -133,8 +133,8 @@ Samuel Brander, Ethan Ohlin, Nora Beringer, Robin Meister, Maximilian Hausdorf
 
 Shoutout to:
 - Michael Kiesling (the creator of Azul) and publishers of the game
-- Whoever created the confetti in React.js
-- Tiles Icon API
+- [Creator of confetti in React.js](https://github.com/alampros/react-confetti#readme)
+- [Avatar API for profile pictures](https://avatars.dicebear.com/)
 
 # License
 Apache License 2.0
